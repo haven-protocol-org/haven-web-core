@@ -164,7 +164,7 @@ Compiled WebAssembly binaries are committed to ./dist for convenience, but these
 ## See also
 
 * [API specification](http://moneroecosystem.org/monero-java/monero-spec.pdf)
-* [monero-cpp](https://github.com/monero-ecosystem/monero-cpp)
+* [haven-web-cpp](https://github.com/haven-protocol-org/haven-web-cpp)
 
 
 ## License
