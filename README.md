@@ -1,6 +1,6 @@
-# Monero JavaScript Library
+# Haven Web Core a Fork of Monero Javascript
 
-A Node.js library for creating Monero applications using RPC or WebAssembly bindings to [monero v0.16.0.1 'Nitrogen Nebula'](https://github.com/monero-project/monero/tree/v0.16.0.1).
+A Node.js library for creating Haven Apps using RPC or WebAssembly
 
 * Supports wallet and daemon RPC clients.
 * Supports client-side wallets in Node.js or the browser using WebAssembly.
@@ -164,11 +164,8 @@ Compiled WebAssembly binaries are committed to ./dist for convenience, but these
 ## See also
 
 * [API specification](http://moneroecosystem.org/monero-java/monero-spec.pdf)
-* [monero-java](https://github.com/monero-ecosystem/monero-java)
 * [monero-cpp](https://github.com/monero-ecosystem/monero-cpp)
-* [xmr-sample-app](https://github.com/woodser/xmr-sample-app/) - sample web app template (under development)
-* [monerostresstester.com](https://github.com/woodser/monerostresstester.com) - repeatedly sends txs to self to stress test the network (under development)
-* [monerowebwallet.com](https://github.com/woodser/monerowebwallet.com) - open-source, client-side web wallet (under development)
+
 
 ## License
 
