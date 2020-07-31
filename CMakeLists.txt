@@ -8,8 +8,8 @@ string(REPLACE ";" "," WASM_EXCEPTION_WHITELIST "${WASM_EXCEPTION_WHITELIST}")
 SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -Oz --bind -s DISABLE_EXCEPTION_CATCHING=2 -s EXCEPTION_CATCHING_WHITELIST='[${WASM_EXCEPTION_WHITELIST}]'")
 add_definitions(-DAUTO_INITIALIZE_EASYLOGGINGPP -DNO_AES)
 
-set(BUILD_MONERO_CORE_WASM ON)
-set(BUILD_MONERO_CORE_KEYS_WASM ON)
+set(BUILD_HAVEN_OFFSHORE_WASM ON)
+set(BUILD_HAVEN_OFFSHORE_KEYS_WASM ON)
 
 ##############
 # C++ bridge
@@ -21,48 +21,48 @@ include_directories("src/cpp")
 # haven-web-cpp
 #####################
 
-set(MONERO_CPP "external/haven-web-cpp)
-set(MONERO_CPP_SRC "${MONERO_CPP}/src")
+set(HAVEN_CPP "external/haven-web-cpp)
+set(HAVEN_CPP_SRC "${HAVEN_CPP}/src")
 
 # headers
-include_directories("${MONERO_CPP_SRC}")
-include_directories("${MONERO_CPP}/external/libsodium/include")
-include_directories("${MONERO_CPP}/external/libsodium/include/sodium")
+include_directories("${HAVEN_CPP_SRC}")
+include_directories("${HAVEN_CPP}/external/libsodium/include")
+include_directories("${HAVEN_CPP}/external/libsodium/include/sodium")
 
 ##################
-# monero-project
+# haven-offshore
 ##################
 
-set(MONERO_CORE "${MONERO_CPP}/external/monero-core")
-set(MONERO_CORE_SRC "${MONERO_CORE}/src")
+set(HAVEN_OFFSHORE "${HAVEN_CPP}/external/haven-offshore")
+set(HAVEN_OFFSHORE_SRC "${HAVEN_OFFSHORE}/monero/src")
 
 # headers
 include_directories("src/main/cpp")
-include_directories("${MONERO_CORE_SRC}/")
-include_directories("${MONERO_CORE_SRC}/checkpoints")
-include_directories("${MONERO_CORE_SRC}/common")
-#include_directories("${MONERO_CORE_SRC}/crypto")
-#include_directories("${MONERO_CORE_SRC}/crypto/crypto_ops_builder/include/")	# DISABLED?
-#include_directories("${MONERO_CORE_SRC}/crypto/crypto_ops_builder/include/sodium")	# DISABLED?
-include_directories("${MONERO_CORE_SRC}/cryptonote_basic")
-#include_directories("${MONERO_CORE_SRC}/multisig")
-#include_directories("${MONERO_CORE_SRC}/cryptonote_core")
-#include_directories("${MONERO_CORE_SRC}/cryptonote_protocol")
-#include_directories("${MONERO_CORE_SRC}/wallet")
-#include_directories("${MONERO_CORE_SRC}/rpc")
-#include_directories("${MONERO_CORE_SRC}/mnemonics")
-include_directories("${MONERO_CORE}/external/")
-include_directories("${MONERO_CORE}/external/easylogging++")
-include_directories("${MONERO_CORE}/external/rapidjson/include")
-include_directories("${MONERO_CORE}/external/unbound/libunbound")
-include_directories("${MONERO_CORE}/external/db_drivers/liblmdb")
-include_directories("${MONERO_CORE}/contrib/epee/include")
-include_directories("${MONERO_CORE}/contrib/epee/include/net")
+include_directories("${HAVEN_OFFSHORE_SRC}/")
+include_directories("${HAVEN_OFFSHORE_SRC}/checkpoints")
+include_directories("${HAVEN_OFFSHORE_SRC}/common")
+#include_directories("${HAVEN_OFFSHORE_SRC}/crypto")
+#include_directories("${HAVEN_OFFSHORE_SRC}/crypto/crypto_ops_builder/include/")	# DISABLED?
+#include_directories("${HAVEN_OFFSHORE_SRC}/crypto/crypto_ops_builder/include/sodium")	# DISABLED?
+include_directories("${HAVEN_OFFSHORE_SRC}/cryptonote_basic")
+#include_directories("${HAVEN_OFFSHORE_SRC}/multisig")
+#include_directories("${HAVEN_OFFSHORE_SRC}/cryptonote_core")
+#include_directories("${HAVEN_OFFSHORE_SRC}/cryptonote_protocol")
+#include_directories("${HAVEN_OFFSHORE_SRC}/wallet")
+#include_directories("${HAVEN_OFFSHORE_SRC}/rpc")
+#include_directories("${HAVEN_OFFSHORE_SRC}/mnemonics")
+include_directories("${HAVEN_OFFSHORE}/external/")
+include_directories("${HAVEN_OFFSHORE}/external/easylogging++")
+include_directories("${HAVEN_OFFSHORE}/external/rapidjson/include")
+include_directories("${HAVEN_OFFSHORE}/external/unbound/libunbound")
+include_directories("${HAVEN_OFFSHORE}/external/db_drivers/liblmdb")
+include_directories("${HAVEN_OFFSHORE}/contrib/epee/include")
+include_directories("${HAVEN_OFFSHORE}/contrib/epee/include/net")
 
 #include_directories("${CMAKE_CURRENT_BINARY_DIR}")
-#include_directories("${MONERO_CORE_SRC}/wallet/api")
+#include_directories("${HAVEN_OFFSHORE_SRC}/wallet/api")
 
-include_directories("${MONERO_CORE}/build/release/translations")
+include_directories("${HAVEN_OFFSHORE}/build/release/translations")
 
 #############
 # OpenSSL
@@ -142,60 +142,60 @@ set_target_properties(
 ################################
 
 set(
-    MONERO_CORE_KEYS_SRC_FILES
+    HAVEN_OFFSHORE_KEYS_SRC_FILES
     
     # monero-javascript WASM bridge
     src/main/cpp/index.cpp
     src/main/cpp/monero_wasm_bridge.cpp
     
     # haven-web-cpp (modified for WASM)
-    ${MONERO_CPP_SRC}/utils/monero_utils.cpp
-    ${MONERO_CPP_SRC}/daemon/monero_daemon_model.cpp
-    ${MONERO_CPP_SRC}/wallet/monero_wallet_model.cpp
-    ${MONERO_CPP_SRC}/wallet/monero_wallet_keys.cpp
-    ${MONERO_CPP}/external/libsodium/src/crypto_verify/verify.c
+    ${HAVEN_CPP_SRC}/utils/monero_utils.cpp
+    ${HAVEN_CPP_SRC}/daemon/monero_daemon_model.cpp
+    ${HAVEN_CPP_SRC}/wallet/monero_wallet_model.cpp
+    ${HAVEN_CPP_SRC}/wallet/monero_wallet_keys.cpp
+    ${HAVEN_CPP}/external/libsodium/src/crypto_verify/verify.c
     
     # monero-project (modified for WASM)
-    ${MONERO_CORE_SRC}/cryptonote_basic/cryptonote_basic_impl.cpp
-    ${MONERO_CORE_SRC}/cryptonote_basic/account.cpp
-    ${MONERO_CORE_SRC}/cryptonote_basic/cryptonote_format_utils.cpp
-    ${MONERO_CORE_SRC}/crypto/crypto.cpp
-    ${MONERO_CORE_SRC}/crypto/hash.c
-    ${MONERO_CORE_SRC}/crypto/slow-hash.c
-    ${MONERO_CORE_SRC}/crypto/oaes_lib.c
-    ${MONERO_CORE_SRC}/crypto/crypto-ops.c
-    ${MONERO_CORE_SRC}/crypto/crypto-ops-data.c
-    ${MONERO_CORE_SRC}/crypto/keccak.c
-    ${MONERO_CORE_SRC}/crypto/chacha.c
-    ${MONERO_CORE_SRC}/crypto/random.c
-    ${MONERO_CORE_SRC}/crypto/aesb.c
-    ${MONERO_CORE_SRC}/crypto/tree-hash.c
-    ${MONERO_CORE_SRC}/crypto/hash-extra-blake.c
-    ${MONERO_CORE_SRC}/crypto/blake256.c
-    ${MONERO_CORE_SRC}/crypto/hash-extra-groestl.c
-    ${MONERO_CORE_SRC}/crypto/hash-extra-jh.c
-    ${MONERO_CORE_SRC}/crypto/hash-extra-skein.c
-    ${MONERO_CORE_SRC}/crypto/groestl.c
-    ${MONERO_CORE_SRC}/crypto/jh.c
-    ${MONERO_CORE_SRC}/crypto/skein.c
-    ${MONERO_CORE_SRC}/cryptonote_core/cryptonote_tx_utils.cpp
-    ${MONERO_CORE}/contrib/epee/src/hex.cpp
-    ${MONERO_CORE}/contrib/epee/src/string_tools.cpp
-    ${MONERO_CORE}/contrib/epee/src/memwipe.c
-    ${MONERO_CORE}/contrib/epee/src/mlocker.cpp
-    ${MONERO_CORE}/contrib/epee/src/wipeable_string.cpp
-    ${MONERO_CORE_SRC}/common/base58.cpp
-    ${MONERO_CORE_SRC}/device/device.cpp
-    ${MONERO_CORE_SRC}/device/device_default.cpp
-    ${MONERO_CORE_SRC}/multisig/multisig.cpp
-    ${MONERO_CORE_SRC}/ringct/rctOps.cpp
-    ${MONERO_CORE_SRC}/ringct/rctTypes.cpp
-    ${MONERO_CORE_SRC}/ringct/rctCryptoOps.c
-    ${MONERO_CORE_SRC}/ringct/rctSigs.cpp
-    ${MONERO_CORE_SRC}/ringct/bulletproofs.cc
-    ${MONERO_CORE_SRC}/ringct/multiexp.cc
-    ${MONERO_CORE_SRC}/mnemonics/electrum-words.cpp
-    ${MONERO_CORE}/external/easylogging++/easylogging++.cc
+    ${HAVEN_OFFSHORE_SRC}/cryptonote_basic/cryptonote_basic_impl.cpp
+    ${HAVEN_OFFSHORE_SRC}/cryptonote_basic/account.cpp
+    ${HAVEN_OFFSHORE_SRC}/cryptonote_basic/cryptonote_format_utils.cpp
+    ${HAVEN_OFFSHORE_SRC}/crypto/crypto.cpp
+    ${HAVEN_OFFSHORE_SRC}/crypto/hash.c
+    ${HAVEN_OFFSHORE_SRC}/crypto/slow-hash.c
+    ${HAVEN_OFFSHORE_SRC}/crypto/oaes_lib.c
+    ${HAVEN_OFFSHORE_SRC}/crypto/crypto-ops.c
+    ${HAVEN_OFFSHORE_SRC}/crypto/crypto-ops-data.c
+    ${HAVEN_OFFSHORE_SRC}/crypto/keccak.c
+    ${HAVEN_OFFSHORE_SRC}/crypto/chacha.c
+    ${HAVEN_OFFSHORE_SRC}/crypto/random.c
+    ${HAVEN_OFFSHORE_SRC}/crypto/aesb.c
+    ${HAVEN_OFFSHORE_SRC}/crypto/tree-hash.c
+    ${HAVEN_OFFSHORE_SRC}/crypto/hash-extra-blake.c
+    ${HAVEN_OFFSHORE_SRC}/crypto/blake256.c
+    ${HAVEN_OFFSHORE_SRC}/crypto/hash-extra-groestl.c
+    ${HAVEN_OFFSHORE_SRC}/crypto/hash-extra-jh.c
+    ${HAVEN_OFFSHORE_SRC}/crypto/hash-extra-skein.c
+    ${HAVEN_OFFSHORE_SRC}/crypto/groestl.c
+    ${HAVEN_OFFSHORE_SRC}/crypto/jh.c
+    ${HAVEN_OFFSHORE_SRC}/crypto/skein.c
+    ${HAVEN_OFFSHORE_SRC}/cryptonote_core/cryptonote_tx_utils.cpp
+    ${HAVEN_OFFSHORE}/contrib/epee/src/hex.cpp
+    ${HAVEN_OFFSHORE}/contrib/epee/src/string_tools.cpp
+    ${HAVEN_OFFSHORE}/contrib/epee/src/memwipe.c
+    ${HAVEN_OFFSHORE}/contrib/epee/src/mlocker.cpp
+    ${HAVEN_OFFSHORE}/contrib/epee/src/wipeable_string.cpp
+    ${HAVEN_OFFSHORE_SRC}/common/base58.cpp
+    ${HAVEN_OFFSHORE_SRC}/device/device.cpp
+    ${HAVEN_OFFSHORE_SRC}/device/device_default.cpp
+    ${HAVEN_OFFSHORE_SRC}/multisig/multisig.cpp
+    ${HAVEN_OFFSHORE_SRC}/ringct/rctOps.cpp
+    ${HAVEN_OFFSHORE_SRC}/ringct/rctTypes.cpp
+    ${HAVEN_OFFSHORE_SRC}/ringct/rctCryptoOps.c
+    ${HAVEN_OFFSHORE_SRC}/ringct/rctSigs.cpp
+    ${HAVEN_OFFSHORE_SRC}/ringct/bulletproofs.cc
+    ${HAVEN_OFFSHORE_SRC}/ringct/multiexp.cc
+    ${HAVEN_OFFSHORE_SRC}/mnemonics/electrum-words.cpp
+    ${HAVEN_OFFSHORE}/external/easylogging++/easylogging++.cc
 )
 
 ################################
@@ -203,38 +203,38 @@ set(
 ################################
 
 set(
-    MONERO_CORE_SRC_FILES
+    HAVEN_OFFSHORE_SRC_FILES
     
     # monero-javascript WASM bridge
     src/main/cpp/http_client_wasm.cpp
     
     # haven-web-cpp (modified for WASM)
-    ${MONERO_CPP_SRC}/wallet/monero_wallet_core.cpp
+    ${HAVEN_CPP_SRC}/wallet/monero_wallet_core.cpp
     
     # monero-project (modified for WASM)
-    ${MONERO_CORE}/external/db_drivers/liblmdb/mdb.c
-    ${MONERO_CORE}/external/db_drivers/liblmdb/midl.c
-    ${MONERO_CORE}/contrib/epee/src/abstract_http_client.cpp
-    #${MONERO_CORE}/contrib/epee/src/http_auth.cpp
-    ${MONERO_CORE_SRC}/wallet/wallet2.cpp
-    ${MONERO_CORE_SRC}/wallet/message_store.cpp
-    ${MONERO_CORE_SRC}/wallet/message_transporter.cpp
-    ${MONERO_CORE_SRC}/wallet/node_rpc_proxy.cpp
-    ${MONERO_CORE_SRC}/wallet/wallet_rpc_payments.cpp
-    #${MONERO_CORE_SRC}/blockchain_db/lmdb/db_lmdb.cpp
-    ${MONERO_CORE_SRC}/cryptonote_core/cryptonote_tx_utils.cpp
-    ${MONERO_CORE_SRC}/checkpoints/checkpoints.cpp
-    ${MONERO_CORE_SRC}/common/perf_timer.cpp
-    ${MONERO_CORE_SRC}/common/threadpool.cpp
-    ${MONERO_CORE_SRC}/common/aligned.c
-    ${MONERO_CORE_SRC}/common/util.cpp
-    ${MONERO_CORE_SRC}/common/i18n.cpp
-    ${MONERO_CORE_SRC}/common/combinator.cpp
-    ${MONERO_CORE_SRC}/rpc/rpc_payment_signature.cpp
-    ${MONERO_CORE_SRC}/wallet/ringdb.cpp
-    ${MONERO_CORE_SRC}/cryptonote_basic/miner.cpp
-    ${MONERO_CORE_SRC}/cryptonote_basic/difficulty.cpp
-    ${MONERO_CORE_SRC}/cryptonote_core/tx_sanity_check.cpp
+    ${HAVEN_OFFSHORE}/external/db_drivers/liblmdb/mdb.c
+    ${HAVEN_OFFSHORE}/external/db_drivers/liblmdb/midl.c
+    ${HAVEN_OFFSHORE}/contrib/epee/src/abstract_http_client.cpp
+    #${HAVEN_OFFSHORE}/contrib/epee/src/http_auth.cpp
+    ${HAVEN_OFFSHORE_SRC}/wallet/wallet2.cpp
+    ${HAVEN_OFFSHORE_SRC}/wallet/message_store.cpp
+    ${HAVEN_OFFSHORE_SRC}/wallet/message_transporter.cpp
+    ${HAVEN_OFFSHORE_SRC}/wallet/node_rpc_proxy.cpp
+    ${HAVEN_OFFSHORE_SRC}/wallet/wallet_rpc_payments.cpp
+    #${HAVEN_OFFSHORE_SRC}/blockchain_db/lmdb/db_lmdb.cpp
+    ${HAVEN_OFFSHORE_SRC}/cryptonote_core/cryptonote_tx_utils.cpp
+    ${HAVEN_OFFSHORE_SRC}/checkpoints/checkpoints.cpp
+    ${HAVEN_OFFSHORE_SRC}/common/perf_timer.cpp
+    ${HAVEN_OFFSHORE_SRC}/common/threadpool.cpp
+    ${HAVEN_OFFSHORE_SRC}/common/aligned.c
+    ${HAVEN_OFFSHORE_SRC}/common/util.cpp
+    ${HAVEN_OFFSHORE_SRC}/common/i18n.cpp
+    ${HAVEN_OFFSHORE_SRC}/common/combinator.cpp
+    ${HAVEN_OFFSHORE_SRC}/rpc/rpc_payment_signature.cpp
+    ${HAVEN_OFFSHORE_SRC}/wallet/ringdb.cpp
+    ${HAVEN_OFFSHORE_SRC}/cryptonote_basic/miner.cpp
+    ${HAVEN_OFFSHORE_SRC}/cryptonote_basic/difficulty.cpp
+    ${HAVEN_OFFSHORE_SRC}/cryptonote_core/tx_sanity_check.cpp
 )
 
 ####################
@@ -301,11 +301,11 @@ message(STATUS "EMCC_LINKER_FLAGS_CORE ${EMCC_LINKER_FLAGS_CORE}")
 # Build targets
 ####################
 
-if (BUILD_MONERO_CORE_KEYS_WASM)
-	add_executable(monero_core_keys ${MONERO_CORE_KEYS_SRC_FILES})
-	set_target_properties(monero_core_keys PROPERTIES LINK_FLAGS "${EMCC_LINKER_FLAGS_CORE_KEYS}")
+if (BUILD_HAVEN_OFFSHORE_KEYS_WASM)
+	add_executable(HAVEN_OFFSHORE_keys ${HAVEN_OFFSHORE_KEYS_SRC_FILES})
+	set_target_properties(HAVEN_OFFSHORE_keys PROPERTIES LINK_FLAGS "${EMCC_LINKER_FLAGS_CORE_KEYS}")
 	target_link_libraries(
-	    monero_core_keys
+	    HAVEN_OFFSHORE_keys
 	    #
 	    boost_chrono
 	    boost_system
@@ -315,12 +315,12 @@ if (BUILD_MONERO_CORE_KEYS_WASM)
 	)
 endif()
 
-if (BUILD_MONERO_CORE_WASM)
-	add_executable(monero_core ${MONERO_CORE_SRC_FILES} ${MONERO_CORE_KEYS_SRC_FILES})
-	set_target_properties(monero_core PROPERTIES LINK_FLAGS "${EMCC_LINKER_FLAGS_CORE}")
-	target_compile_definitions(monero_core PRIVATE BUILD_CORE_WALLET=1)
+if (BUILD_HAVEN_OFFSHORE_WASM)
+	add_executable(HAVEN_OFFSHORE ${HAVEN_OFFSHORE_SRC_FILES} ${HAVEN_OFFSHORE_KEYS_SRC_FILES})
+	set_target_properties(HAVEN_OFFSHORE PROPERTIES LINK_FLAGS "${EMCC_LINKER_FLAGS_CORE}")
+	target_compile_definitions(HAVEN_OFFSHORE PRIVATE BUILD_CORE_WALLET=1)
 	target_link_libraries(
-	    monero_core
+	    HAVEN_OFFSHORE
 	    #
 	    #openssl_ssl
 	    #openssl_crypto
