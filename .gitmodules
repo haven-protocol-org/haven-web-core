@@ -1,4 +1,4 @@
 [submodule "external/haven-web-cpp"]
 	path = external/haven-web-cpp
-	url = https://github.com/haven-protocol-org/haven-web-cpp.git
+	url = https://github.com/haven-protocol-org/haven-web-cpp
 	ignore = dirty
