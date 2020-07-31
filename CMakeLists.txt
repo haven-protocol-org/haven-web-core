@@ -303,9 +303,9 @@ message(STATUS "EMCC_LINKER_FLAGS_CORE ${EMCC_LINKER_FLAGS_CORE}")
 
 if (BUILD_HAVEN_OFFSHORE_KEYS_WASM)
 	add_executable(HAVEN_OFFSHORE_keys ${HAVEN_OFFSHORE_KEYS_SRC_FILES})
-	set_target_properties(HAVEN_OFFSHORE_keys PROPERTIES LINK_FLAGS "${EMCC_LINKER_FLAGS_CORE_KEYS}")
+	set_target_properties(haven_offshore_keys PROPERTIES LINK_FLAGS "${EMCC_LINKER_FLAGS_CORE_KEYS}")
 	target_link_libraries(
-	    HAVEN_OFFSHORE_keys
+	    haven_offshore_keys
 	    #
 	    boost_chrono
 	    boost_system
@@ -316,11 +316,11 @@ if (BUILD_HAVEN_OFFSHORE_KEYS_WASM)
 endif()
 
 if (BUILD_HAVEN_OFFSHORE_WASM)
-	add_executable(HAVEN_OFFSHORE ${HAVEN_OFFSHORE_SRC_FILES} ${HAVEN_OFFSHORE_KEYS_SRC_FILES})
-	set_target_properties(HAVEN_OFFSHORE PROPERTIES LINK_FLAGS "${EMCC_LINKER_FLAGS_CORE}")
-	target_compile_definitions(HAVEN_OFFSHORE PRIVATE BUILD_CORE_WALLET=1)
+	add_executable(haven_offshore ${HAVEN_OFFSHORE_SRC_FILES} ${HAVEN_OFFSHORE_KEYS_SRC_FILES})
+	set_target_properties(haven_offshore PROPERTIES LINK_FLAGS "${EMCC_LINKER_FLAGS_CORE}")
+	target_compile_definitions(haven_offshore PRIVATE BUILD_CORE_WALLET=1)
 	target_link_libraries(
-	    HAVEN_OFFSHORE
+	    haven_offshore
 	    #
 	    #openssl_ssl
 	    #openssl_crypto
