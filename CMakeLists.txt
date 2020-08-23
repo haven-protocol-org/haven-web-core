@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.4.1)
 
-project(monero-javascript-wasm)
+project(haven-javascript-wasm)
 
 # build with exception whitelist from file
 file(STRINGS wasm_exception_whitelist.txt WASM_EXCEPTION_WHITELIST)
@@ -21,7 +21,7 @@ include_directories("src/cpp")
 # haven-web-cpp
 #####################
 
-set(HAVEN_CPP "external/haven-web-cpp)
+set(HAVEN_CPP "external/haven-web-cpp")
 set(HAVEN_CPP_SRC "${HAVEN_CPP}/src")
 
 # headers
@@ -33,8 +33,8 @@ include_directories("${HAVEN_CPP}/external/libsodium/include/sodium")
 # haven-offshore
 ##################
 
-set(HAVEN_OFFSHORE "${HAVEN_CPP}/external/haven-offshore")
-set(HAVEN_OFFSHORE_SRC "${HAVEN_OFFSHORE}/monero/src")
+set(HAVEN_OFFSHORE "${HAVEN_CPP}/external/haven-offshore/monero")
+set(HAVEN_OFFSHORE_SRC "${HAVEN_OFFSHORE}/src")
 
 # headers
 include_directories("src/main/cpp")
@@ -62,7 +62,11 @@ include_directories("${HAVEN_OFFSHORE}/contrib/epee/include/net")
 #include_directories("${CMAKE_CURRENT_BINARY_DIR}")
 #include_directories("${HAVEN_OFFSHORE_SRC}/wallet/api")
 
-include_directories("${HAVEN_OFFSHORE}/build/release/translations")
+if (CMAKE_HOST_APPLE)
+    include_directories("${HAVEN_OFFSHORE}/build/Darwin/release-v0.16/release/translations")
+else()
+    include_directories("${HAVEN_OFFSHORE}/build/release/translations")
+endif()
 
 #############
 # OpenSSL
@@ -220,7 +224,7 @@ set(
     ${HAVEN_OFFSHORE_SRC}/wallet/message_store.cpp
     ${HAVEN_OFFSHORE_SRC}/wallet/message_transporter.cpp
     ${HAVEN_OFFSHORE_SRC}/wallet/node_rpc_proxy.cpp
-    ${HAVEN_OFFSHORE_SRC}/wallet/wallet_rpc_payments.cpp
+    #${HAVEN_OFFSHORE_SRC}/wallet/wallet_rpc_payments.cpp
     #${HAVEN_OFFSHORE_SRC}/blockchain_db/lmdb/db_lmdb.cpp
     ${HAVEN_OFFSHORE_SRC}/cryptonote_core/cryptonote_tx_utils.cpp
     ${HAVEN_OFFSHORE_SRC}/checkpoints/checkpoints.cpp
@@ -230,7 +234,7 @@ set(
     ${HAVEN_OFFSHORE_SRC}/common/util.cpp
     ${HAVEN_OFFSHORE_SRC}/common/i18n.cpp
     ${HAVEN_OFFSHORE_SRC}/common/combinator.cpp
-    ${HAVEN_OFFSHORE_SRC}/rpc/rpc_payment_signature.cpp
+    #${HAVEN_OFFSHORE_SRC}/rpc/rpc_payment_signature.cpp
     ${HAVEN_OFFSHORE_SRC}/wallet/ringdb.cpp
     ${HAVEN_OFFSHORE_SRC}/cryptonote_basic/miner.cpp
     ${HAVEN_OFFSHORE_SRC}/cryptonote_basic/difficulty.cpp
@@ -302,7 +306,7 @@ message(STATUS "EMCC_LINKER_FLAGS_CORE ${EMCC_LINKER_FLAGS_CORE}")
 ####################
 
 if (BUILD_HAVEN_OFFSHORE_KEYS_WASM)
-	add_executable(HAVEN_OFFSHORE_keys ${HAVEN_OFFSHORE_KEYS_SRC_FILES})
+	add_executable(haven_offshore_keys ${HAVEN_OFFSHORE_KEYS_SRC_FILES})
 	set_target_properties(haven_offshore_keys PROPERTIES LINK_FLAGS "${EMCC_LINKER_FLAGS_CORE_KEYS}")
 	target_link_libraries(
 	    haven_offshore_keys
