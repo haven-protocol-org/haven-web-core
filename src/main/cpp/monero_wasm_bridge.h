@@ -72,6 +72,12 @@ namespace monero_wasm_bridge
   string get_unlocked_balance_wallet(int handle);
   string get_unlocked_balance_account(int handle, const uint32_t account_idx);
   string get_unlocked_balance_subaddress(int handle, const uint32_t account_idx, const uint32_t subaddress_idx);
+  string get_offshore_balance_wallet(int handle);
+  string get_offshore_balance_account(int handle, const uint32_t account_idx);
+  string get_offshore_balance_subaddress(int handle, const uint32_t account_idx, const uint32_t subaddress_idx);
+  string get_unlocked_offshore_balance_wallet(int handle);
+  string get_unlocked_offshore_balance_account(int handle, const uint32_t account_idx);
+  string get_unlocked_offshore_balance_subaddress(int handle, const uint32_t account_idx, const uint32_t subaddress_idx);
   string get_accounts(int handle, bool include_subaddresses = false, const string& tag = "");
   string get_account(int handle, uint32_t account_idx, bool include_subaddresses = false);
   string create_account(int handle, const string& label);

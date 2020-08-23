@@ -398,6 +398,17 @@ string monero_wasm_bridge::get_balance_wallet(int handle) {
   return monero_utils::serialize(doc);
 }
 
+string monero_wasm_bridge::get_offshore_balance_wallet(int handle) {
+  monero_wallet* wallet = (monero_wallet*) handle;
+
+  // serialize wallet balance to json string {"balance": ...}
+  rapidjson::Document doc;
+  doc.SetObject();
+  rapidjson::Value value;
+  doc.AddMember("balance", rapidjson::Value().SetUint64(wallet->get_offshore_balance()), doc.GetAllocator());
+  return monero_utils::serialize(doc);
+}
+
 string monero_wasm_bridge::get_balance_account(int handle, const uint32_t account_idx) {
   monero_wallet* wallet = (monero_wallet*) handle;
 
@@ -406,6 +417,17 @@ string monero_wasm_bridge::get_balance_account(int handle, const uint32_t accoun
   doc.SetObject();
   rapidjson::Value value;
   doc.AddMember("balance", rapidjson::Value().SetUint64(wallet->get_balance(account_idx)), doc.GetAllocator());
+  return monero_utils::serialize(doc);
+}
+
+string monero_wasm_bridge::get_offshore_balance_account(int handle, const uint32_t account_idx) {
+  monero_wallet* wallet = (monero_wallet*) handle;
+
+  // serialize wallet balance to json string {"balance": ...}
+  rapidjson::Document doc;
+  doc.SetObject();
+  rapidjson::Value value;
+  doc.AddMember("balance", rapidjson::Value().SetUint64(wallet->get_offshore_balance(account_idx)), doc.GetAllocator());
   return monero_utils::serialize(doc);
 }
 
@@ -420,6 +442,17 @@ string monero_wasm_bridge::get_balance_subaddress(int handle, const uint32_t acc
   return monero_utils::serialize(doc);
 }
 
+string monero_wasm_bridge::get_offshore_balance_subaddress(int handle, const uint32_t account_idx, const uint32_t subaddress_idx) {
+  monero_wallet* wallet = (monero_wallet*) handle;
+
+  // serialize wallet balance to json string {"balance": ...}
+  rapidjson::Document doc;
+  doc.SetObject();
+  rapidjson::Value value;
+  doc.AddMember("balance", rapidjson::Value().SetUint64(wallet->get_offshore_balance(account_idx, subaddress_idx)), doc.GetAllocator());
+  return monero_utils::serialize(doc);
+}
+
 string monero_wasm_bridge::get_unlocked_balance_wallet(int handle) {
   monero_wallet* wallet = (monero_wallet*) handle;
 
@@ -428,6 +461,17 @@ string monero_wasm_bridge::get_unlocked_balance_wallet(int handle) {
   doc.SetObject();
   rapidjson::Value value;
   doc.AddMember("unlockedBalance", rapidjson::Value().SetUint64(wallet->get_unlocked_balance()), doc.GetAllocator());
+  return monero_utils::serialize(doc);
+}
+
+string monero_wasm_bridge::get_unlocked_offshore_balance_wallet(int handle) {
+  monero_wallet* wallet = (monero_wallet*) handle;
+
+  // serialize wallet unlocked balance to json string {"unlockedBalance": ...}
+  rapidjson::Document doc;
+  doc.SetObject();
+  rapidjson::Value value;
+  doc.AddMember("unlockedBalance", rapidjson::Value().SetUint64(wallet->get_unlocked_offshore_balance()), doc.GetAllocator());
   return monero_utils::serialize(doc);
 }
 
@@ -442,6 +486,17 @@ string monero_wasm_bridge::get_unlocked_balance_account(int handle, const uint32
   return monero_utils::serialize(doc);
 }
 
+string monero_wasm_bridge::get_unlocked_offshore_balance_account(int handle, const uint32_t account_idx) {
+  monero_wallet* wallet = (monero_wallet*) handle;
+
+  // serialize account unlocked balance to json string {"unlockedBalance": ...}
+  rapidjson::Document doc;
+  doc.SetObject();
+  rapidjson::Value value;
+  doc.AddMember("unlockedBalance", rapidjson::Value().SetUint64(wallet->get_unlocked_offshore_balance(account_idx)), doc.GetAllocator());
+  return monero_utils::serialize(doc);
+}
+
 string monero_wasm_bridge::get_unlocked_balance_subaddress(int handle, const uint32_t account_idx, const uint32_t subaddress_idx) {
   monero_wallet* wallet = (monero_wallet*) handle;
 
@@ -450,6 +505,17 @@ string monero_wasm_bridge::get_unlocked_balance_subaddress(int handle, const uin
   doc.SetObject();
   rapidjson::Value value;
   doc.AddMember("unlockedBalance", rapidjson::Value().SetUint64(wallet->get_unlocked_balance(account_idx, subaddress_idx)), doc.GetAllocator());
+  return monero_utils::serialize(doc);
+}
+
+string monero_wasm_bridge::get_unlocked_offshore_balance_subaddress(int handle, const uint32_t account_idx, const uint32_t subaddress_idx) {
+  monero_wallet* wallet = (monero_wallet*) handle;
+
+  // serialize subaddress unlocked balance to json string {"unlockedBalance": ...}
+  rapidjson::Document doc;
+  doc.SetObject();
+  rapidjson::Value value;
+  doc.AddMember("unlockedBalance", rapidjson::Value().SetUint64(wallet->get_unlocked_offshore_balance(account_idx, subaddress_idx)), doc.GetAllocator());
   return monero_utils::serialize(doc);
 }
 

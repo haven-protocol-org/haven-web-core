@@ -277,6 +277,28 @@ class MoneroWallet {
   async getUnlockedBalance(accountIdx, subaddressIdx) {
     throw new MoneroError("Not supported");
   }
+
+    /**
+   * Get the offshore balance of the wallet, account, or subaddress.
+   * 
+   * @param {int} accountIdx - index of the account to get the offshore balance of (optional)
+   * @param {int} subaddressIdx - index of the subaddress to get the offshore balance of (optional)
+   * @return {BigInteger} the offshore balance of the wallet, account, or subaddress
+   */
+  async getOffshoreBalance(accountIdx, subaddressIdx) {
+    throw new MoneroError("Not supported");
+  }
+  
+  /**
+   * Get the unlocked offshore balance of the wallet, account, or subaddress.
+   * 
+   * @param {int} accountIdx - index of the account to get the unlocked offshore balance of (optional)
+   * @param {int} subaddressIdx - index of the subaddress to get the unlocked offshore balance of (optional)
+   * @return {BigInteger} the unlocked offshore balance of the wallet, account, or subaddress
+   */
+  async getUnlockedOffshoreBalance(accountIdx, subaddressIdx) {
+    throw new MoneroError("Not supported");
+  }
   
   /**
    * Get accounts with a given tag.
