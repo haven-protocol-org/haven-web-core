@@ -1,5 +1,5 @@
 #!/bin/sh
-
+source ../../utils/emsdk/emsdk_env.sh
 # check for emscripten
 [ -z ${EMSDK} ] \
   && {
@@ -14,10 +14,10 @@
 # update submodules
 ./bin/update_submodules.sh || exit 1
 
-# build monero-core translations directory
-cd ./external/haven-web-cpp/external/monero-core || exit 1
+# build haven offshore translations directory
+cd ./external/haven-web-cpp/external/haven-offshore/monero || exit 1
 make release-static -j8		# don't exit because this will build translations directory even if build fails
-cd ../../../../ || exit 1
+cd ../../../../../ || exit 1
 
 # build boost
 ./bin/build_boost_emscripten.sh || exit 1

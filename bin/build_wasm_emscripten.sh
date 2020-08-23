@@ -1,6 +1,7 @@
 #!/bin/sh
 
 #EMCC_DEBUG=1
+source ../../utils/emsdk/emsdk_env.sh
 
 export BOOSTROOT="build/boost/lib"
 export BOOST_ROOT=$BOOSTROOT
@@ -21,22 +22,22 @@ emmake cmake --build . -j$HOST_NCORES || exit 1
 # move available wasm files to ./dist
 cd ..
 mkdir -p ./dist || exit 1
-[ -f ./build/monero_core_keys.js ] \
+[ -f ./build/haven_offshore_keys.js ] \
   && {
-    mv ./build/monero_core_keys.js ./dist/
+    mv ./build/haven_offshore_keys.js ./dist/
   }
 
-[ -f ./build/monero_core_keys.wasm ] \
+[ -f ./build/haven_offshore_keys.wasm ] \
   && {
-    mv ./build/monero_core_keys.wasm ./dist/
+    mv ./build/haven_offshore_keys.wasm ./dist/
   }
 
-[ -f ./build/monero_core.js ] \
+[ -f ./build/haven_offshore.js ] \
   && {
-    mv ./build/monero_core.js ./dist/
+    mv ./build/haven_offshore.js ./dist/
   }
 
-[ -f ./build/monero_core.wasm ] \
+[ -f ./build/haven_offshore.wasm ] \
   && {
-    mv ./build/monero_core.wasm ./dist/
+    mv ./build/haven_offshore.wasm ./dist/
   }
