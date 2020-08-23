@@ -8,3 +8,6 @@ test_products
 /test_wallets/
 /build
 /browser_build/
+/dist
+/.idea
+/.vscode
