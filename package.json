@@ -8,17 +8,19 @@
   "main": "index.js",
   "scripts": {
     "start": "todo",
+    "build_bundle": "webpack --config ./webpack.bundle.js --display-modules",
     "build_web_worker": "webpack --config ./webpack.worker.js",
     "build_web_tests": "webpack --config ./webpack.tests.js",
     "test": "node --experimental-wasm-threads --experimental-wasm-bulk-memory node_modules/mocha/bin/_mocha 'src/test/TestAll' --timeout 900000000 --exit",
+    "debug-test": "node --experimental-wasm-threads --inspect-brk --experimental-wasm-bulk-memory node_modules/mocha/bin/_mocha 'src/test/TestAll' --timeout 900000000 --exit",
     "jsdoc": "jsdoc -r -c ./configs/jsdoc_config.js -d ./docs"
   },
   "build": {
     "publish": [
       {
         "provider": "github",
-        "owner": "woodser",
-        "repo": "monero-javascript"
+        "owner": "haven-protocol",
+        "repo": "haven-javascript"
       }
     ]
   },
