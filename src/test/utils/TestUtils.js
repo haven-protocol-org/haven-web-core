@@ -166,12 +166,12 @@ TestUtils.NETWORK_TYPE = MoneroNetworkType.STAGENET;
 
 // default keypair to test
 TestUtils.MNEMONIC = "hijack lucky rally sober hockey robot gumball amaze gave fifteen organs gecko skater wizard demonstrate upright system vegan tobacco tsunami lurk withdrawn tomorrow uphill organs";
-TestUtils.ADDRESS = "52FnB7ABUrKJzVQRpbMNrqDFWbcKLjFUq8Rgek7jZEuB6WE2ZggXaTf4FK6H8gQymvSrruHHrEuKhMN3qTMiBYzREKsmRKM";
-TestUtils.FIRST_RECEIVE_HEIGHT = 589429;   // NOTE: this value MUST be the height of the wallet's first tx for tests
+TestUtils.ADDRESS = "hvsaeHhYweyALpooyXSiMn2MEMkaoxykKRuEkHris1UgFkAKQamu2926iv479zyq4VUEuEK7VPJnGXTLQ61oEV41QxiwiezJyYt";
+TestUtils.FIRST_RECEIVE_HEIGHT = 10;   // NOTE: this value MUST be the height of the wallet's first tx for tests
 
 // wallet RPC config
 TestUtils.WALLET_RPC_CONFIG = {
-  uri: "http://localhost:38083",
+  uri: "http://localhost:12345",
   username: "rpc_user",
   password: "abc123",
   rejectUnauthorized: true // reject self-signed certificates if true
@@ -179,7 +179,7 @@ TestUtils.WALLET_RPC_CONFIG = {
 
 // daemon RPC config
 TestUtils.DAEMON_RPC_CONFIG = {
-  uri: "http://localhost:38081",
+  uri: "http://localhost:37750",
   username: "superuser",
   password: "abctesting123",
   rejectUnauthorized: true // reject self-signed certificates if true

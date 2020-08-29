@@ -41,13 +41,13 @@ class TestSampleCode {
         const monerojs = require("../../index");	// *** CHANGE README TO "monero-javascript" ***
         
         // connect to a daemon
-        let daemon = monerojs.connectToDaemonRpc("http://localhost:38081", "superuser", "abctesting123");
+        let daemon = monerojs.connectToDaemonRpc("http://localhost:37750", "superuser", "abctesting123");
         let height = await daemon.getHeight();            // 1523651
         let feeEstimate = await daemon.getFeeEstimate();  // 1014313512
         let txsInPool = await daemon.getTxPool();         // get transactions in the pool
         
         // open wallet on monero-wallet-rpc
-        let walletRpc = monerojs.connectToWalletRpc("http://localhost:38083", "rpc_user", "abc123");
+        let walletRpc = monerojs.connectToWalletRpc("http://localhost:12345", "rpc_user", "abc123");
         await walletRpc.openWallet("test_wallet_1", "supersecretpassword123");  // *** CHANGE README TO "sample_wallet_rpc" ***
         let primaryAddress = await walletRpc.getPrimaryAddress(); // 555zgduFhmKd2o8rPUz...
         let balance = await walletRpc.getBalance();               // 533648366742
@@ -58,7 +58,7 @@ class TestSampleCode {
           path: "./test_wallets/" + monerojs.GenUtils.getUUID(),  // *** CHANGE README TO "sample_wallet_wasm"
           password: "supersecretpassword123",
           networkType: "stagenet",
-          serverUri: "http://localhost:38081",
+          serverUri: "http://localhost:37750",
           serverUsername: "superuser",
           serverPassword: "abctesting123",
           mnemonic: TestUtils.MNEMONIC,                 // *** REPLACE README WITH MNEMONIC ***
