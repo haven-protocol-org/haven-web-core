@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.4.1)
 
 project(haven-javascript-wasm)
-
+#set(CMAKE_VERBOSE_MAKEFILE ON)
 # build with exception whitelist from file
 file(STRINGS wasm_exception_whitelist.txt WASM_EXCEPTION_WHITELIST)
 string(REPLACE ";" "," WASM_EXCEPTION_WHITELIST "${WASM_EXCEPTION_WHITELIST}")
@@ -42,6 +42,7 @@ include_directories("${HAVEN_OFFSHORE_SRC}/")
 include_directories("${HAVEN_OFFSHORE_SRC}/checkpoints")
 include_directories("${HAVEN_OFFSHORE_SRC}/common")
 #include_directories("${HAVEN_OFFSHORE_SRC}/crypto")
+include_directories("${HAVEN_OFFSHORE_SRC}/offshore")
 #include_directories("${HAVEN_OFFSHORE_SRC}/crypto/crypto_ops_builder/include/")	# DISABLED?
 #include_directories("${HAVEN_OFFSHORE_SRC}/crypto/crypto_ops_builder/include/sodium")	# DISABLED?
 include_directories("${HAVEN_OFFSHORE_SRC}/cryptonote_basic")
@@ -163,6 +164,8 @@ set(
     ${HAVEN_OFFSHORE_SRC}/cryptonote_basic/cryptonote_basic_impl.cpp
     ${HAVEN_OFFSHORE_SRC}/cryptonote_basic/account.cpp
     ${HAVEN_OFFSHORE_SRC}/cryptonote_basic/cryptonote_format_utils.cpp
+    ${HAVEN_OFFSHORE_SRC}/crypto//cn_slow_hash_soft.cpp
+    ${HAVEN_OFFSHORE_SRC}/crypto/cn_slow_hash_hard_intel.cpp
     ${HAVEN_OFFSHORE_SRC}/crypto/crypto.cpp
     ${HAVEN_OFFSHORE_SRC}/crypto/hash.c
     ${HAVEN_OFFSHORE_SRC}/crypto/slow-hash.c
@@ -224,7 +227,9 @@ set(
     ${HAVEN_OFFSHORE_SRC}/wallet/message_store.cpp
     ${HAVEN_OFFSHORE_SRC}/wallet/message_transporter.cpp
     ${HAVEN_OFFSHORE_SRC}/wallet/node_rpc_proxy.cpp
-    #${HAVEN_OFFSHORE_SRC}/wallet/wallet_rpc_payments.cpp
+    ${HAVEN_OFFSHORE_SRC}/offshore/pricing_record.cpp
+    ${HAVEN_OFFSHORE_SRC}/rpc/rpc_payment_signature.cpp
+    ${HAVEN_OFFSHORE_SRC}/wallet/wallet_rpc_payments.cpp
     #${HAVEN_OFFSHORE_SRC}/blockchain_db/lmdb/db_lmdb.cpp
     ${HAVEN_OFFSHORE_SRC}/cryptonote_core/cryptonote_tx_utils.cpp
     ${HAVEN_OFFSHORE_SRC}/checkpoints/checkpoints.cpp
@@ -262,7 +267,7 @@ EMCC_LINKER_FLAGS_BASE
 
 "-Wall -Werror -std=c++11 -Oz \
 --bind -s MODULARIZE=1 \
--s 'EXPORT_NAME=\"monero_javascript\"' \
+-s 'EXPORT_NAME=\"haven_javascript\"' \
 -s ERROR_ON_UNDEFINED_SYMBOLS=0 \
 -s ASSERTIONS=2 \
 -s EXIT_RUNTIME=0 \
