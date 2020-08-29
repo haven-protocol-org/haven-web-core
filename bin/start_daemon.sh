@@ -1,0 +1,1 @@
+./external/haven-web-cpp/external/haven-offshore/monero/build/Darwin/release-v0.16/release/bin/havend --stagenet --offline --fixed-difficulty=50
