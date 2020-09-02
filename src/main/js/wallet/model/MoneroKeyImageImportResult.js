@@ -1,4 +1,4 @@
-const BigInteger = require("../../common/biginteger").BigInteger;
+const BigInteger = require("../../common/biginteger");
 
 /**
  * Models results from importing key images.

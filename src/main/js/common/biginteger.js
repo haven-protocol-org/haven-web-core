@@ -24,8 +24,6 @@ This file has been modified by Paul Shapiro:
 
 		<BigInteger>
 */
-(function(exports) {
-"use strict";
 /*
 	Class: BigInteger
 	An arbitrarily-large integer.
@@ -1632,5 +1630,4 @@ BigInteger.MAX_EXP = MAX_EXP;
 	})();
 })();
 
-exports.BigInteger = BigInteger;
-})(typeof exports !== 'undefined' ? exports : this);
+module.exports = BigInteger;

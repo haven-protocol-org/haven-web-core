@@ -1,5 +1,5 @@
 const MoneroCheck = require("./MoneroCheck");
-const BigInteger = require("../../common/biginteger").BigInteger;
+const BigInteger = require("../../common/biginteger");
 
 /**
  * Results from checking a transaction key.

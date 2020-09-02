@@ -1,4 +1,4 @@
-const BigInteger = require("../../common/biginteger").BigInteger;
+const BigInteger = require("../../common/biginteger");
 
 /**
  * Monero hard fork info.

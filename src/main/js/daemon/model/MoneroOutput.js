@@ -1,5 +1,5 @@
 const assert = require("assert");
-const BigInteger = require("../../common/biginteger").BigInteger;
+const BigInteger = require("../../common/biginteger");
 const GenUtils = require("../../common/GenUtils");
 const MoneroKeyImage = require("./MoneroKeyImage");
 

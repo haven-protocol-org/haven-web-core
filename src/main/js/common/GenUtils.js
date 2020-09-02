@@ -1,5 +1,5 @@
 const assert = require("assert");
-const BigInteger = require("./biginteger").BigInteger;
+const BigInteger = require("./biginteger");
 
 /**
  * MIT License

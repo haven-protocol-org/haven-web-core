@@ -9,7 +9,7 @@ module.exports = {};
 
 // export common models
 module.exports.GenUtils = require("./src/main/js/common/GenUtils");
-module.exports.BigInteger = require("./src/main/js/common/biginteger").BigInteger;
+module.exports.BigInteger = require("./src/main/js/common/biginteger");
 module.exports.Filter = require("./src/main/js/common/Filter");
 module.exports.MoneroError = require("./src/main/js/common/MoneroError");
 module.exports.HttpClient = require("./src/main/js/common/HttpClient");

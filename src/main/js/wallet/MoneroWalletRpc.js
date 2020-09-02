@@ -1,5 +1,5 @@
 const assert = require("assert");
-const BigInteger = require("../common/biginteger").BigInteger;
+const BigInteger = require("../common/biginteger");
 const GenUtils = require("../common/GenUtils");
 const MoneroAccount = require("./model/MoneroAccount");
 const MoneroAccountTag = require("./model/MoneroAccountTag");
