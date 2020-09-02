@@ -14,9 +14,9 @@ describe("Scratchpad", function() {
     
     // initialize daemon rpc client
     let daemon = monerojs.connectToDaemonRpc({
-      uri: "http://localhost:38081",
-      username: "superuser",
-      password: "abctesting123",
+      uri: "http://localhost:37750",
+      username: "super",
+      password: "super",
       proxyToWorker: TestUtils.PROXY_TO_WORKER,
       rejectUnauthorized: false
     });

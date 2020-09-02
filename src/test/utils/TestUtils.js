@@ -180,9 +180,9 @@ TestUtils.WALLET_RPC_CONFIG = {
 // daemon RPC config
 TestUtils.DAEMON_RPC_CONFIG = {
   uri: "http://localhost:37750",
-  username: "superuser",
-  password: "abctesting123",
-  rejectUnauthorized: true // reject self-signed certificates if true
+  username: "super",
+  password: "super",
+ // rejectUnauthorized: true // reject self-signed certificates if true
 };
 
 //TestUtils.DAEMON_RPC_CONFIG = {
