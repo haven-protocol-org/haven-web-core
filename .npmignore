@@ -1,0 +1,8 @@
+test_wallets
+external
+build
+browser_build
+bin
+.vscode
+.idea
+configs
