@@ -1,7 +1,7 @@
 {
   "name": "haven-wallet-core",
   "description": "A JavaScript library for using Haven",
-  "version": "1.0.5",
+  "version": "1.0.6",
   "license": "MIT",
   "repository": "https://github.com/haven-protocol-org/haven-web-core",
   "private": false,
@@ -30,18 +30,17 @@
     "request-promise": "^4.2.5",
     "text-encoding": "^0.7.0",
     "tls": "0.0.1",
-    "uuid": "3.3.2"
+    "uuid": "3.3.2",
+    "memfs": "^3.1.2"
+
   },
   "devDependencies": {
     "babel-core": "6.26.3",
     "babel-loader": "8.0.2",
     "babel-minify": "^0.4.3",
-    "electron": "7.2.4",
     "eslint": "5.6.0",
     "jsdoc": "^3.6.4",
-    "memfs": "^3.1.2",
     "minimist": "^1.2.5",
-    "tern": "^0.24.3",
     "typescript": "^4.0.2",
     "webpack": "^4.43.0",
     "webpack-cli": "^3.3.11",
