@@ -25,13 +25,15 @@ struct wallet_wasm_listener : public monero_wallet_listener {
   emscripten::val m_on_sync_progress;
   emscripten::val m_on_new_block;
   emscripten::val m_on_balances_changed;
+  emscripten::val m_on_offshore_balances_changed;
   emscripten::val m_on_output_received;
   emscripten::val m_on_output_spent;
 
-  wallet_wasm_listener(emscripten::val on_sync_progress, emscripten::val on_new_block, emscripten::val on_balances_changed, emscripten::val on_output_received, emscripten::val on_output_spent):
+  wallet_wasm_listener(emscripten::val on_sync_progress, emscripten::val on_new_block, emscripten::val on_balances_changed, emscripten::val on_offshore_balances_changed,, emscripten::val on_output_received, emscripten::val on_output_spent):
     m_on_sync_progress(on_sync_progress),
     m_on_new_block(on_new_block),
     m_on_balances_changed(on_balances_changed),
+    m_on_offshore_balances_changed(m_on_offshore_balances_changed),
     m_on_output_received(on_output_received),
     m_on_output_spent(on_output_spent)
   { }
@@ -49,6 +51,11 @@ struct wallet_wasm_listener : public monero_wallet_listener {
   void on_balances_changed(uint64_t new_balance, uint64_t new_unlocked_balance) override {
     m_on_balances_changed(to_string(new_balance), to_string(new_unlocked_balance));
   }
+
+  void on_offshore_balances_changed(uint64_t new_offshore_balance, uint64_t new_unlocked_offshore_balance) override {
+    m_on_offshore_balances_changed(to_string(new_offshore_balance), to_string(new_unlocked_offshore_balance));
+  }
+
 
   void on_output_received(const monero_output_wallet& output) override {
     boost::optional<uint64_t> height = output.m_tx->get_height();
@@ -348,7 +355,7 @@ void monero_wasm_bridge::set_sync_height(int handle, long sync_height) {
   wallet->set_sync_height(sync_height);
 }
 
-int monero_wasm_bridge::set_listener(int wallet_handle, int old_listener_handle, emscripten::val on_sync_progress, emscripten::val on_new_block, emscripten::val on_balances_changed, emscripten::val on_output_received, emscripten::val on_output_spent) {
+int monero_wasm_bridge::set_listener(int wallet_handle, int old_listener_handle, emscripten::val on_sync_progress, emscripten::val on_new_block, emscripten::val on_balances_changed, emscripten::val on_offshore_balances_changed, emscripten::val on_output_received, emscripten::val on_output_spent) {
   monero_wallet* wallet = (monero_wallet*) wallet_handle;
 
   // remove old listener
@@ -360,7 +367,7 @@ int monero_wasm_bridge::set_listener(int wallet_handle, int old_listener_handle,
 
   // add new listener
   if (on_sync_progress == emscripten::val::undefined()) return 0;
-  wallet_wasm_listener* listener = new wallet_wasm_listener(on_sync_progress, on_new_block, on_balances_changed, on_output_received, on_output_spent);
+  wallet_wasm_listener* listener = new wallet_wasm_listener(on_sync_progress, on_new_block, on_balances_changed, on_offshore_balances_changed, on_output_received, on_output_spent);
   wallet->add_listener(*listener);
   return (int) listener;
 }
