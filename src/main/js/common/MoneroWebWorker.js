@@ -518,6 +518,10 @@ self.addListener = async function(walletId, listenerId) {
       this.worker.postMessage([this.walletId, "onBalancesChanged_" + this.getId(), newBalance.toString(), newUnlockedBalance.toString()]);
     }
 
+    onOffshoreBalancesChanged(newOffshoreBalance, newUnlockedOffshoreBalance) {
+      this.worker.postMessage([this.walletId, "onOffshoreBalancesChanged_" + this.getId(), newOffshoreBalance.toString(), newUnlockedOffshoreBalance.toString()]);
+    }
+
     onOutputReceived(output) {
       let block = output.getTx().getBlock();
       if (block === undefined) block = new MoneroBlock().setTxs([output.getTx()]);
