@@ -29,7 +29,7 @@ struct wallet_wasm_listener : public monero_wallet_listener {
   emscripten::val m_on_output_received;
   emscripten::val m_on_output_spent;
 
-  wallet_wasm_listener(emscripten::val on_sync_progress, emscripten::val on_new_block, emscripten::val on_balances_changed, emscripten::val on_offshore_balances_changed,, emscripten::val on_output_received, emscripten::val on_output_spent):
+  wallet_wasm_listener(emscripten::val on_sync_progress, emscripten::val on_new_block, emscripten::val on_balances_changed, emscripten::val on_offshore_balances_changed, emscripten::val on_output_received, emscripten::val on_output_spent):
     m_on_sync_progress(on_sync_progress),
     m_on_new_block(on_new_block),
     m_on_balances_changed(on_balances_changed),
