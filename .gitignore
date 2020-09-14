@@ -7,7 +7,6 @@ test_products
 **/tests_config.js
 /test_wallets/
 /build
-/browser_build/
-/dist
+/browser_build
 /.idea
 /.vscode
