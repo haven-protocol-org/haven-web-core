@@ -202,6 +202,15 @@ class MoneroTx {
     this.state.key = key;
     return this;
   }
+
+  setCurrency(currency) {
+    this.state.currency = currency;
+    return this;
+  }
+
+  getCurrency() {
+    return this.state.currency
+  }
   
   /**
    * Get full transaction hex.  Full hex = pruned hex + prunable hex.
