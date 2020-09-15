@@ -1670,7 +1670,7 @@ class MoneroWalletWasm extends MoneroWalletKeys {
             function(height, txHash, amountStr, accountIdx, subaddressIdx, version, unlockTime) { that._wasmListener.onOutputReceived(height, txHash, amountStr, accountIdx, subaddressIdx, version, unlockTime); },
             function(height, txHash, amountStr, accountIdx, subaddressIdx, version) { that._wasmListener.onOutputSpent(height, txHash, amountStr, accountIdx, subaddressIdx, version); });
       } else {
-        that._wasmListenerHandle = that._module.set_listener(that._cppAddress, that._wasmListenerHandle, undefined, undefined, undefined, undefined, undefined);
+        that._wasmListenerHandle = that._module.set_listener(that._cppAddress, that._wasmListenerHandle, undefined, undefined, undefined, undefined, undefined, undefined);
       }
     });
   }
