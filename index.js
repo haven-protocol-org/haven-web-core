@@ -61,6 +61,7 @@ module.exports.MoneroMultisigSignResult = require("./src/main/js/wallet/model/Mo
 module.exports.MoneroOutputWallet = require("./src/main/js/wallet/model/MoneroOutputWallet");
 module.exports.MoneroOutputQuery = require("./src/main/js/wallet/model/MoneroOutputQuery");
 module.exports.MoneroTxPriority = require("./src/main/js/wallet/model/MoneroTxPriority");
+module.exports.HavenTxType = require("./src/main/js/wallet/model/HavenTxType");
 module.exports.MoneroTxConfig = require("./src/main/js/wallet/model/MoneroTxConfig");
 module.exports.MoneroSubaddress = require("./src/main/js/wallet/model/MoneroSubaddress");
 module.exports.MoneroSyncResult = require("./src/main/js/wallet/model/MoneroSyncResult");

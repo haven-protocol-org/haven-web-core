@@ -6,22 +6,22 @@
 class HavenTxType {}
 
 /**
- * Default priority (i.e. normal) (value=0).
+ * classic XHV -> XHV
  */
 HavenTxType.CLASSIC = 0;
 
 /**
- * Unimportant priority (value=1).
+ * xUSD -> XHV
  */
 HavenTxType.ONSHORE = 1;
 
 /**
- * Normal priority (value=2).
+ * XHV -> xUSD
  */
 HavenTxType.OFFSHORE = 2;
 
 /**
- * Elevated priority (value=3).
+ * xUSD -> xUSD
  */
 HavenTxType.OFFSHORE_TO_OFFSHORE = 3;
 

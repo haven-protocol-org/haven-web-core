@@ -169,6 +169,15 @@ class MoneroTxConfig {
     this.state.priority = priority;
     return this;
   }
+
+  getTxType() {
+    return this.state.txType;
+  }
+  
+  setTxType(txType) {
+    this.state.txType = txType;
+    return this;
+  }
   
   getFee() {
     return this.state.fee;
