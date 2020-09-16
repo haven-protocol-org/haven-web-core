@@ -34,7 +34,7 @@ declare class MoneroTransferQuery extends MoneroTransferQuery_base {
      * @param {object|MoneroTxQuery} config.txQuery - get transfers whose tx match this tx query
      */
     constructor(config: {
-        amount: BigInteger;
+        amount: any;
         accountIndex: any;
         subaddressIndex: any;
         subaddressIndices: any[];

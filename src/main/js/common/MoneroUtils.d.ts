@@ -23,7 +23,7 @@ declare class MoneroUtils {
      * @param txExtra is an array of tx extra bytes
      * @return the last pub key as a hexidecimal string
      */
-    static getLastTxPubKey(txExtra: any): string;
+    static getLastTxPubKey(txExtra: any): any;
     /**
      * Determines if two payment ids are functionally equal.
      *
@@ -47,7 +47,7 @@ declare class MoneroUtils {
      * @param json is the json to convert to binary
      * @returns Uint8Array is the json converted to portable storage binary
      */
-    static jsonToBinary(json: any): Uint8Array;
+    static jsonToBinary(json: any): any;
     /**
      * Converts the given portable storage binary to JSON.
      *

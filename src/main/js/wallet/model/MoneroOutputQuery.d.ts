@@ -41,9 +41,9 @@ declare class MoneroOutputQuery extends MoneroOutputQuery_base {
         accountIndex: any;
         subaddressIndex: any;
         subaddressIndices: any[];
-        amount: BigInteger;
-        minAmount: BigInteger;
-        maxAmount: BigInteger;
+        amount: import("../../common/biginteger");
+        minAmount: import("../../common/biginteger");
+        maxAmount: import("../../common/biginteger");
         isLocked: boolean;
         isSpent: boolean;
         keyImage: object | any;
@@ -68,4 +68,3 @@ declare class MoneroOutputQuery extends MoneroOutputQuery_base {
 declare namespace MoneroOutputQuery {
     const _EMPTY_OUTPUT: import("./MoneroOutputWallet");
 }
-declare const BigInteger: typeof import("../../common/biginteger");

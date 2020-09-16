@@ -5,9 +5,9 @@ declare const TestMoneroWalletWasm_base: typeof import("./TestMoneroWalletCommon
  */
 declare class TestMoneroWalletWasm extends TestMoneroWalletWasm_base {
     static _getRandomWalletPath(): string;
-    static _testWalletEqualityOnChain(wallet1: any, wallet2: any): Promise<void>;
+    static _testWalletEqualityOnChain(wallet1: any, wallet2: any): any;
     constructor(testConfig: any);
-    getWalletGt(): Promise<any>;
+    getWalletGt(): unknown;
     runTests(): void;
     _testWalletWasm(): void;
 }

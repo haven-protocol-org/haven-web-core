@@ -105,9 +105,9 @@ declare class MoneroDaemonRpc extends MoneroDaemonRpc_base {
      */
     constructor(uriOrConfigOrConnection: string | object | import("../common/MoneroRpcConnection"), username: string, password: string, rejectUnauthorized: boolean, pollInterval: number, proxyToWorker: boolean);
     config: any;
-    _proxyPromise: Promise<MoneroDaemonRpcProxy>;
+    _proxyPromise: unknown;
     rpc: import("../common/MoneroRpcConnection");
-    listeners: any[];
+    listeners: {};
     cachedHeaders: {};
     /**
      * Get the daemon's RPC connection.
@@ -115,12 +115,12 @@ declare class MoneroDaemonRpc extends MoneroDaemonRpc_base {
      * @return {MoneroRpcConnection} the daemon's rpc connection
      */
     getRpcConnection(): import("../common/MoneroRpcConnection");
-    _getDaemonProxy(): Promise<MoneroDaemonRpcProxy>;
-    _startPollingHeaders(interval: any): Promise<void>;
+    _getDaemonProxy(): unknown;
+    _startPollingHeaders(interval: any): any;
     isPollingHeaders: boolean;
     _stopPollingHeaders(): void;
-    _getBandwidthLimits(): Promise<any[]>;
-    _setBandwidthLimits(downLimit: any, upLimit: any): Promise<any[]>;
+    _getBandwidthLimits(): unknown;
+    _setBandwidthLimits(downLimit: any, upLimit: any): unknown;
     /**
      * Get a contiguous chunk of blocks starting from a given height up to a maximum
      * height or amount of block data fetched from the blockchain, whichever comes first.
@@ -138,25 +138,10 @@ declare class MoneroDaemonRpc extends MoneroDaemonRpc_base {
      * @param {number} height - height of the header to retrieve from the cache
      * @param {number} maxHeight - maximum height of headers to cache
      */
-    _getBlockHeaderByHeightCached(height: number, maxHeight: number): Promise<any>;
+    _getBlockHeaderByHeightCached(height: number, maxHeight: number): unknown;
 }
 declare namespace MoneroDaemonRpc {
     const DEFAULT_ID: string;
     const MAX_REQ_SIZE: string;
     const NUM_HEADERS_PER_REQ: string;
-}
-declare const MoneroDaemonRpcProxy_base: typeof import("./MoneroDaemon");
-/**
- * Implements a MoneroDaemon by proxying requests to a web worker.
- *
- * @private
- */
-declare class MoneroDaemonRpcProxy extends MoneroDaemonRpcProxy_base {
-    static connect(config: any): Promise<MoneroDaemonRpcProxy>;
-    constructor(daemonId: any, worker: any);
-    daemonId: any;
-    worker: any;
-    wrappedListeners: any[];
-    getRpcConnection(): Promise<import("../common/MoneroRpcConnection")>;
-    _invokeWorker(fnName: any, args: any): Promise<any>;
 }

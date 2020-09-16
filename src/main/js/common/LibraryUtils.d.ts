@@ -24,7 +24,7 @@ declare class LibraryUtils {
     /**
      * Load the WebAssembly keys module with caching.
      */
-    static loadKeysModule(): Promise<any>;
+    static loadKeysModule(): unknown;
     /**
      * Load the WebAssembly core module with caching.
      *
@@ -32,7 +32,7 @@ declare class LibraryUtils {
      *
      * TODO: this is separate static function from loadKeysModule() because webpack cannot bundle WebWorker using runtime param for conditional import
      */
-    static loadCoreModule(): Promise<any>;
+    static loadCoreModule(): unknown;
     /**
      * Private helper to initialize the wasm module with data structures to synchronize access.
      */
@@ -44,7 +44,7 @@ declare class LibraryUtils {
      * @param {string} fnId - unique identifier for the function
      * @param {function} fn - function to inform if unauthorized requests should be rejected
      */
-    static setRejectUnauthorizedFn(fnId: string, fn: Function): void;
+    static setRejectUnauthorizedFn(fnId: string, fn: {}): void;
     /**
      * Indicate if unauthorized requests should be rejected.
      *
@@ -56,7 +56,7 @@ declare class LibraryUtils {
      *
      * @return {Worker} a worker to share among wallet instances
      */
-    static getWorker(): Worker;
+    static getWorker(): any;
     /**
      * Invoke a web worker function and get the result with error handling.
      *
@@ -65,5 +65,5 @@ declare class LibraryUtils {
      * @param {Object[]} args are function arguments to invoke with
      * @return {Promise} resolves with response payload from the worker or an error
      */
-    static invokeWorker(objectId: any, fnName: string, args: any[]): Promise<any>;
+    static invokeWorker(objectId: any, fnName: string, args: any[]): any;
 }

@@ -31,10 +31,10 @@ declare class MoneroWalletKeys extends MoneroWalletKeys_base {
      * @return {MoneroWalletKeys} the created wallet
      */
     static createWallet(config: import("./model/MoneroWalletConfig") | object): MoneroWalletKeys;
-    static _createWalletRandom(networkType: any, language: any): Promise<any>;
-    static _createWalletFromMnemonic(networkType: any, mnemonic: any, seedOffset: any): Promise<any>;
-    static _createWalletFromKeys(networkType: any, address: any, privateViewKey: any, privateSpendKey: any, language: any): Promise<any>;
-    static getMnemonicLanguages(): Promise<any>;
+    static _createWalletRandom(networkType: any, language: any): unknown;
+    static _createWalletFromMnemonic(networkType: any, mnemonic: any, seedOffset: any): unknown;
+    static _createWalletFromKeys(networkType: any, address: any, privateViewKey: any, privateSpendKey: any, language: any): unknown;
+    static getMnemonicLanguages(): unknown;
     /**
      * Internal constructor which is given the memory address of a C++ wallet
      * instance.

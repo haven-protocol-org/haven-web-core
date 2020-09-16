@@ -16,5 +16,5 @@ declare class MoneroVersion {
     isRelease(): any;
     setIsRelease(isRelease: any): MoneroVersion;
     copy(): any;
-    toJson(): {};
+    toJson(): any;
 }

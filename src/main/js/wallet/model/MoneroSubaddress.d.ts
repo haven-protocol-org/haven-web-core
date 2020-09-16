@@ -24,5 +24,5 @@ declare class MoneroSubaddress {
     setIsUsed(isUsed: any): MoneroSubaddress;
     getNumBlocksToUnlock(): any;
     setNumBlocksToUnlock(numBlocksToUnlock: any): MoneroSubaddress;
-    toString(indent: any): string;
+    toString(indent: any): any;
 }

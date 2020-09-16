@@ -62,5 +62,5 @@ declare class MoneroBlockHeader {
     getPowHash(): any;
     setPowHash(powHash: any): MoneroBlockHeader;
     merge(header: any): MoneroBlockHeader;
-    toString(indent?: number): string;
+    toString(indent?: number): any;
 }

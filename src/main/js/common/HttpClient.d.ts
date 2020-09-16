@@ -27,7 +27,7 @@ declare class HttpClient {
     static request(request: {
         method: string;
         uri: string;
-        body: string | object | Uint8Array;
+        body: string | object | any;
         username: string;
         password: string;
         headers: object;
@@ -35,24 +35,14 @@ declare class HttpClient {
         resolveWithFullResponse: boolean;
         rejectUnauthorized: boolean;
     }): object;
-    static _requestFetch(req: any): Promise<{
-        statusCode: any;
-        statusText: any;
-        headers: any;
-        body: any;
-    }>;
-    static _requestXhr(req: any): Promise<{
-        statusCode: any;
-        statusText: any;
-        headers: {};
-        body: any;
-    }>;
+    static _requestFetch(req: any): unknown;
+    static _requestXhr(req: any): unknown;
     /**
      * Executes given tasks serially (first in, first out).
      *
      * @param {function} asyncFn is an asynchronous function to execute after previously given tasks
      */
-    static _queueTask(asyncFn: Function): Promise<any>;
+    static _queueTask(asyncFn: {}): unknown;
     /**
      * Get a singleton instance of an HTTP client to share.
      *

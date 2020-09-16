@@ -206,7 +206,7 @@ declare class MoneroDaemon {
      * @param {int} graceBlocks TODO
      * @return {BigInteger} fee estimate per kB.
      */
-    getFeeEstimate(graceBlocks: any): BigInteger;
+    getFeeEstimate(graceBlocks: any): any;
     /**
      * Submits a transaction to the daemon's pool.
      *
@@ -220,13 +220,13 @@ declare class MoneroDaemon {
      *
      * @param {string} txHash - hash of the transaction to relay
      */
-    relayTxByHash(txHash: string): Promise<void>;
+    relayTxByHash(txHash: string): any;
     /**
      * Relays transactions by hash.
      *
      * @param {string[]} txHashes - hashes of the transactinos to relay
      */
-    relayTxsByHash(txHashes: string[]): Promise<void>;
+    relayTxsByHash(txHashes: string[]): any;
     /**
      * Get valid transactions seen by the node but not yet mined into a block, as well
      * as spent key image information for the tx pool.
@@ -257,7 +257,7 @@ declare class MoneroDaemon {
      *
      * @param {(string|string[])} hashes - specific transactions to flush (defaults to all)
      */
-    flushTxPool(hashes: (string | string[])): Promise<void>;
+    flushTxPool(hashes: (string | string[])): any;
     /**
      * Get the spent status of the given key image.
      *
@@ -292,7 +292,7 @@ declare class MoneroDaemon {
      * @param {int} recentCutoff - TODO
      * @return {MoneroOutputHistogramEntry[]} are entries meeting the parameters
      */
-    getOutputHistogram(amounts: BigInteger[], minCount: any, maxCount: any, isUnlocked: boolean, recentCutoff: any): any[];
+    getOutputHistogram(amounts: any[], minCount: any, maxCount: any, isUnlocked: boolean, recentCutoff: any): any[];
     /**
      * Creates an output distribution.
      *
@@ -302,7 +302,7 @@ declare class MoneroDaemon {
      * @param {int} endHeight - end height upper bound inclusive (optional)
      * @return {MoneroOutputDistributionEntry[]} are entries meeting the parameters
      */
-    getOutputDistribution(amounts: BigInteger[], cumulative: boolean, startHeight: any, endHeight: any): any[];
+    getOutputDistribution(amounts: any[], cumulative: boolean, startHeight: any, endHeight: any): any[];
     /**
      * Get general information about the state of the node and the network.
      *
@@ -388,13 +388,13 @@ declare class MoneroDaemon {
      *
      * @param {int} limit - maximum number of outgoing peers
      */
-    setOutgoingPeerLimit(limit: any): Promise<void>;
+    setOutgoingPeerLimit(limit: any): any;
     /**
      * Limit number of incoming peers.
      *
      * @param {int} limit - maximum number of incoming peers
      */
-    setIncomingPeerLimit(limit: any): Promise<void>;
+    setIncomingPeerLimit(limit: any): any;
     /**
      * Get peer bans.
      *
@@ -406,13 +406,13 @@ declare class MoneroDaemon {
      *
      * @param {MoneroBan} ban - contains information about a node to ban
      */
-    setPeerBan(ban: any): Promise<void>;
+    setPeerBan(ban: any): unknown;
     /**
      * Ban peers nodes.
      *
      * @param {MoneroBan[]} bans - specify which peers to ban
      */
-    setPeerBans(bans: any[]): Promise<void>;
+    setPeerBans(bans: any[]): any;
     /**
      * Start mining.
      *
@@ -421,11 +421,11 @@ declare class MoneroDaemon {
      * @param {boolean} isBackground - specifies if the miner should run in the background or not
      * @param {boolean} ignoreBattery - specifies if the battery state (e.g. on laptop) should be ignored or not
      */
-    startMining(address: string, numThreads: any, isBackground: boolean, ignoreBattery: boolean): Promise<void>;
+    startMining(address: string, numThreads: any, isBackground: boolean, ignoreBattery: boolean): any;
     /**
      * Stop mining.
      */
-    stopMining(): Promise<void>;
+    stopMining(): any;
     /**
      * Get the daemon's mining status.
      *
@@ -437,13 +437,13 @@ declare class MoneroDaemon {
      *
      * @param {string} blockBlob - mined block to submit
      */
-    submitBlock(blockBlob: string): Promise<void>;
+    submitBlock(blockBlob: string): any;
     /**
      * Submit mined blocks to the network.
      *
      * @param {string[]} blockBlobs - mined blocks to submit
      */
-    submitBlocks(blockBlobs: string[]): Promise<void>;
+    submitBlocks(blockBlobs: string[]): any;
     /**
      * Check for update.
      *
@@ -460,7 +460,7 @@ declare class MoneroDaemon {
     /**
      * Safely disconnect and shut down the daemon.
      */
-    stop(): Promise<void>;
+    stop(): any;
     /**
      * Get the header of the next block added to the chain.
      *
@@ -472,11 +472,11 @@ declare class MoneroDaemon {
      *
      * @param {function} listener - invoked with MoneroBlockHeaders as blocks are added to the chain
      */
-    addBlockListener(listener: Function): Promise<void>;
+    addBlockListener(listener: {}): any;
     /**
      * Unregister a listener to be notified when blocks are added to the chain.
      *
      * @param {function} listener - previously registered listener to be unregistered
      */
-    removeBlockListener(listener: Function): Promise<void>;
+    removeBlockListener(listener: {}): any;
 }

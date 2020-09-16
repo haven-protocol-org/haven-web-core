@@ -178,7 +178,7 @@ declare class MoneroWalletRpc extends MoneroWalletRpc_base {
      * @param {MoneroRpcConnection|object} pathOrConfig.server - MoneroRpcConnection or equivalent JS object providing daemon configuration (optional)
      * @param {string} password is the wallet's password
      */
-    openWallet(pathOrConfig: string | object | import("./model/MoneroWalletConfig"), password: string): Promise<void>;
+    openWallet(pathOrConfig: string | object | import("./model/MoneroWalletConfig"), password: string): unknown;
     path: any;
     /**
      * <p>Create and open a wallet on the monero-wallet-rpc server.<p>
@@ -215,7 +215,7 @@ declare class MoneroWalletRpc extends MoneroWalletRpc_base {
      * @param {MoneroRpcConnection|object} config.server - MoneroRpcConnection or equivalent JS object providing daemon configuration (optional)
      * @param {boolean} config.saveCurrent - specifies if the current RPC wallet should be saved before being closed (default true)
      */
-    createWallet(config: object | import("./model/MoneroWalletConfig")): Promise<void>;
+    createWallet(config: object | import("./model/MoneroWalletConfig")): unknown;
     /**
      * Create and open a new wallet with a randomly generated seed on the RPC server.
      *
@@ -223,7 +223,7 @@ declare class MoneroWalletRpc extends MoneroWalletRpc_base {
      * @param {string} password - wallet's password
      * @param {string} language - language for the wallet's mnemonic phrase
      */
-    _createWalletRandom(name: string, password: string, language: string): Promise<void>;
+    _createWalletRandom(name: string, password: string, language: string): any;
     /**
      * Create and open a wallet from an existing mnemonic phrase on the RPC server,
      * closing the currently open wallet if applicable.
@@ -236,7 +236,7 @@ declare class MoneroWalletRpc extends MoneroWalletRpc_base {
      * @param {string} seedOffset - offset used to derive a new seed from the given mnemonic to recover a secret wallet from the mnemonic phrase
      * @param {boolean} saveCurrent - specifies if the current RPC wallet should be saved before being closed
      */
-    _createWalletFromMnemonic(name: string, password: string, mnemonic: string, restoreHeight: any, language: string, seedOffset: string, saveCurrent: boolean): Promise<void>;
+    _createWalletFromMnemonic(name: string, password: string, mnemonic: string, restoreHeight: any, language: string, seedOffset: string, saveCurrent: boolean): any;
     /**
      * Create a wallet on the RPC server from an address, view key, and (optionally) spend key.
      *
@@ -249,7 +249,7 @@ declare class MoneroWalletRpc extends MoneroWalletRpc_base {
      * @param restoreHeight - block height to restore (i.e. scan the chain) from (default = 0)
      * @param language - wallet and mnemonic's language (default = "English")
      */
-    _createWalletFromKeys(name: any, password: any, address: any, viewKey: any, spendKey: any, restoreHeight: any, language: any, saveCurrent: any): Promise<void>;
+    _createWalletFromKeys(name: any, password: any, address: any, viewKey: any, spendKey: any, restoreHeight: any, language: any, saveCurrent: any): any;
     /**
      * Get a list of available languages for the wallet's mnemonic phrase.
      *
@@ -259,13 +259,13 @@ declare class MoneroWalletRpc extends MoneroWalletRpc_base {
     /**
      * Save and close the current wallet and stop the RPC server.
      */
-    stop(): Promise<void>;
-    _clear(): Promise<void>;
-    _getBalances(accountIdx: any, subaddressIdx: any): Promise<import("../common/biginteger")[]>;
-    _getAccountIndices(getSubaddressIndices: any): Promise<Map<any, any>>;
-    _getSubaddressIndices(accountIdx: any): Promise<any[]>;
-    _getTransfersAux(query: any): Promise<any[]>;
-    _getOutputsAux(query: any): Promise<any[]>;
+    stop(): any;
+    _clear(): any;
+    _getBalances(accountIdx: any, subaddressIdx: any): unknown;
+    _getAccountIndices(getSubaddressIndices: any): unknown;
+    _getSubaddressIndices(accountIdx: any): unknown;
+    _getTransfersAux(query: any): unknown;
+    _getOutputsAux(query: any): unknown;
     /**
      * Common method to get key images.
      *
@@ -273,5 +273,5 @@ declare class MoneroWalletRpc extends MoneroWalletRpc_base {
      * @return {MoneroKeyImage[]} are the key images
      */
     _rpcExportKeyImages(all: any): import("../daemon/model/MoneroKeyImage")[];
-    _rpcSweepAccount(config: any): Promise<any>;
+    _rpcSweepAccount(config: any): unknown;
 }

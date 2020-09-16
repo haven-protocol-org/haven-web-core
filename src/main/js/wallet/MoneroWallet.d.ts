@@ -46,7 +46,7 @@ declare class MoneroWallet {
      * @param {string} username - username to authenticate with the daemon (optional)
      * @param {string} password - password to authenticate with the daemon (optional)
      */
-    setDaemonConnection(uriOrConnection: string | any, username: string, password: string): Promise<void>;
+    setDaemonConnection(uriOrConnection: string | any, username: string, password: string): any;
     /**
      * Get the wallet's daemon connection.
      *
@@ -161,11 +161,11 @@ declare class MoneroWallet {
      * @param {MoneroWalletListener|number} listenerOrStartHeight - listener xor start height (defaults to no sync listener, the last synced block)
      * @param {number} startHeight - startHeight if not given in first arg (defaults to last synced block)
      */
-    sync(listenerOrStartHeight: any | number, startHeight: number): Promise<void>;
+    sync(listenerOrStartHeight: any | number, startHeight: number): any;
     /**
      * Start an asynchronous thread to continuously synchronize the wallet with the daemon.
      */
-    startSyncing(): Promise<void>;
+    startSyncing(): any;
     /**
      * <p>Rescan the blockchain for spent outputs.</p>
      *
@@ -175,7 +175,7 @@ declare class MoneroWallet {
      * so the wallet will not rescan spent outputs.  Then the wallet connects to a trusted
      * daemon.  This method should be manually invoked to rescan outputs.</p>
      */
-    rescanSpent(): Promise<void>;
+    rescanSpent(): any;
     /**
      * <p>Rescan the blockchain from scratch, losing any information which cannot be recovered from
      * the blockchain itself.</p>
@@ -183,7 +183,7 @@ declare class MoneroWallet {
      * <p>WARNING: This method discards local wallet data like destination addresses, tx secret keys,
      * tx notes, etc.</p>
      */
-    rescanBlockchain(): Promise<void>;
+    rescanBlockchain(): any;
     /**
      * Get the balance of the wallet, account, or subaddress.
      *
@@ -191,7 +191,7 @@ declare class MoneroWallet {
      * @param {int} subaddressIdx - index of the subaddress to get the balance of (optional)
      * @return {BigInteger} the balance of the wallet, account, or subaddress
      */
-    getBalance(accountIdx: any, subaddressIdx: any): BigInteger;
+    getBalance(accountIdx: any, subaddressIdx: any): any;
     /**
      * Get the unlocked balance of the wallet, account, or subaddress.
      *
@@ -199,7 +199,7 @@ declare class MoneroWallet {
      * @param {int} subaddressIdx - index of the subaddress to get the unlocked balance of (optional)
      * @return {BigInteger} the unlocked balance of the wallet, account, or subaddress
      */
-    getUnlockedBalance(accountIdx: any, subaddressIdx: any): BigInteger;
+    getUnlockedBalance(accountIdx: any, subaddressIdx: any): any;
     /**
    * Get the offshore balance of the wallet, account, or subaddress.
    *
@@ -207,7 +207,7 @@ declare class MoneroWallet {
    * @param {int} subaddressIdx - index of the subaddress to get the offshore balance of (optional)
    * @return {BigInteger} the offshore balance of the wallet, account, or subaddress
    */
-    getOffshoreBalance(accountIdx: any, subaddressIdx: any): BigInteger;
+    getOffshoreBalance(accountIdx: any, subaddressIdx: any): any;
     /**
      * Get the unlocked offshore balance of the wallet, account, or subaddress.
      *
@@ -215,7 +215,7 @@ declare class MoneroWallet {
      * @param {int} subaddressIdx - index of the subaddress to get the unlocked offshore balance of (optional)
      * @return {BigInteger} the unlocked offshore balance of the wallet, account, or subaddress
      */
-    getUnlockedOffshoreBalance(accountIdx: any, subaddressIdx: any): BigInteger;
+    getUnlockedOffshoreBalance(accountIdx: any, subaddressIdx: any): any;
     /**
      * Get accounts with a given tag.
      *
@@ -571,7 +571,7 @@ declare class MoneroWallet {
      * @param message - message included with the signature to further authenticate the proof (optional)
      * @return the reserve proof signature
      */
-    getReserveProofWallet(message: any): Promise<void>;
+    getReserveProofWallet(message: any): any;
     /**
      * Generate a signature to prove an available amount in an account.
      *
@@ -580,7 +580,7 @@ declare class MoneroWallet {
      * @param {string} message - message to include with the signature to further authenticate the proof (optional)
      * @return {string} the reserve proof signature
      */
-    getReserveProofAccount(accountIdx: any, amount: BigInteger, message: string): string;
+    getReserveProofAccount(accountIdx: any, amount: any, message: string): string;
     /**
      * Proves a wallet has a disposable reserve using a signature.
      *
@@ -610,14 +610,14 @@ declare class MoneroWallet {
      * @param {string} txHash - hash of the transaction to set a note for
      * @param {string} note - the transaction note
      */
-    setTxNote(txHash: string, note: string): Promise<void>;
+    setTxNote(txHash: string, note: string): any;
     /**
      * Set notes for multiple transactions.
      *
      * @param {string[]} txHashes - transactions to set notes for
      * @param {string[]} notes - notes to set for the transactions
      */
-    setTxNotes(txHashes: string[], notes: string[]): Promise<void>;
+    setTxNotes(txHashes: string[], notes: string[]): any;
     /**
      * Get address book entries.
      *
@@ -642,26 +642,26 @@ declare class MoneroWallet {
      * @param {boolean} setDescription - specifies if the description should be updated
      * @param {string} description - updated description
      */
-    editAddressBookEntry(index: number, setAddress: boolean, address: string, setDescription: boolean, description: string): Promise<void>;
+    editAddressBookEntry(index: number, setAddress: boolean, address: string, setDescription: boolean, description: string): any;
     /**
      * Delete an address book entry.
      *
      * @param {int} entryIdx - index of the entry to delete
      */
-    deleteAddressBookEntry(entryIdx: any): Promise<void>;
+    deleteAddressBookEntry(entryIdx: any): any;
     /**
      * Tag accounts.
      *
      * @param {string} tag - tag to apply to the specified accounts
      * @param {int[]} accountIndices - indices of the accounts to tag
      */
-    tagAccounts(tag: string, accountIndices: any[]): Promise<void>;
+    tagAccounts(tag: string, accountIndices: any[]): any;
     /**
      * Untag accounts.
      *
      * @param {int[]} accountIndices - indices of the accounts to untag
      */
-    untagAccounts(accountIndices: any[]): Promise<void>;
+    untagAccounts(accountIndices: any[]): any;
     /**
      * Return all account tags.
      *
@@ -674,7 +674,7 @@ declare class MoneroWallet {
      * @param {string} tag - tag to set a description for
      * @param {string} label - label to set for the tag
      */
-    setAccountTagLabel(tag: string, label: string): Promise<void>;
+    setAccountTagLabel(tag: string, label: string): any;
     /**
      * Creates a payment URI from a send configuration.
      *
@@ -702,7 +702,7 @@ declare class MoneroWallet {
      * @param {string} key - attribute key
      * @param {string} val - attribute value
      */
-    setAttribute(key: string, val: string): Promise<void>;
+    setAttribute(key: string, val: string): any;
     /**
      * Start mining.
      *
@@ -710,11 +710,11 @@ declare class MoneroWallet {
      * @param {boolean} backgroundMining - specifies if mining should occur in the background (optional)
      * @param {boolean} ignoreBattery - specifies if the battery should be ignored for mining (optional)
      */
-    startMining(numThreads: any, backgroundMining: boolean, ignoreBattery: boolean): Promise<void>;
+    startMining(numThreads: any, backgroundMining: boolean, ignoreBattery: boolean): any;
     /**
      * Stop mining.
      */
-    stopMining(): Promise<void>;
+    stopMining(): any;
     /**
      * Indicates if importing multisig data is needed for returning a correct balance.
      *
@@ -795,7 +795,7 @@ declare class MoneroWallet {
      *
      * @param {boolean} save - specifies if the wallet should be saved before being closed (default false)
      */
-    close(save: boolean): Promise<void>;
+    close(save: boolean): any;
     /**
      * Indicates if this wallet is closed or not.
      *

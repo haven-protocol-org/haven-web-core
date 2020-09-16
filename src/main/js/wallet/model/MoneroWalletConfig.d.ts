@@ -66,5 +66,5 @@ declare class MoneroWalletConfig {
     setCacheData(cacheData: any): MoneroWalletConfig;
 }
 declare namespace MoneroWalletConfig {
-    const SUPPORTED_FIELDS: string[];
+    const SUPPORTED_FIELDS: {};
 }

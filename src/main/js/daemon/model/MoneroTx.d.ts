@@ -47,6 +47,8 @@ declare class MoneroTx {
     setIsDoubleSpend(isDoubleSpendSeen: any): MoneroTx;
     getKey(): any;
     setKey(key: any): MoneroTx;
+    setCurrency(currency: any): MoneroTx;
+    getCurrency(): any;
     /**
      * Get full transaction hex.  Full hex = pruned hex + prunable hex.
      *
@@ -113,7 +115,7 @@ declare class MoneroTx {
      * @return {MoneroTx} this for method chaining
      */
     merge(tx: any): MoneroTx;
-    toString(indent?: number): string;
+    toString(indent?: number): any;
 }
 declare namespace MoneroTx {
     const DEFAULT_PAYMENT_ID: string;

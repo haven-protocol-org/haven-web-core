@@ -9,12 +9,12 @@ export = TxPoolWalletTracker;
  * TODO monero core: sync txs relayed outside wallet so this class is unecessary
  */
 declare class TxPoolWalletTracker {
-    clearedWallets: Set<any>;
+    clearedWallets: any;
     reset(): void;
     /**
      * Waits for transactions in the pool belonging to the given wallets to clear.
      *
      * @param wallets have transactions to wait on if in the pool
      */
-    waitForWalletTxsToClearPool(wallets: any): Promise<void>;
+    waitForWalletTxsToClearPool(wallets: any): any;
 }

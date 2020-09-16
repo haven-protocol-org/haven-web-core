@@ -36,7 +36,7 @@ declare class MoneroTxConfig {
      * @param {boolean} config.sweepEachSubaddress - for sweep requests, sweep each subaddress individually instead of together if true
      * @param {string} config.keyImage - key image to sweep (ignored except in sweepOutput() requests)
      */
-    constructor(config: MoneroTxConfig | object, ...args: any[]);
+    constructor(config: MoneroTxConfig | object, ...args: {});
     state: any;
     copy(): MoneroTxConfig;
     toJson(): any;
@@ -59,28 +59,30 @@ declare class MoneroTxConfig {
      * @param {BigInteger} amount - the amount to set for the single destination
      * @return {MoneroTxConfig} this configuration for chaining
      */
-    setAmount(amount: BigInteger): MoneroTxConfig;
+    setAmount(amount: any): MoneroTxConfig;
     /**
      * Get the amount of a single-destination configuration.
      *
      * @return {BigInteger} the amount of the single destination
      */
-    getAmount(): BigInteger;
+    getAmount(): any;
     addDestination(destination: any): MoneroTxConfig;
     getDestinations(): any;
-    setDestinations(destinations: any, ...args: any[]): MoneroTxConfig;
+    setDestinations(destinations: any, ...args: {}): MoneroTxConfig;
     setDestination(destination: any): MoneroTxConfig;
     getPaymentId(): any;
     setPaymentId(paymentId: any): MoneroTxConfig;
     getPriority(): any;
     setPriority(priority: any): MoneroTxConfig;
+    getTxType(): any;
+    setTxType(txType: any): MoneroTxConfig;
     getFee(): any;
     setFee(fee: any): MoneroTxConfig;
     getAccountIndex(): any;
     setAccountIndex(accountIndex: any): MoneroTxConfig;
     setSubaddressIndex(subaddressIndex: any): MoneroTxConfig;
     getSubaddressIndices(): any;
-    setSubaddressIndices(subaddressIndices: any, ...args: any[]): MoneroTxConfig;
+    setSubaddressIndices(subaddressIndices: any, ...args: {}): MoneroTxConfig;
     getUnlockTime(): any;
     setUnlockTime(unlockTime: any): MoneroTxConfig;
     getRelay(): any;

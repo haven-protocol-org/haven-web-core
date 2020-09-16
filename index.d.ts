@@ -47,6 +47,7 @@ export var MoneroMultisigSignResult: typeof import("./src/main/js/wallet/model/M
 export var MoneroOutputWallet: typeof import("./src/main/js/wallet/model/MoneroOutputWallet");
 export var MoneroOutputQuery: typeof import("./src/main/js/wallet/model/MoneroOutputQuery");
 export var MoneroTxPriority: typeof import("./src/main/js/wallet/model/MoneroTxPriority");
+export var HavenTxType: typeof import("./src/main/js/wallet/model/HavenTxType");
 export var MoneroTxConfig: typeof import("./src/main/js/wallet/model/MoneroTxConfig");
 export var MoneroSubaddress: typeof import("./src/main/js/wallet/model/MoneroSubaddress");
 export var MoneroSyncResult: typeof import("./src/main/js/wallet/model/MoneroSyncResult");
@@ -66,8 +67,8 @@ export var MoneroDaemonRpc: typeof import("./src/main/js/daemon/MoneroDaemonRpc"
 export var MoneroWalletRpc: typeof import("./src/main/js/wallet/MoneroWalletRpc");
 export var MoneroWalletKeys: typeof import("./src/main/js/wallet/MoneroWalletKeys");
 export var MoneroWalletWasm: typeof import("./src/main/js/wallet/MoneroWalletWasm");
-export function connectToDaemonRpc(...args: any[]): any;
-export function connectToWalletRpc(...args: any[]): any;
-export function createWalletWasm(...args: any[]): any;
-export function openWalletWasm(...args: any[]): any;
-export function createWalletKeys(...args: any[]): any;
+export function connectToDaemonRpc(...args: {}): any;
+export function connectToWalletRpc(...args: {}): any;
+export function createWalletWasm(...args: {}): any;
+export function openWalletWasm(...args: {}): any;
+export function createWalletKeys(...args: {}): any;

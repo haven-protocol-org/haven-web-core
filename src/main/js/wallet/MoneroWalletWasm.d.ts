@@ -97,18 +97,18 @@ declare class MoneroWalletWasm extends MoneroWalletWasm_base {
      * @return {MoneroWalletWasm} the created wallet
      */
     static createWallet(config: object | import("./model/MoneroWalletConfig")): MoneroWalletWasm;
-    static _createWalletRandom(path: any, password: any, networkType: any, daemonUriOrConnection: any, language: any, proxyToWorker: any, fs: any): Promise<any>;
-    static _createWalletFromMnemonic(path: any, password: any, networkType: any, mnemonic: any, daemonUriOrConnection: any, restoreHeight: any, seedOffset: any, proxyToWorker: any, fs: any): Promise<any>;
-    static _createWalletFromKeys(path: any, password: any, networkType: any, address: any, viewKey: any, spendKey: any, daemonUriOrConnection: any, restoreHeight: any, language: any, proxyToWorker: any, fs: any): Promise<any>;
-    static _openWalletData(path: any, password: any, networkType: any, keysData: any, cacheData: any, daemonUriOrConnection: any, proxyToWorker: any, fs: any): Promise<any>;
+    static _createWalletRandom(path: any, password: any, networkType: any, daemonUriOrConnection: any, language: any, proxyToWorker: any, fs: any): unknown;
+    static _createWalletFromMnemonic(path: any, password: any, networkType: any, mnemonic: any, daemonUriOrConnection: any, restoreHeight: any, seedOffset: any, proxyToWorker: any, fs: any): unknown;
+    static _createWalletFromKeys(path: any, password: any, networkType: any, address: any, viewKey: any, spendKey: any, daemonUriOrConnection: any, restoreHeight: any, language: any, proxyToWorker: any, fs: any): unknown;
+    static _openWalletData(path: any, password: any, networkType: any, keysData: any, cacheData: any, daemonUriOrConnection: any, proxyToWorker: any, fs: any): unknown;
     static _sanitizeBlock(block: any): any;
     static _sanitizeTxWallet(tx: any): any;
     static _sanitizeAccount(account: any): any;
     static _sanitizeSubaddress(subaddress: any): any;
-    static _deserializeBlocks(blocksJsonStr: any, txType: any): any[];
-    static _blocksJsonToTxs(query: any, blocksJsonStr: any): any[];
-    static _blocksJsonToTransfers(query: any, blocksJsonStr: any): any[];
-    static _blocksJsonToOutputs(query: any, blocksJsonStr: any): any[];
+    static _deserializeBlocks(blocksJsonStr: any, txType: any): {};
+    static _blocksJsonToTxs(query: any, blocksJsonStr: any): {};
+    static _blocksJsonToTransfers(query: any, blocksJsonStr: any): {};
+    static _blocksJsonToOutputs(query: any, blocksJsonStr: any): {};
     /**
      * Internal constructor which is given the memory address of a C++ wallet
      * instance.
@@ -126,7 +126,7 @@ declare class MoneroWalletWasm extends MoneroWalletWasm_base {
     constructor(cppAddress: any, path: string, password: string, fs: any, rejectUnauthorized: boolean, rejectUnauthorizedFnId: string);
     _path: string;
     _password: string;
-    _listeners: any[];
+    _listeners: {};
     _fs: any;
     _isClosed: boolean;
     _wasmListener: WalletWasmListener;
@@ -168,19 +168,19 @@ declare class MoneroWalletWasm extends MoneroWalletWasm_base {
      *
      * @param {number} syncHeight - height of the first block that the wallet scans
      */
-    setSyncHeight(syncHeight: number): Promise<any>;
+    setSyncHeight(syncHeight: number): unknown;
     /**
      * Register a listener to receive wallet notifications.
      *
      * @param {MoneroWalletListener} listener - listener to receive wallet notifications
      */
-    addListener(listener: import("./model/MoneroWalletListener")): Promise<void>;
+    addListener(listener: import("./model/MoneroWalletListener")): any;
     /**
      * Unregister a listener to receive wallet notifications.
      *
      * @param {MoneroWalletListener} listener - listener to unregister
      */
-    removeListener(listener: import("./model/MoneroWalletListener")): Promise<void>;
+    removeListener(listener: import("./model/MoneroWalletListener")): any;
     /**
      * Get the listeners registered with the wallet.
      *
@@ -193,24 +193,24 @@ declare class MoneroWalletWasm extends MoneroWalletWasm_base {
      * @param {string} path is the new wallet's path
      * @param {string} password is the new wallet's password
      */
-    moveTo(path: string, password: string): Promise<void>;
+    moveTo(path: string, password: string): any;
     _syncingEnabled: boolean;
-    stopSyncing(): Promise<void>;
+    stopSyncing(): any;
     /**
      * Get the wallet's keys and cache data.
      *
      * @return {DataView[]} is the keys and cache data respectively
      */
-    getData(): DataView[];
+    getData(): any[];
     /**
      * Loop while syncing enabled.
      */
-    _runSyncLoop(): Promise<void>;
+    _runSyncLoop(): any;
     _syncLoopRunning: boolean;
     /**
      * Enables or disables listening in the c++ wallet.
      */
-    _setIsListening(isEnabled: any): Promise<any>;
+    _setIsListening(isEnabled: any): unknown;
     /**
      * Set the path of the wallet on the browser main thread if run as a web worker.
      *
@@ -230,6 +230,7 @@ declare class WalletWasmListener {
     onSyncProgress(height: any, startHeight: any, endHeight: any, percentDone: any, message: any): void;
     onNewBlock(height: any): void;
     onBalancesChanged(newBalanceStr: any, newUnlockedBalanceStr: any): void;
+    onOffshoreBalancesChanged(newOffshoreBalanceStr: any, newUnlockedOffshoreBalanceStr: any): void;
     onOutputReceived(height: any, txHash: any, amountStr: any, accountIdx: any, subaddressIdx: any, version: any, unlockTime: any): void;
     onOutputSpent(height: any, txHash: any, amountStr: any, accountIdx: any, subaddressIdx: any, version: any): void;
 }

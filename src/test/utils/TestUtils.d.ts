@@ -31,7 +31,7 @@ declare class TestUtils {
      */
     static getWalletKeys(): any;
     static testUnsignedBigInteger(num: any, nonZero: any): void;
-    static getExternalWalletAddress(): Promise<any>;
+    static getExternalWalletAddress(): unknown;
     static txsMergeable(tx1: any, tx2: any): boolean;
 }
 declare namespace TestUtils {

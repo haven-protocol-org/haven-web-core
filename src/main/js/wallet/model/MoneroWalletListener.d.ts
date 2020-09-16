@@ -25,7 +25,14 @@ declare class MoneroWalletListener {
      * @param {BigInteger} newBalance - new wallet balance
      * @param {BigInteger} newUnlockedBalance - new unlocked wallet balance
      */
-    onBalancesChanged(newBalance: BigInteger, newUnlockedBalance: BigInteger): void;
+    onBalancesChanged(newBalance: any, newUnlockedBalance: any): void;
+    /**
+   * Invoked when the wallet's balances change.
+   *
+   * @param {BigInteger} newOffshoreBalance - new wallet balance
+   * @param {BigInteger} newUnlockedOffshoreBalance - new unlocked wallet balance
+   */
+    onOffshoreBalancesChanged(newOffshoreBalance: any, newUnlockedOffshoreBalance: any): void;
     /**
      * Invoked when the wallet receives an output.
      *
