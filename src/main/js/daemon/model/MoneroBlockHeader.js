@@ -214,7 +214,7 @@ class MoneroBlockHeader {
     return this;
   }
 
-  getPricingRecord(pricingRecord) {
+  getPricingRecord() {
     return this.state.pricingRecord;
   }
 

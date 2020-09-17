@@ -772,7 +772,7 @@ class MoneroWalletWasm extends MoneroWalletKeys {
       }
       
       // parse json string to BigInteger
-      return BigInteger.parse(JSON.parse(GenUtils.stringifyBIs(balanceStr)).balance);
+      return BigInteger.parse(JSON.parse(GenUtils.stringifyBIs(balanceStr)).offshoreBalance);
     });
   }
   
@@ -814,7 +814,7 @@ class MoneroWalletWasm extends MoneroWalletKeys {
       }
       
       // parse json string to BigInteger
-      return BigInteger.parse(JSON.parse(GenUtils.stringifyBIs(unlockedBalanceStr)).unlockedBalance);
+      return BigInteger.parse(JSON.parse(GenUtils.stringifyBIs(unlockedBalanceStr)).unlockedOffshoreBalance);
     });
   }
   

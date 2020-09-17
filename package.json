@@ -1,14 +1,14 @@
 {
   "name": "haven-wallet-core",
   "description": "A JavaScript library for using Haven",
-  "version": "1.0.11",
+  "version": "1.0.14",
   "license": "MIT",
   "repository": "https://github.com/haven-protocol-org/haven-web-core",
   "private": false,
   "main": "index.js",
   "scripts": {
     "start": "todo",
-    "tsc": "sh 'find ./ -name "*.d.ts" -exec rm {} \ ;' && tsc",
+    "tsc": "sh 'find ./ -name '*.d.ts' -exec rm {} ;' && tsc",
     "build_bundle": "webpack --config ./webpack.bundle.js --display-modules",
     "build_web_worker": "webpack --config ./webpack.worker.js",
     "build_web_tests": "webpack --config ./webpack.tests.js",
