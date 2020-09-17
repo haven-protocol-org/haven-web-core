@@ -917,6 +917,7 @@ class MoneroDaemonRpc extends MoneroDaemon {
       else if (key === "tx_hashes") {}  // used in block model, not header model
       else if (key === "miner_tx") {}   // used in block model, not header model
       else if (key === "miner_tx_hash") header.setMinerTxHash(val);
+      else if (key === "pricing_record") GenUtils.safeSet(header, header.getPricingRecord, header.setPricingRecord, val);
       else console.log("WARNING: ignoring unexpected block header field: '" + key + "': " + val);
     }
     return header;

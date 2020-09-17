@@ -213,6 +213,15 @@ class MoneroBlockHeader {
     this.state.powHash = powHash;
     return this;
   }
+
+  getPricingRecord(pricingRecord) {
+    return this.state.pricingRecord;
+  }
+
+  setPricingRecord(pricingRecord) {
+    this.state.pricingRecord = pricingRecord;
+    return this;
+  }
   
   merge(header) {
     assert(header instanceof MoneroBlockHeader);
