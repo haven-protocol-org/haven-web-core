@@ -61,6 +61,8 @@ declare class MoneroBlockHeader {
     setReward(reward: any): MoneroBlockHeader;
     getPowHash(): any;
     setPowHash(powHash: any): MoneroBlockHeader;
+    getPricingRecord(pricingRecord: any): any;
+    setPricingRecord(pricingRecord: any): MoneroBlockHeader;
     merge(header: any): MoneroBlockHeader;
     toString(indent?: number): any;
 }

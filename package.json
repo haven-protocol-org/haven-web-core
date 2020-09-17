@@ -8,7 +8,7 @@
   "main": "index.js",
   "scripts": {
     "start": "todo",
-    "tsc": "tsc",
+    "tsc": "sh 'find ./ -name "*.d.ts" -exec rm {} \ ;' && tsc",
     "build_bundle": "webpack --config ./webpack.bundle.js --display-modules",
     "build_web_worker": "webpack --config ./webpack.worker.js",
     "build_web_tests": "webpack --config ./webpack.tests.js",
