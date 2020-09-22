@@ -10,16 +10,6 @@ const MoneroError = require("./MoneroError");
 class LibraryUtils {
   
   /**
-   * Get a default file system.  Uses an in-memory file system if running in the browser.
-   * 
-   * @return nodejs-compatible file system
-   */
-  static getDefaultFs() {
-    if (!LibraryUtils.FS) LibraryUtils.FS = GenUtils.isBrowser() ? require('memfs') : require('fs');
-    return LibraryUtils.FS;
-  }
-  
-  /**
    * Get the total memory used by WebAssembly.
    * 
    * @return {int} the total memory used by WebAssembly
@@ -132,6 +122,18 @@ class LibraryUtils {
   }
   
   /**
+   * Set the path to load MoneroWebWorker.dist.js when running this library in
+   * a web worker (defaults to "/MoneroWebWorker.dist.js").
+   * 
+   * @param {string} workerDistPath - path to load MoneroWebWorker.dist.js
+   */
+  static setWorkerDistPath(workerDistPath) {
+    let path = workerDistPath ? workerDistPath : LibraryUtils.WORKER_DIST_PATH_DEFAULT;
+    if (path !== LibraryUtils.WORKER_DIST_PATH) delete LibraryUtils.WORKER;
+    LibraryUtils.WORKER_DIST_PATH = path; 
+  }
+  
+  /**
    * Get a singleton instance of a web worker to share.
    * 
    * @return {Worker} a worker to share among wallet instances
@@ -140,7 +142,7 @@ class LibraryUtils {
     
     // one time initialization
     if (!LibraryUtils.WORKER) {
-      LibraryUtils.WORKER = new Worker("MoneroWebWorker.dist.js");
+      LibraryUtils.WORKER = new Worker(LibraryUtils.WORKER_DIST_PATH);
       LibraryUtils.WORKER_OBJECTS = {};  // store per object running in the worker
       
       // catch worker messages
@@ -182,5 +184,8 @@ class LibraryUtils {
     });
   }
 }
+
+LibraryUtils.WORKER_DIST_PATH_DEFAULT = "/MoneroWebWorker.dist.js";
+LibraryUtils.WORKER_DIST_PATH = LibraryUtils.WORKER_DIST_PATH_DEFAULT;
 
 module.exports = LibraryUtils;

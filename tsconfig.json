@@ -12,10 +12,18 @@
       "declaration": true,
       // This compiler run should
       // only output d.ts files
+<<<<<<< HEAD
       "emitDeclarationOnly": true,
+=======
+      "emitDeclarationOnly": true
+>>>>>>> pr/1
       // Types should go into this directory.
       // Removing this would place the .d.ts files
       // next to the .js files
      // "outDir": "typings",
+<<<<<<< HEAD
     },
+=======
+    }
+>>>>>>> pr/1
   }

@@ -22,7 +22,7 @@ class TestSampleCode {
           
           // create directory for test wallets if it doesn't exist
           const monerojs = require("../../index");
-          let fs = monerojs.LibraryUtils.getDefaultFs();
+          let fs = TestUtils.getDefaultFs();
           if (!fs.existsSync(TestUtils.TEST_WALLETS_DIR)) {
             if (!fs.existsSync(process.cwd())) fs.mkdirSync(process.cwd(), { recursive: true });  // create current process directory for relative paths which does not exist in memory fs
             fs.mkdirSync(TestUtils.TEST_WALLETS_DIR);
@@ -53,7 +53,7 @@ class TestSampleCode {
         let balance = await walletRpc.getBalance();               // 533648366742
         let txs = await walletRpc.getTxs();                       // get transactions containing transfers to/from the wallet
         
-        // create wallet from mnemonic phrase using WebAssembly bindings to Monero Core
+        // create wallet from mnemonic phrase using WebAssembly bindings to monero-project
         let walletWasm = await monerojs.createWalletWasm({
           path: "./test_wallets/" + monerojs.GenUtils.getUUID(),  // *** CHANGE README TO "sample_wallet_wasm"
           password: "supersecretpassword123",
@@ -62,7 +62,8 @@ class TestSampleCode {
           serverUsername: "superuser",
           serverPassword: "abctesting123",
           mnemonic: TestUtils.MNEMONIC,                 // *** REPLACE README WITH MNEMONIC ***
-          restoreHeight: TestUtils.FIRST_RECEIVE_HEIGHT // *** REPLACE README WITH FIRST RECEIVE HEIGHT ***
+          restoreHeight: TestUtils.FIRST_RECEIVE_HEIGHT, // *** REPLACE README WITH FIRST RECEIVE HEIGHT ***
+          fs: TestUtils.getDefaultFs()
         });
         
         // synchronize with progress notifications

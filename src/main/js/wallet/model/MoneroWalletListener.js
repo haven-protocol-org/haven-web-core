@@ -38,7 +38,8 @@ class MoneroWalletListener {
   onOffshoreBalancesChanged(newOffshoreBalance, newUnlockedOffshoreBalance) { }
 
   /**
-   * Invoked when the wallet receives an output.
+   * Invoked when the wallet receives an unconfirmed output, when the output is confirmed,
+   * and when the output is unlocked.
    * 
    * @param {MoneroOutputWallet} output - the received output
    */

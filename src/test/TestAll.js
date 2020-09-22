@@ -8,7 +8,7 @@ const TestMoneroWalletRpc = require("./TestMoneroWalletRpc");
 const TestDeveloperGuide = require("./TestDeveloperGuide");
 
 // test sample code for readme
-new TestSampleCode().runTests();
+ new TestSampleCode().runTests();
 
 // test utilitiles
 new TestMoneroUtils().runTests();
@@ -28,7 +28,7 @@ new TestMoneroWalletKeys({
   testRelays: false,
   testResets: false,
   testNotifications: false
-}).runTests();
+}).runTests(); 
 
 // test wasm wallet
 new TestMoneroWalletWasm({
@@ -40,7 +40,7 @@ new TestMoneroWalletWasm({
 }).runTests();
 
 // test wallet rpc
-new TestMoneroWalletRpc({
+ new TestMoneroWalletRpc({
   liteMode: false,
   testNonRelays: true,
   testRelays: true,
@@ -49,7 +49,7 @@ new TestMoneroWalletRpc({
 }).runTests();
 
 // test queries for developer guide
-new TestDeveloperGuide().runTests();
+new TestDeveloperGuide().runTests(); 
 
 // test scratchpad
 require("./Scratchpad");

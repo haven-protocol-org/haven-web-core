@@ -25,6 +25,9 @@ class MoneroTransfer {
     
     // deserialize fields if necessary
     if (state.amount !== undefined && !(state.amount instanceof BigInteger)) state.amount = BigInteger.parse(state.amount);
+    
+    // validate state
+    this._validate();
   }
   
   copy() {
@@ -63,6 +66,7 @@ class MoneroTransfer {
 
   setAccountIndex(accountIndex) {
     this.state.accountIndex = accountIndex;
+    this._validate();
     return this;
   }
 
@@ -100,7 +104,7 @@ class MoneroTransfer {
     
     // TODO monero core: failed tx in pool (after testUpdateLockedDifferentAccounts()) causes non-originating saved wallets to return duplicate incoming transfers but one has amount of 0
     if (this.getAmount() !== undefined && transfer.getAmount() !== undefined && this.getAmount().compare(transfer.getAmount()) !== 0 && (this.getAmount().compare(BigInteger.parse("0")) === 0 || transfer.getAmount().compare(BigInteger.parse("0")) === 0)) {
-      throw new Error("failed tx in pool causes non-originating wallets to return duplicate incoming transfers but with one amount/numSuggestedConfirmations of 0");
+      //throw new Error("WARNING: monero core returning transfers with 0 amount/numSuggestedConfirmations");
     } else {
       this.setAmount(GenUtils.reconcile(this.getAmount(), transfer.getAmount()));
     }
@@ -114,6 +118,10 @@ class MoneroTransfer {
     str += GenUtils.kvLine("Account index", this.getAccountIndex(), indent);
     str += GenUtils.kvLine("Amount", this.getAmount() ? this.getAmount().toString() : undefined, indent);
     return str === "" ? str :  str.slice(0, str.length - 1);  // strip last newline
+  }
+  
+  _validate() {
+    if (this.getAccountIndex() !== undefined && this.getAccountIndex() < 0) throw new MoneroError("Account index must be >= 0");
   }
 }
 
