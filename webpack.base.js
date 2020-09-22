@@ -7,7 +7,7 @@ let configBase = {
       rules: [
         {
           test: /\.js$/,
-          exclude: path.join(__dirname, 'node_modules'),
+          exclude: [path.join(__dirname, 'node_modules'),path.join(__dirname, 'dist')],
           type: "javascript/auto",
           use: [
             {

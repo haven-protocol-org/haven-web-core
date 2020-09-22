@@ -8,3 +8,9 @@ test_products
 /test_wallets/
 /build
 /browser_build/
+.idea/encodings.xml
+.idea/misc.xml
+.idea/vcs.xml
+.idea/workspace.xml
+.vscode/c_cpp_properties.json
+.vscode/settings.json
