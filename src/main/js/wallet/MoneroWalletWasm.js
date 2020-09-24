@@ -1714,6 +1714,7 @@ class MoneroWalletWasm extends MoneroWalletKeys {
             function(height, startHeight, endHeight, percentDone, message) { that._wasmListener.onSyncProgress(height, startHeight, endHeight, percentDone, message); },
             function(height) { that._wasmListener.onNewBlock(height); },
             function(newBalanceStr, newUnlockedBalanceStr) { that._wasmListener.onBalancesChanged(newBalanceStr, newUnlockedBalanceStr); },
+            function(newBalanceStr, newUnlockedBalanceStr) { that._wasmListener.onOffshoreBalancesChanged(newBalanceStr, newUnlockedBalanceStr); },
             function(height, txHash, amountStr, accountIdx, subaddressIdx, version, unlockHeight, isLocked) { that._wasmListener.onOutputReceived(height, txHash, amountStr, accountIdx, subaddressIdx, version, unlockHeight, isLocked); },
             function(height, txHash, amountStr, accountIdx, subaddressIdx, version, unlockHeight, isLocked) { that._wasmListener.onOutputReceived(height, txHash, amountStr, accountIdx, subaddressIdx, version, unlockHeight, isLocked); },
         )} else {
