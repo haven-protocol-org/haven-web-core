@@ -22,6 +22,8 @@ declare class MoneroTransfer {
     setAccountIndex(accountIndex: any): MoneroTransfer;
     getAmount(): any;
     setAmount(amount: any): MoneroTransfer;
+    setCurrency(currency: any): MoneroTransfer;
+    getCurrency(): any;
     /**
      * Updates this transaction by merging the latest information from the given
      * transaction.
@@ -34,4 +36,5 @@ declare class MoneroTransfer {
      */
     merge(transfer: any): MoneroTransfer;
     toString(indent?: number): any;
+    _validate(): void;
 }

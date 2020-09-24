@@ -37,8 +37,8 @@ declare class MoneroTx {
     setInTxPool(inTxPool: any): MoneroTx;
     getNumConfirmations(): any;
     setNumConfirmations(numConfirmations: any): MoneroTx;
-    getUnlockTime(): any;
-    setUnlockTime(unlockTime: any): MoneroTx;
+    getUnlockHeight(): any;
+    setUnlockHeight(unlockHeight: any): MoneroTx;
     getLastRelayedTimestamp(): any;
     setLastRelayedTimestamp(lastRelayedTimestamp: any): MoneroTx;
     getReceivedTimestamp(): any;
@@ -47,8 +47,6 @@ declare class MoneroTx {
     setIsDoubleSpend(isDoubleSpendSeen: any): MoneroTx;
     getKey(): any;
     setKey(key: any): MoneroTx;
-    setCurrency(currency: any): MoneroTx;
-    getCurrency(): any;
     /**
      * Get full transaction hex.  Full hex = pruned hex + prunable hex.
      *

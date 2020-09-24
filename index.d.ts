@@ -67,6 +67,7 @@ export var MoneroDaemonRpc: typeof import("./src/main/js/daemon/MoneroDaemonRpc"
 export var MoneroWalletRpc: typeof import("./src/main/js/wallet/MoneroWalletRpc");
 export var MoneroWalletKeys: typeof import("./src/main/js/wallet/MoneroWalletKeys");
 export var MoneroWalletWasm: typeof import("./src/main/js/wallet/MoneroWalletWasm");
+export function getVersion(): string;
 export function connectToDaemonRpc(...args: {}): any;
 export function connectToWalletRpc(...args: {}): any;
 export function createWalletWasm(...args: {}): any;

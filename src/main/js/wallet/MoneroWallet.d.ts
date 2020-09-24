@@ -156,6 +156,15 @@ declare class MoneroWallet {
      */
     getDaemonHeight(): any;
     /**
+     * Get the blockchain's height by date as a conservative estimate for scanning.
+     *
+     * @param {int} year - year of the height to get
+     * @param {int} month - month of the height to get as a number between 1 and 12
+     * @param {int} day - day of the height to get as a number between 1 and 31
+     * @return the blockchain's approximate height at the given date
+     */
+    getHeightByDate(year: any, month: any, day: any): any;
+    /**
      * Synchronize the wallet with the daemon as a one-time synchronous process.
      *
      * @param {MoneroWalletListener|number} listenerOrStartHeight - listener xor start height (defaults to no sync listener, the last synced block)
@@ -166,6 +175,10 @@ declare class MoneroWallet {
      * Start an asynchronous thread to continuously synchronize the wallet with the daemon.
      */
     startSyncing(): any;
+    /**
+     * Stop synchronizing the wallet with the daemon.
+     */
+    stopSyncing(): any;
     /**
      * <p>Rescan the blockchain for spent outputs.</p>
      *
@@ -295,9 +308,10 @@ declare class MoneroWallet {
      * @param {boolean} query.isIncoming - get txs with an incoming transfer or not (optional)
      * @param {MoneroTransferQuery} query.transferQuery - get txs that have a transfer that meets this query (optional)
      * @param {boolean} query.includeOutputs - specifies that tx outputs should be returned with tx results (optional)
+     * @param {string[]} missingTxHashes - populated with hashes of unfound or unmet transactions that were queried by hash (throws error if undefined and queried transaction hashes are unfound or unmet)
      * @return {MoneroTxWallet[]} wallet transactions per the configuration
      */
-    getTxs(query: (import("./model/MoneroTxQuery") | string[] | object)): any[];
+    getTxs(query: (import("./model/MoneroTxQuery") | string[] | object), missingTxHashes: string[]): any[];
     /**
      * <p>Get incoming and outgoing transfers to and from this wallet.  An outgoing
      * transfer represents a total amount sent from one or more subaddresses
@@ -405,7 +419,7 @@ declare class MoneroWallet {
      * @param {MoneroTxPriority} config.priority - transaction priority (default MoneroTxPriority.NORMAL)
      * @param {MoneroDestination[]} config.destinations - addresses and amounts in a multi-destination tx (required unless `address` and `amount` provided)
      * @param {string} config.paymentId - transaction payment ID (optional)
-     * @param {int} config.unlockTime - number of confirmations before the recipient can spend the funds (default 0)
+     * @param {int} config.unlockHeight - minimum height for the transaction to unlock (default 0)
      * @return {MoneroTxWallet} the created transaction
      */
     createTx(config: import("./model/MoneroTxConfig") | object): any;
@@ -422,7 +436,7 @@ declare class MoneroWallet {
      * @param {MoneroTxPriority} config.priority - transaction priority (default MoneroTxPriority.NORMAL)
      * @param {MoneroDestination[]} config.destinations - addresses and amounts in a multi-destination tx (required unless `address` and `amount` provided)
      * @param {string} config.paymentId - transaction payment ID (optional)
-     * @param {int} config.unlockTime - number of confirmations before the recipient can spend the funds (default 0)
+     * @param {int} config.unlockHeight - minimum height for the transactions to unlock (default 0)
      * @param {boolean} config.canSplit - allow funds to be transferred using multiple transactions (default true)
      * @return {MoneroTxWallet[]} the created transactions
      */
@@ -434,7 +448,7 @@ declare class MoneroWallet {
      * @param {string} config.address - single destination address (required)
      * @param {string} config.keyImage - key image to sweep (required)
      * @param {boolean} config.relay - relay the transaction to peers to commit to the blockchain (default false)
-     * @param {int} config.unlockTime - number of confirmations before the recipient can spend the funds (default 0)
+     * @param {int} config.unlockHeight - minimum height for the transaction to unlock (default 0)
      * @param {MoneroTxPriority} config.priority - transaction priority (default MoneroTxPriority.NORMAL)
      * @return {MoneroTxWallet} the created transaction
      */
@@ -449,7 +463,7 @@ declare class MoneroWallet {
      * @param {int[]} config.subaddressIndices - source subaddress indices to sweep from (optional)
      * @param {boolean} config.relay - relay the transactions to peers to commit to the blockchain (default false)
      * @param {MoneroTxPriority} config.priority - transaction priority (default MoneroTxPriority.NORMAL)
-     * @param {int} config.unlockTime - number of confirmations before the recipient can spend the funds (default 0)
+     * @param {int} config.unlockHeight - minimum height for the transactions to unlock (default 0)
      * @return {MoneroTxWallet[]} the created transactions
      */
     sweepUnlocked(config: import("./model/MoneroTxConfig") | object): any[];

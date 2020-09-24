@@ -12,7 +12,7 @@ declare class MoneroWalletWasm extends MoneroWalletWasm_base {
      * Check if a wallet exists at a given path.
      *
      * @param {string} path - path of the wallet on the file system
-     * @param {fs} - Node.js compatible file system to use (optional, defaults to disk if nodejs, in-memory FS if browser)
+     * @param {fs} - Node.js compatible file system to use (optional, defaults to disk if nodejs)
      * @return {boolean} true if a wallet exists at the given path, false otherwise
      */
     static walletExists(path: string, fs: any): boolean;
@@ -100,15 +100,19 @@ declare class MoneroWalletWasm extends MoneroWalletWasm_base {
     static _createWalletRandom(path: any, password: any, networkType: any, daemonUriOrConnection: any, language: any, proxyToWorker: any, fs: any): unknown;
     static _createWalletFromMnemonic(path: any, password: any, networkType: any, mnemonic: any, daemonUriOrConnection: any, restoreHeight: any, seedOffset: any, proxyToWorker: any, fs: any): unknown;
     static _createWalletFromKeys(path: any, password: any, networkType: any, address: any, viewKey: any, spendKey: any, daemonUriOrConnection: any, restoreHeight: any, language: any, proxyToWorker: any, fs: any): unknown;
+    static _getFs(): any;
     static _openWalletData(path: any, password: any, networkType: any, keysData: any, cacheData: any, daemonUriOrConnection: any, proxyToWorker: any, fs: any): unknown;
     static _sanitizeBlock(block: any): any;
     static _sanitizeTxWallet(tx: any): any;
     static _sanitizeAccount(account: any): any;
     static _sanitizeSubaddress(subaddress: any): any;
-    static _deserializeBlocks(blocksJsonStr: any, txType: any): {};
-    static _blocksJsonToTxs(query: any, blocksJsonStr: any): {};
-    static _blocksJsonToTransfers(query: any, blocksJsonStr: any): {};
-    static _blocksJsonToOutputs(query: any, blocksJsonStr: any): {};
+    static _deserializeBlocks(blocksJsonStr: any): {
+        blocks: {};
+        missingTxHashes: {};
+    };
+    static _deserializeTxs(query: any, blocksJsonStr: any, missingTxHashes: any): {};
+    static _deserializeTransfers(query: any, blocksJsonStr: any): {};
+    static _deserializeOutputs(query: any, blocksJsonStr: any): {};
     /**
      * Internal constructor which is given the memory address of a C++ wallet
      * instance.
@@ -119,7 +123,7 @@ declare class MoneroWalletWasm extends MoneroWalletWasm_base {
      * @param {int} cppAddress - address of the wallet instance in C++
      * @param {string} path - path of the wallet instance
      * @param {string} password - password of the wallet instance
-     * @param {FileSystem} fs - provides a minimal file system interface (read, write, delete, exists) (defaults to LibraryUtils.getDefaultFs())
+     * @param {FileSystem} fs - node.js-compatible file system to read/write wallet files
      * @param {boolean} rejectUnauthorized - specifies if unauthorized requests (e.g. self-signed certificates) should be rejected
      * @param {string} rejectUnauthorizedFnId - unique identifier for http_client_wasm to query rejectUnauthorized
      */
@@ -195,7 +199,6 @@ declare class MoneroWalletWasm extends MoneroWalletWasm_base {
      */
     moveTo(path: string, password: string): any;
     _syncingEnabled: boolean;
-    stopSyncing(): any;
     /**
      * Get the wallet's keys and cache data.
      *
@@ -231,6 +234,6 @@ declare class WalletWasmListener {
     onNewBlock(height: any): void;
     onBalancesChanged(newBalanceStr: any, newUnlockedBalanceStr: any): void;
     onOffshoreBalancesChanged(newOffshoreBalanceStr: any, newUnlockedOffshoreBalanceStr: any): void;
-    onOutputReceived(height: any, txHash: any, amountStr: any, accountIdx: any, subaddressIdx: any, version: any, unlockTime: any): void;
+    onOutputReceived(height: any, txHash: any, amountStr: any, accountIdx: any, subaddressIdx: any, version: any, unlockHeight: any, isLocked: any): void;
     onOutputSpent(height: any, txHash: any, amountStr: any, accountIdx: any, subaddressIdx: any, version: any): void;
 }

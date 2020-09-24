@@ -6,12 +6,6 @@ export = LibraryUtils;
  */
 declare class LibraryUtils {
     /**
-     * Get a default file system.  Uses an in-memory file system if running in the browser.
-     *
-     * @return nodejs-compatible file system
-     */
-    static getDefaultFs(): any;
-    /**
      * Get the total memory used by WebAssembly.
      *
      * @return {int} the total memory used by WebAssembly
@@ -52,6 +46,13 @@ declare class LibraryUtils {
      */
     static isRejectUnauthorized(fnId: string): any;
     /**
+     * Set the path to load MoneroWebWorker.dist.js when running this library in
+     * a web worker (defaults to "/MoneroWebWorker.dist.js").
+     *
+     * @param {string} workerDistPath - path to load MoneroWebWorker.dist.js
+     */
+    static setWorkerDistPath(workerDistPath: string): void;
+    /**
      * Get a singleton instance of a web worker to share.
      *
      * @return {Worker} a worker to share among wallet instances
@@ -66,4 +67,9 @@ declare class LibraryUtils {
      * @return {Promise} resolves with response payload from the worker or an error
      */
     static invokeWorker(objectId: any, fnName: string, args: any[]): any;
+}
+declare namespace LibraryUtils {
+    export const WORKER_DIST_PATH_DEFAULT: string;
+    import WORKER_DIST_PATH = WORKER_DIST_PATH_DEFAULT;
+    export { WORKER_DIST_PATH };
 }

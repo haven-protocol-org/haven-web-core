@@ -28,7 +28,7 @@ declare class MoneroTxConfig {
      * @param {MoneroTxPriority} config.priority - transaction priority (default MoneroTxPriority.NORMAL)
      * @param {MoneroDestination[]} config.destinations - addresses and amounts in a multi-destination tx
      * @param {string} config.paymentId - transaction payment ID
-     * @param {int} config.unlockTime - number of confirmations before the recipient can spend the funds
+     * @param {int} config.unlockHeight - minimum height for the transaction to unlock (default 0)
      * @param {string} config.note - transaction note saved locally with the wallet
      * @param {string} config.recipientName - recipient name saved locally with the wallet
      * @param {boolean} config.canSplit - allow funds to be transferred using multiple transactions
@@ -83,8 +83,8 @@ declare class MoneroTxConfig {
     setSubaddressIndex(subaddressIndex: any): MoneroTxConfig;
     getSubaddressIndices(): any;
     setSubaddressIndices(subaddressIndices: any, ...args: {}): MoneroTxConfig;
-    getUnlockTime(): any;
-    setUnlockTime(unlockTime: any): MoneroTxConfig;
+    getUnlockHeight(): any;
+    setUnlockHeight(unlockHeight: any): MoneroTxConfig;
     getRelay(): any;
     setRelay(relay: any): MoneroTxConfig;
     getCanSplit(): any;

@@ -5,6 +5,12 @@ export = MoneroUtils;
  * @hideconstructor
  */
 declare class MoneroUtils {
+    /**
+     * <p>Get the version of the monero-javascript library.<p>
+     *
+     * @return {string} the version of this monero-javascript library
+     */
+    static getVersion(): string;
     static validateMnemonic(mnemonic: any): void;
     static validatePrivateViewKey(privateViewKey: any): void;
     static validatePrivateSpendKey(privateSpendKey: any): void;

@@ -6,6 +6,12 @@ export = TestUtils;
  */
 declare class TestUtils {
     /**
+     * Get a default file system.  Uses an in-memory file system if running in the browser.
+     *
+     * @return nodejs-compatible file system
+     */
+    static getDefaultFs(): any;
+    /**
      * Get a singleton daemon RPC instance shared among tests.
      *
      * @return {MoneroDaemonRpc} a daemon RPC instance

@@ -116,7 +116,7 @@ declare class MoneroWalletRpc extends MoneroWalletRpc_base {
     /**
      * Compares two outputs by ascending account and subaddress indices.
      */
-    static _compareOutputs(o1: any, o2: any): number;
+    static _compareOutputs(o1: any, o2: any): any;
     /**
      * <p>Construct a wallet RPC client.</p>
      *
