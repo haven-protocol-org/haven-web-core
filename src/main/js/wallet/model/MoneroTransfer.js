@@ -78,7 +78,15 @@ class MoneroTransfer {
     this.state.amount = amount;
     return this;
   }
-  
+
+  setCurrency(currency) {
+    this.state.currency = currency;
+    return this;
+  };
+
+  getCurrency() {
+    return this.state.currency;
+  }
   /**
    * Updates this transaction by merging the latest information from the given
    * transaction.
@@ -99,6 +107,7 @@ class MoneroTransfer {
       return this;
     }
     
+    this.setCurrency(GenUtils.reconcile(this.getCurrency(), transfer.getCurrency()));
     // otherwise merge transfer fields
     this.setAccountIndex(GenUtils.reconcile(this.getAccountIndex(), transfer.getAccountIndex()));
     
@@ -115,6 +124,7 @@ class MoneroTransfer {
   toString(indent = 0) {
     let str = "";
     str += GenUtils.kvLine("Is incoming", this.isIncoming(), indent);
+    str += GenUtils.kvLine("Currency", this.getCurrency(), indent);
     str += GenUtils.kvLine("Account index", this.getAccountIndex(), indent);
     str += GenUtils.kvLine("Amount", this.getAmount() ? this.getAmount().toString() : undefined, indent);
     return str === "" ? str :  str.slice(0, str.length - 1);  // strip last newline
