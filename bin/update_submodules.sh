@@ -11,6 +11,9 @@ git pull ##--ff-only origin tags/v0.3.3
 # update haven-offshore
 branchname=$(git branch --show-current)
 tagname=$(git tag --points-at HEAD)
+
+cd ./external/haven-offshore
+
 if [ -z "$branchname" ]
 then
     git checkout tags/$tagname
@@ -18,7 +21,7 @@ else
     git checkout $branchname
 fi
 
-cd ./external/haven-offshore
+
 
 git pull #--ff-only origin tags/v0.16.0.1
 cd ../../../../

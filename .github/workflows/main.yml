@@ -47,14 +47,14 @@ jobs:
         git clone https://github.com/zeromq/cppzmq.git -b ${CPPZMQ_VERSION}
         cd cppzmq
         sudo mv *.hpp /usr/local/include
-    - name: build Haven
+    - name: build haven web libs
       run: |
         export EMSCRIPTEN=$PWD/emsdk/upstream/emscripten
         source ./emsdk/emsdk_env.sh
         ./bin/build_ci.sh
-    # - name: Upload artifact
-    #   uses: actions/upload-artifact@v2
-    #   with:
-    #     name: Haven-Linux-x64 (glibc 2.29)
-    #     path: monero/build/release/bin/
+    - name: Upload artifact
+      uses: actions/upload-artifact@v2
+      with:
+        name: libs
+        path: dist/*
   
