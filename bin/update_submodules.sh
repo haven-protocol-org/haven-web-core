@@ -9,8 +9,9 @@ git checkout master #tags/v0.3.3
 git pull ##--ff-only origin tags/v0.3.3
 
 # update haven-offshore
-branchname=$(git branch --show-current)
-tagname=$(git tag --points-at HEAD)
+
+branchname=$(git --git-dir ../../.git branch --show-current)
+tagname=$(git --git-dir ../../.git tag --points-at HEAD)
 
 cd ./external/haven-offshore
 
@@ -20,7 +21,7 @@ then
 else
     git checkout $branchname
 fi
-
+ 
 
 
 git pull #--ff-only origin tags/v0.16.0.1
