@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 #source "$(realpath $(dirname $0))/emsdk_inc.sh"
 source "$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )/emsdk_inc.sh"

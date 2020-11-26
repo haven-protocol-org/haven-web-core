@@ -1,5 +1,5 @@
-#!/bin/sh
-source ../../utils/emsdk/emsdk_env.sh
+#!/bin/bash
+source ../emsdk/emsdk_env.sh
 # check for emscripten
 [ -z ${EMSDK} ] \
   && {
@@ -34,4 +34,4 @@ npm install || exit 1
 ./bin/build_web_worker.sh || exit 1
 
 # build browser tests
-./bin/build_browser_tests.sh || exit 1
+#./bin/build_browser_tests.sh || exit 1
