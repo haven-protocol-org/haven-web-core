@@ -9,7 +9,7 @@ jobs:
       CPPZMQ_VERSION: v4.3.0
       CFLAGS: -fPIC
       CXXFLAGS: -fPIC
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-18.04
     steps:
     - uses: actions/checkout@v1
       with:
