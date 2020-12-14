@@ -122,10 +122,10 @@ class LibraryUtils {
   }
   
   /**
-   * Set the path to load MoneroWebWorker.dist.js when running this library in
-   * a web worker (defaults to "/MoneroWebWorker.dist.js").
+   * Set the path to load HsavenWebWorker.dist.js when running this library in
+   * a web worker (defaults to "/HavenWebWorker.dist.js").
    * 
-   * @param {string} workerDistPath - path to load MoneroWebWorker.dist.js
+   * @param {string} workerDistPath - path to load HavenWebWorker.dist.js
    */
   static setWorkerDistPath(workerDistPath) {
     let path = workerDistPath ? workerDistPath : LibraryUtils.WORKER_DIST_PATH_DEFAULT;
@@ -185,7 +185,7 @@ class LibraryUtils {
   }
 }
 
-LibraryUtils.WORKER_DIST_PATH_DEFAULT = "/MoneroWebWorker.dist.js";
+LibraryUtils.WORKER_DIST_PATH_DEFAULT = "/HavenWebWorker.dist.js";
 LibraryUtils.WORKER_DIST_PATH = LibraryUtils.WORKER_DIST_PATH_DEFAULT;
 
 module.exports = LibraryUtils;
