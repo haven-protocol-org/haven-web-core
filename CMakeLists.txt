@@ -9,7 +9,9 @@ SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -Oz --bind -s DISABLE_EXCEPTI
 add_definitions(-DAUTO_INITIALIZE_EASYLOGGINGPP -DNO_AES)
 
 set(BUILD_HAVEN_OFFSHORE_WASM ON)
-set(BUILD_HAVEN_OFFSHORE_KEYS_WASM ON)
+set(BUILD_HAVEN_OFFSHORE_KEYS_WASM OFF)
+
+
 
 ##############
 # C++ bridge
@@ -325,11 +327,11 @@ if (BUILD_HAVEN_OFFSHORE_KEYS_WASM)
 endif()
 
 if (BUILD_HAVEN_OFFSHORE_WASM)
-	add_executable(haven_offshore ${HAVEN_OFFSHORE_SRC_FILES} ${HAVEN_OFFSHORE_KEYS_SRC_FILES})
-	set_target_properties(haven_offshore PROPERTIES LINK_FLAGS "${EMCC_LINKER_FLAGS_CORE}")
-	target_compile_definitions(haven_offshore PRIVATE BUILD_CORE_WALLET=1)
+	add_executable($ENV{HAVEN_OFFSHORE_NAME} ${HAVEN_OFFSHORE_SRC_FILES} ${HAVEN_OFFSHORE_KEYS_SRC_FILES})
+	set_target_properties($ENV{HAVEN_OFFSHORE_NAME}  PROPERTIES LINK_FLAGS "${EMCC_LINKER_FLAGS_CORE}")
+	target_compile_definitions($ENV{HAVEN_OFFSHORE_NAME}  PRIVATE BUILD_CORE_WALLET=1)
 	target_link_libraries(
-	    haven_offshore
+	    $ENV{HAVEN_OFFSHORE_NAME} 
 	    #
 	    #openssl_ssl
 	    #openssl_crypto
