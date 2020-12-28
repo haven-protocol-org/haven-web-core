@@ -265,6 +265,7 @@ class MoneroBlockHeader {
     str += GenUtils.kvLine("Prev hash", this.getPrevHash(), indent);
     str += GenUtils.kvLine("Reward", this.getReward(), indent);
     str += GenUtils.kvLine("Pow hash", this.getPowHash(), indent);
+    str += GenUtils.kvLine("Pricing record", this.getPricingRecord(), indent);
     return str[str.length - 1] === "\n" ? str.slice(0, str.length - 1) : str  // strip last newline
   }
 }

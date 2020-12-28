@@ -38,7 +38,7 @@ class LibraryUtils {
     
     // load module
     delete LibraryUtils.WASM_MODULE;
-  //  LibraryUtils.WASM_MODULE = require("../../../../dist/haven_offshore1.0.70_keys")();
+  //  LibraryUtils.WASM_MODULE = require("../../../../dist/haven_offshore1.2.1_keys")();
     return new Promise(function(resolve, reject) {
       LibraryUtils.WASM_MODULE.then(module => {
         LibraryUtils.WASM_MODULE = module
@@ -63,7 +63,7 @@ class LibraryUtils {
     
     // load module
     delete LibraryUtils.WASM_MODULE;
-    LibraryUtils.WASM_MODULE = require("../../../../dist/haven_offshore1.0.70")();
+    LibraryUtils.WASM_MODULE = require("../../../../dist/haven_offshore1.2.1")();
     return new Promise(function(resolve, reject) {
       LibraryUtils.WASM_MODULE.then(module => {
         LibraryUtils.WASM_MODULE = module
