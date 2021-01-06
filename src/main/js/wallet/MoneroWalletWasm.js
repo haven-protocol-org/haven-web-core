@@ -48,10 +48,11 @@ class MoneroWalletWasm extends MoneroWalletKeys {
    */
   static async walletExists(path, fs) {
     assert(path, "Must provide a path to look for a wallet");
+    const keysPath = path + ".keys";
     if (!fs) fs = MoneroWalletWasm._getFs();
     if (!fs) throw new MoneroError("Must provide file system to check if wallet exists");
-    let exists = fs.existsSync(path); // TODO: look for keys file
-    console.log("Wallet exists at " + path + ": " + exists);
+    let exists = fs.existsSync(keysPath);
+    console.log("Keys File exists at " + path + ": " + exists);
     return exists;
   }
   
@@ -124,9 +125,15 @@ class MoneroWalletWasm extends MoneroWalletKeys {
     if (!config.getKeysData()) {
       let fs = config.getFs() ? config.getFs() : MoneroWalletWasm._getFs();
       if (!fs) throw new MoneroError("Must provide file system to read wallet data from");
+      // check if keys file exists 
       if (!await this.walletExists(config.getPath(), fs)) throw new MoneroError("Wallet does not exist at path: " + config.getPath());
       config.setKeysData(fs.readFileSync(config.getPath() + ".keys"));
-      config.setCacheData(fs.readFileSync(config.getPath()));
+
+      let cacheData = new ArrayBuffer(0);
+      if (fs.existsSync(config.getPath())) {
+        cacheData = fs.readFileSync(config.getPath());
+      }
+      config.setCacheData(cacheData);
     }
     
     // open wallet from data
