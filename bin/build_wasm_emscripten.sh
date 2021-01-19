@@ -63,6 +63,9 @@ mkdir -p ./dist || exit 1
 
 
 # rename reference in Libraryutils
-sed -i "" "s/haven_offshore[0-9\.]*/${HAVEN_OFFSHORE_NAME}/g" ./src/main/js/common/LibraryUtils.js 
+if [[ "$OSTYPE" == "darwin"* ]]; then
+  sed -i "" "s/haven_offshore[0-9\.]*/${HAVEN_OFFSHORE_NAME}/g" ./src/main/js/common/LibraryUtils.js 
+else
+  sed -i "s/haven_offshore[0-9\.]*/${HAVEN_OFFSHORE_NAME}/g" ./src/main/js/common/LibraryUtils.js 
 
 #  TODO keys file is not addressed
