@@ -38,7 +38,7 @@ class LibraryUtils {
     
     // load module
     delete LibraryUtils.WASM_MODULE;
-    LibraryUtils.WASM_MODULE = require("../../../../dist/haven_offshore_keys")();
+  //  LibraryUtils.WASM_MODULE = require("../../../../dist/haven_offshore1.2.6_keys")();
     return new Promise(function(resolve, reject) {
       LibraryUtils.WASM_MODULE.then(module => {
         LibraryUtils.WASM_MODULE = module
@@ -63,7 +63,7 @@ class LibraryUtils {
     
     // load module
     delete LibraryUtils.WASM_MODULE;
-    LibraryUtils.WASM_MODULE = require("../../../../dist/haven_offshore")();
+    LibraryUtils.WASM_MODULE = require("../../../../dist/haven_offshore1.2.6")();
     return new Promise(function(resolve, reject) {
       LibraryUtils.WASM_MODULE.then(module => {
         LibraryUtils.WASM_MODULE = module
@@ -122,10 +122,10 @@ class LibraryUtils {
   }
   
   /**
-   * Set the path to load MoneroWebWorker.dist.js when running this library in
-   * a web worker (defaults to "/MoneroWebWorker.dist.js").
+   * Set the path to load HsavenWebWorker.dist.js when running this library in
+   * a web worker (defaults to "/HavenWebWorker1.2.6.dist.js").
    * 
-   * @param {string} workerDistPath - path to load MoneroWebWorker.dist.js
+   * @param {string} workerDistPath - path to load HavenWebWorker1.2.6.dist.js
    */
   static setWorkerDistPath(workerDistPath) {
     let path = workerDistPath ? workerDistPath : LibraryUtils.WORKER_DIST_PATH_DEFAULT;
@@ -185,7 +185,7 @@ class LibraryUtils {
   }
 }
 
-LibraryUtils.WORKER_DIST_PATH_DEFAULT = "/MoneroWebWorker.dist.js";
+LibraryUtils.WORKER_DIST_PATH_DEFAULT = "/HavenWebWorker1.2.6.js";
 LibraryUtils.WORKER_DIST_PATH = LibraryUtils.WORKER_DIST_PATH_DEFAULT;
 
 module.exports = LibraryUtils;

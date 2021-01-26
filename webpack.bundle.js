@@ -8,11 +8,7 @@ let configMoneroWebWorker = Object.assign({}, configBase, {
   entry: "./index.js",
   output: {
     path: path.resolve(__dirname, "dist"),
-<<<<<<< HEAD
-    filename: "bundle.js"
-=======
     filename: "haven.js"
->>>>>>> pr/1
   },
 });
 
