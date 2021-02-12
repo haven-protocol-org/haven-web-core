@@ -5,7 +5,7 @@ git submodule update --init --recursive
 
 # update haven-web-cpp
 cd ./external/haven-web-cpp
-git checkout master #tags/v0.3.3
+git checkout feature/xassets #tags/v0.3.3
 git pull ##--ff-only origin tags/v0.3.3
 
 # update haven-offshore
