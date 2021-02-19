@@ -787,27 +787,6 @@ class MoneroWalletWasm extends MoneroWalletKeys {
     });
   }
 
-  async getOffshoreBalance(accountIdx, subaddressIdx) {
-    let that = this;
-    return that._module.queueTask(async function() {
-      that._assertNotClosed();
-      
-      // get balance encoded in json string
-      let balanceStr;
-      if (accountIdx === undefined) {
-        assert(subaddressIdx === undefined, "Subaddress index must be undefined if account index is undefined");
-        balanceStr = that._module.get_offshore_balance_wallet(that._cppAddress);
-      } else if (subaddressIdx === undefined) {
-        balanceStr = that._module.get_offshore_balance_account(that._cppAddress, accountIdx);
-      } else {
-        balanceStr = that._module.get_offshore_balance_subaddress(that._cppAddress, accountIdx, subaddressIdx);
-      }
-      
-      // parse json string to BigInteger
-      return BigInteger.parse(JSON.parse(GenUtils.stringifyBIs(balanceStr)).offshoreBalance);
-    });
-  }
-  
   async getUnlockedBalance(accountIdx, subaddressIdx) {
     let that = this;
     return that._module.queueTask(async function() {
@@ -826,27 +805,6 @@ class MoneroWalletWasm extends MoneroWalletKeys {
       
       // parse json string to BigInteger
       return BigInteger.parse(JSON.parse(GenUtils.stringifyBIs(unlockedBalanceStr)).unlockedBalance);
-    });
-  }
-
-  async getUnlockedOffshoreBalance(accountIdx, subaddressIdx) {
-    let that = this;
-    return that._module.queueTask(async function() {
-      that._assertNotClosed();
-      
-      // get balance encoded in json string
-      let unlockedBalanceStr;
-      if (accountIdx === undefined) {
-        assert(subaddressIdx === undefined, "Subaddress index must be undefined if account index is undefined");
-        unlockedBalanceStr = that._module.get_unlocked_offshore_balance_wallet(that._cppAddress);
-      } else if (subaddressIdx === undefined) {
-        unlockedBalanceStr = that._module.get_unlocked_offshore_balance_account(that._cppAddress, accountIdx);
-      } else {
-        unlockedBalanceStr = that._module.get_unlocked_offshore_balance_subaddress(that._cppAddress, accountIdx, subaddressIdx);
-      }
-      
-      // parse json string to BigInteger
-      return BigInteger.parse(JSON.parse(GenUtils.stringifyBIs(unlockedBalanceStr)).unlockedOffshoreBalance);
     });
   }
   

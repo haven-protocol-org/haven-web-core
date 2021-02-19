@@ -63,12 +63,6 @@ EMSCRIPTEN_BINDINGS(module)
   emscripten::function("get_unlocked_balance_wallet", &monero_wasm_bridge::get_unlocked_balance_wallet);
   emscripten::function("get_unlocked_balance_account", &monero_wasm_bridge::get_unlocked_balance_account);
   emscripten::function("get_unlocked_balance_subaddress", &monero_wasm_bridge::get_unlocked_balance_subaddress);
-  emscripten::function("get_offshore_balance_wallet", &monero_wasm_bridge::get_offshore_balance_wallet);
-  emscripten::function("get_offshore_balance_account", &monero_wasm_bridge::get_offshore_balance_account);
-  emscripten::function("get_offshore_balance_subaddress", &monero_wasm_bridge::get_offshore_balance_subaddress);
-  emscripten::function("get_unlocked_offshore_balance_wallet", &monero_wasm_bridge::get_unlocked_offshore_balance_wallet);
-  emscripten::function("get_unlocked_offshore_balance_account", &monero_wasm_bridge::get_unlocked_offshore_balance_account);
-  emscripten::function("get_unlocked_offshore_balance_subaddress", &monero_wasm_bridge::get_unlocked_offshore_balance_subaddress);
   emscripten::function("get_accounts", &monero_wasm_bridge::get_accounts);
   emscripten::function("get_account", &monero_wasm_bridge::get_account);
   emscripten::function("create_account", &monero_wasm_bridge::create_account);
