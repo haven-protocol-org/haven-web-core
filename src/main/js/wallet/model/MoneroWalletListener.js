@@ -26,16 +26,9 @@ class MoneroWalletListener {
    * 
    * @param {BigInteger} newBalance - new wallet balance
    * @param {BigInteger} newUnlockedBalance - new unlocked wallet balance
+   * @param {string} assetType - new unlocked wallet balance
    */
-  onBalancesChanged(newBalance, newUnlockedBalance) { }
-
-    /**
-   * Invoked when the wallet's balances change.
-   * 
-   * @param {BigInteger} newOffshoreBalance - new wallet balance
-   * @param {BigInteger} newUnlockedOffshoreBalance - new unlocked wallet balance
-   */
-  onOffshoreBalancesChanged(newOffshoreBalance, newUnlockedOffshoreBalance) { }
+  onBalancesChanged(newBalance, newUnlockedBalance, assetType) { }
 
   /**
    * Invoked when the wallet receives an unconfirmed output, when the output is confirmed,

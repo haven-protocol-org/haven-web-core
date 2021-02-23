@@ -1447,7 +1447,7 @@ class OutputNotificationCollector extends MoneroWalletListener {
     this.outputsSpent = [];
   }
   
-  onBalancesChanged(newBalance, newUnlockedBalance) {
+  onBalancesChanged(newBalance, newUnlockedBalance, assetType) {
     if (this.balanceNotifications.length > 0) {
       this.lastNotification = this.balanceNotifications[this.balanceNotifications.length - 1];
       assert(newBalance.toString() !== this.lastNotification.balance.toString() || newUnlockedBalance.toString() !== this.lastNotification.unlockedBalance.toString());
@@ -1567,7 +1567,7 @@ class WalletSyncTester extends SyncProgressTester {
     this.walletTesterPrevHeight = height;
   }
   
-  async onBalancesChanged(newBalance, newUnlockedBalance) {
+  async onBalancesChanged(newBalance, newUnlockedBalance, assetType) {
     //assert.equal(newBalance.toString(), (await this.wallet.getBalance()).toString()); // TODO: asynchronous balance queries block until done syncing
     //assert.equal(newUnlockedBalance.toString(), (await this.wallet.getUnlockedBalance()).toString());
     if (this.prevBalance !== undefined) assert(newBalance.toString() !== this.prevBalance.toString() || newUnlockedBalance.toString() !== this.prevUnlockedBalance.toString());

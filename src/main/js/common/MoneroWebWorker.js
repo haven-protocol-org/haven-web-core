@@ -518,12 +518,8 @@ self.addListener = async function(walletId, listenerId) {
       this.worker.postMessage([this.walletId, "onNewBlock_" + this.getId(), height]);
     }
     
-    onBalancesChanged(newBalance, newUnlockedBalance) {
-      this.worker.postMessage([this.walletId, "onBalancesChanged_" + this.getId(), newBalance.toString(), newUnlockedBalance.toString()]);
-    }
-
-    onOffshoreBalancesChanged(newOffshoreBalance, newUnlockedOffshoreBalance) {
-      this.worker.postMessage([this.walletId, "onOffshoreBalancesChanged_" + this.getId(), newOffshoreBalance.toString(), newUnlockedOffshoreBalance.toString()]);
+    onBalancesChanged(newBalance, newUnlockedBalance, assetType) {
+      this.worker.postMessage([this.walletId, "onBalancesChanged_" + this.getId(), newBalance.toString(), newUnlockedBalance.toString(), assetType]);
     }
 
     onOutputReceived(output) {

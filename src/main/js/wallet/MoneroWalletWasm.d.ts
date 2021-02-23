@@ -232,8 +232,7 @@ declare class WalletWasmListener {
     _wallet: any;
     onSyncProgress(height: any, startHeight: any, endHeight: any, percentDone: any, message: any): void;
     onNewBlock(height: any): void;
-    onBalancesChanged(newBalanceStr: any, newUnlockedBalanceStr: any): void;
-    onOffshoreBalancesChanged(newOffshoreBalanceStr: any, newUnlockedOffshoreBalanceStr: any): void;
+    onBalancesChanged(newBalanceStr: any, newUnlockedBalanceStr: any, assetType: string): void;
     onOutputReceived(height: any, txHash: any, amountStr: any, accountIdx: any, subaddressIdx: any, version: any, unlockHeight: any, isLocked: any): void;
     onOutputSpent(height: any, txHash: any, amountStr: any, accountIdx: any, subaddressIdx: any, version: any): void;
 }

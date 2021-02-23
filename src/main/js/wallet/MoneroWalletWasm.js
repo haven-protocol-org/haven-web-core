@@ -1678,8 +1678,7 @@ class MoneroWalletWasm extends MoneroWalletKeys {
             that._wasmListenerHandle,
             function(height, startHeight, endHeight, percentDone, message) { that._wasmListener.onSyncProgress(height, startHeight, endHeight, percentDone, message); },
             function(height) { that._wasmListener.onNewBlock(height); },
-            function(newBalanceStr, newUnlockedBalanceStr) { that._wasmListener.onBalancesChanged(newBalanceStr, newUnlockedBalanceStr); },
-            function(newBalanceStr, newUnlockedBalanceStr) { that._wasmListener.onOffshoreBalancesChanged(newBalanceStr, newUnlockedBalanceStr); },
+            function(newBalanceStr, newUnlockedBalanceStr, assetType) { that._wasmListener.onBalancesChanged(newBalanceStr, newUnlockedBalanceStr, assetType); },
             function(height, txHash, amountStr, accountIdx, subaddressIdx, version, unlockHeight, isLocked) { that._wasmListener.onOutputReceived(height, txHash, amountStr, accountIdx, subaddressIdx, version, unlockHeight, isLocked); },
             function(height, txHash, amountStr, accountIdx, subaddressIdx, version, unlockHeight, isLocked) { that._wasmListener.onOutputReceived(height, txHash, amountStr, accountIdx, subaddressIdx, version, unlockHeight, isLocked); },
         )} else {
@@ -1824,11 +1823,7 @@ class WalletWasmListener {
   }
   
   onBalancesChanged(newBalanceStr, newUnlockedBalanceStr) {
-    for (let listener of this._wallet.getListeners()) listener.onBalancesChanged(BigInteger.parse(newBalanceStr), BigInteger.parse(newUnlockedBalanceStr));
-  }
-
-  onOffshoreBalancesChanged(newOffshoreBalanceStr, newUnlockedOffshoreBalanceStr) {
-    for (let listener of this._wallet.getListeners()) listener.onOffshoreBalancesChanged(BigInteger.parse(newOffshoreBalanceStr), BigInteger.parse(newUnlockedOffshoreBalanceStr));
+    for (let listener of this._wallet.getListeners()) listener.onBalancesChanged(BigInteger.parse(newBalanceStr), BigInteger.parse(newUnlockedBalanceStr), assetType);
   }
   
   onOutputReceived(height, txHash, amountStr, accountIdx, subaddressIdx, version, unlockHeight, isLocked) {
@@ -2093,7 +2088,6 @@ class MoneroWalletWasmProxy extends MoneroWallet {
     LibraryUtils.WORKER_OBJECTS[this._walletId].callbacks["onSyncProgress_" + listenerId] = [wrappedListener.onSyncProgress, wrappedListener];
     LibraryUtils.WORKER_OBJECTS[this._walletId].callbacks["onNewBlock_" + listenerId] = [wrappedListener.onNewBlock, wrappedListener];
     LibraryUtils.WORKER_OBJECTS[this._walletId].callbacks["onBalancesChanged_" + listenerId] = [wrappedListener.onBalancesChanged, wrappedListener];
-    LibraryUtils.WORKER_OBJECTS[this._walletId].callbacks["onOffshoreBalancesChanged_" + listenerId] = [wrappedListener.onOffshoreBalancesChanged, wrappedListener];
     LibraryUtils.WORKER_OBJECTS[this._walletId].callbacks["onOutputReceived_" + listenerId] = [wrappedListener.onOutputReceived, wrappedListener];
     LibraryUtils.WORKER_OBJECTS[this._walletId].callbacks["onOutputSpent_" + listenerId] = [wrappedListener.onOutputSpent, wrappedListener];
     this._wrappedListeners.push(wrappedListener);
@@ -2108,7 +2102,6 @@ class MoneroWalletWasmProxy extends MoneroWallet {
         delete LibraryUtils.WORKER_OBJECTS[this._walletId].callbacks["onSyncProgress_" + listenerId];
         delete LibraryUtils.WORKER_OBJECTS[this._walletId].callbacks["onNewBlock_" + listenerId];
         delete LibraryUtils.WORKER_OBJECTS[this._walletId].callbacks["onBalancesChanged_" + listenerId];
-        delete LibraryUtils.WORKER_OBJECTS[this._walletId].callbacks["onOffshoreBalancesChanged_" + listenerId];
         delete LibraryUtils.WORKER_OBJECTS[this._walletId].callbacks["onOutputReceived_" + listenerId];
         delete LibraryUtils.WORKER_OBJECTS[this._walletId].callbacks["onOutputSpent_" + listenerId];
         this._wrappedListeners.splice(i, 1);
@@ -2532,11 +2525,7 @@ class WalletWorkerListener {
   }
   
   onBalancesChanged(newBalanceStr, newUnlockedBalanceStr) {
-    this._listener.onBalancesChanged(BigInteger.parse(newBalanceStr), BigInteger.parse(newUnlockedBalanceStr));
-  }
-
-  onOffshoreBalancesChanged(newOffshoreBalanceStr, newUnlockedOffshoreBalanceStr) {
-    this._listener.onOffshoreBalancesChanged(BigInteger.parse(newOffshoreBalanceStr), BigInteger.parse(newUnlockedOffshoreBalanceStr));
+    this._listener.onBalancesChanged(BigInteger.parse(newBalanceStr), BigInteger.parse(newUnlockedBalanceStr), assetType);
   }
 
   onOutputReceived(blockJson) {
