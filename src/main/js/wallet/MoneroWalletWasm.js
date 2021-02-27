@@ -2524,7 +2524,7 @@ class WalletWorkerListener {
     this._listener.onNewBlock(height);
   }
   
-  onBalancesChanged(newBalanceStr, newUnlockedBalanceStr) {
+  onBalancesChanged(newBalanceStr, newUnlockedBalanceStr, assetType) {
     this._listener.onBalancesChanged(BigInteger.parse(newBalanceStr), BigInteger.parse(newUnlockedBalanceStr), assetType);
   }
 
