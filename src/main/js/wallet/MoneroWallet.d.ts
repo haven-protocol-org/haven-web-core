@@ -214,22 +214,6 @@ declare class MoneroWallet {
      */
     getUnlockedBalance(accountIdx: any, subaddressIdx: any): any;
     /**
-   * Get the offshore balance of the wallet, account, or subaddress.
-   *
-   * @param {int} accountIdx - index of the account to get the offshore balance of (optional)
-   * @param {int} subaddressIdx - index of the subaddress to get the offshore balance of (optional)
-   * @return {BigInteger} the offshore balance of the wallet, account, or subaddress
-   */
-    getOffshoreBalance(accountIdx: any, subaddressIdx: any): any;
-    /**
-     * Get the unlocked offshore balance of the wallet, account, or subaddress.
-     *
-     * @param {int} accountIdx - index of the account to get the unlocked offshore balance of (optional)
-     * @param {int} subaddressIdx - index of the subaddress to get the unlocked offshore balance of (optional)
-     * @return {BigInteger} the unlocked offshore balance of the wallet, account, or subaddress
-     */
-    getUnlockedOffshoreBalance(accountIdx: any, subaddressIdx: any): any;
-    /**
      * Get accounts with a given tag.
      *
      * @param {boolean} includeSubaddresses - include subaddresses if true

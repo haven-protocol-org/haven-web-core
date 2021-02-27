@@ -579,16 +579,8 @@ self.getBalance = async function(walletId, accountIdx, subaddressIdx) {
   return (await self.WORKER_OBJECTS[walletId].getBalance(accountIdx, subaddressIdx)).toString();
 }
 
-self.getOffshoreBalance = async function(walletId, accountIdx, subaddressIdx) {
-  return (await self.WORKER_OBJECTS[walletId].getOffshoreBalance(accountIdx, subaddressIdx)).toString();
-}
-
 self.getUnlockedBalance = async function(walletId, accountIdx, subaddressIdx) {
   return (await self.WORKER_OBJECTS[walletId].getUnlockedBalance(accountIdx, subaddressIdx)).toString();
-}
-
-self.getUnlockedOffshoreBalance = async function(walletId, accountIdx, subaddressIdx) {
-  return (await self.WORKER_OBJECTS[walletId].getUnlockedOffshoreBalance(accountIdx, subaddressIdx)).toString();
 }
 
 self.getAccounts = async function(walletId, includeSubaddresses, tag) {

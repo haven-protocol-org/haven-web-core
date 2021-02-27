@@ -2168,18 +2168,9 @@ class MoneroWalletWasmProxy extends MoneroWallet {
   async getBalance(accountIdx, subaddressIdx) {
     return BigInteger.parse(await this._invokeWorker("getBalance", Array.from(arguments)));
   }
-
-  async getOffshoreBalance(accountIdx, subaddressIdx) {
-    return BigInteger.parse(await this._invokeWorker("getOffshoreBalance", Array.from(arguments)));
-  }
   
   async getUnlockedBalance(accountIdx, subaddressIdx) {
     let unlockedBalanceStr = await this._invokeWorker("getUnlockedBalance", Array.from(arguments));
-    return BigInteger.parse(unlockedBalanceStr);
-  }
-
-  async getUnlockedOffshoreBalance(accountIdx, subaddressIdx) {
-    let unlockedBalanceStr = await this._invokeWorker("getUnlockedOffshoreBalance", Array.from(arguments));
     return BigInteger.parse(unlockedBalanceStr);
   }
   
