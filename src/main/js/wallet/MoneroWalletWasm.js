@@ -1822,7 +1822,7 @@ class WalletWasmListener {
     for (let listener of this._wallet.getListeners()) listener.onNewBlock(height);
   }
   
-  onBalancesChanged(newBalanceStr, newUnlockedBalanceStr) {
+  onBalancesChanged(newBalanceStr, newUnlockedBalanceStr, assetType) {
     for (let listener of this._wallet.getListeners()) listener.onBalancesChanged(BigInteger.parse(newBalanceStr), BigInteger.parse(newUnlockedBalanceStr), assetType);
   }
   
