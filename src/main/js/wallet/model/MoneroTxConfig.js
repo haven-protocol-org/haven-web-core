@@ -25,6 +25,8 @@ class MoneroTxConfig {
    * @param {MoneroTxConfig|object} config - configures the transaction to create (optional)
    * @param {string} config.address - single destination address
    * @param {BigInteger} config.amount - single destination amount
+   * @param {string} config.sourceCurrency - source currency
+   * @param {string} config.destinationCurrency - destination currency
    * @param {int} config.accountIndex - source account index to transfer funds from
    * @param {int} config.subaddressIndex - source subaddress index to transfer funds from
    * @param {int[]} config.subaddressIndices - source subaddress indices to transfer funds from
@@ -170,14 +172,32 @@ class MoneroTxConfig {
     return this;
   }
 
-  getTxType() {
+  getSourceCurrency() {
+    return this.state.sourceCurrency;
+  }
+
+  setSourceCurrency(sourceCurrency) {
+    this.state.sourceCurrency = sourceCurrency;
+    return this;
+  }
+
+  getDestinationCurrency() {
+    return this.state.destinationCurrency;
+  }
+
+  setDestinationCurrency(destinationCurrency) {
+    this.state.destinationCurrency = destinationCurrency;
+    return this;
+  }
+
+ /*  getTxType() {
     return this.state.txType;
   }
   
   setTxType(txType) {
     this.state.txType = txType;
     return this;
-  }
+  } */
   
   getFee() {
     return this.state.fee;
