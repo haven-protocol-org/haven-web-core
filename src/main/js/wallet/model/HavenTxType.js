@@ -6,23 +6,18 @@
 class HavenTxType {}
 
 /**
- * classic XHV -> XHV
+ * transfer
  */
-HavenTxType.CLASSIC = 0;
+HavenTxType.TRANSFER = 0;
 
 /**
- * xUSD -> XHV
+ * exchange from USD
  */
-HavenTxType.ONSHORE = 1;
+HavenTxType.EXCHANGE_FROM_USD = 1;
 
 /**
- * XHV -> xUSD
+ * exchange to USD
  */
-HavenTxType.OFFSHORE = 2;
-
-/**
- * xUSD -> xUSD
- */
-HavenTxType.OFFSHORE_TO_OFFSHORE = 3;
+HavenTxType.EXCHANGE_TO_USD = 2;
 
 module.exports = HavenTxType;
