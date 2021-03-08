@@ -26,7 +26,7 @@ class MoneroTxConfig {
    * @param {string} config.address - single destination address
    * @param {BigInteger} config.amount - single destination amount
    * @param {string} config.currency - used currency
-   * @param {} config.txType - determines type of exchange/transfer
+   * @param {HavenTxType} config.txType - determines type of exchange/transfer
    * @param {int} config.accountIndex - source account index to transfer funds from
    * @param {int} config.subaddressIndex - source subaddress index to transfer funds from
    * @param {int[]} config.subaddressIndices - source subaddress indices to transfer funds from
