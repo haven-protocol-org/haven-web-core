@@ -27,6 +27,7 @@ const MoneroWallet = require("./MoneroWallet");
 const MoneroWalletConfig = require("./model/MoneroWalletConfig");
 const MoneroWalletKeys = require("./MoneroWalletKeys");
 const MoneroWalletListener = require("./model/MoneroWalletListener");
+const { assertArray } = require("../common/GenUtils");
 
 /**
  * Implements a MoneroWallet using WebAssembly bindings to monero-project's wallet2.
@@ -776,6 +777,13 @@ class MoneroWalletWasm extends MoneroWalletKeys {
       if (accountIdx === undefined) {
         assert(subaddressIdx === undefined, "Subaddress index must be undefined if account index is undefined");
         balanceStr = that._module.get_balance_wallet(that._cppAddress);
+
+        //we need to handle different reponse types upon given arguments
+        const assetBalances = JSON.parse(GenUtils.stringifyBIs(balanceStr)).balance;
+        // iterate through keys/asset types
+        Object.keys(assetBalances).forEach( assetType => assetBalances[assetType] = BigInteger.parse(assetBalances[assetType]))
+        return assetBalances;
+
       } else if (subaddressIdx === undefined) {
         balanceStr = that._module.get_balance_account(that._cppAddress, accountIdx);
       } else {
@@ -796,7 +804,14 @@ class MoneroWalletWasm extends MoneroWalletKeys {
       let unlockedBalanceStr;
       if (accountIdx === undefined) {
         assert(subaddressIdx === undefined, "Subaddress index must be undefined if account index is undefined");
-        unlockedBalanceStr = that._module.get_unlocked_balance_wallet(that._cppAddress);
+        
+         unlockedBalanceStr = that._module.get_unlocked_balance_wallet(that._cppAddress);
+         //we need to handle different reponse types upon given arguments
+         const assetBalances = JSON.parse(GenUtils.stringifyBIs(unlockedBalanceStr)).unlockedBalance;
+         // iterate through keys/asset types
+         Object.keys(assetBalances).forEach( assetType => assetBalances[assetType] = BigInteger.parse(assetBalances[assetType]))
+         return assetBalances;
+
       } else if (subaddressIdx === undefined) {
         unlockedBalanceStr = that._module.get_unlocked_balance_account(that._cppAddress, accountIdx);
       } else {
