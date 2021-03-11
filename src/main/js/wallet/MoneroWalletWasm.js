@@ -28,6 +28,7 @@ const MoneroWalletConfig = require("./model/MoneroWalletConfig");
 const MoneroWalletKeys = require("./MoneroWalletKeys");
 const MoneroWalletListener = require("./model/MoneroWalletListener");
 const { assertArray } = require("../common/GenUtils");
+const HavenBalance = require("./model/HavenBalance");
 
 /**
  * Implements a MoneroWallet using WebAssembly bindings to monero-project's wallet2.
@@ -767,7 +768,7 @@ class MoneroWalletWasm extends MoneroWalletKeys {
     });
   }
   
-  async getBalance(accountIdx, subaddressIdx) {
+  async getBalance(accountIdx, subaddressIdx, assetType) {
     let that = this;
     return that._module.queueTask(async function() {
       that._assertNotClosed();
@@ -777,13 +778,6 @@ class MoneroWalletWasm extends MoneroWalletKeys {
       if (accountIdx === undefined) {
         assert(subaddressIdx === undefined, "Subaddress index must be undefined if account index is undefined");
         balanceStr = that._module.get_balance_wallet(that._cppAddress);
-
-        //we need to handle different reponse types upon given arguments
-        const assetBalances = JSON.parse(GenUtils.stringifyBIs(balanceStr)).balance;
-        // iterate through keys/asset types
-        Object.keys(assetBalances).forEach( assetType => assetBalances[assetType] = BigInteger.parse(assetBalances[assetType]))
-        return assetBalances;
-
       } else if (subaddressIdx === undefined) {
         balanceStr = that._module.get_balance_account(that._cppAddress, accountIdx);
       } else {
@@ -791,11 +785,11 @@ class MoneroWalletWasm extends MoneroWalletKeys {
       }
       
       // parse json string to BigInteger
-      return BigInteger.parse(JSON.parse(GenUtils.stringifyBIs(balanceStr)).balance);
+      return new HavenBalance(JSON.parse(GenUtils.stringifyBIs(balanceStr)).balance, assetType);
     });
   }
 
-  async getUnlockedBalance(accountIdx, subaddressIdx) {
+  async getUnlockedBalance(accountIdx, subaddressIdx, assetType) {
     let that = this;
     return that._module.queueTask(async function() {
       that._assertNotClosed();
@@ -804,14 +798,7 @@ class MoneroWalletWasm extends MoneroWalletKeys {
       let unlockedBalanceStr;
       if (accountIdx === undefined) {
         assert(subaddressIdx === undefined, "Subaddress index must be undefined if account index is undefined");
-        
          unlockedBalanceStr = that._module.get_unlocked_balance_wallet(that._cppAddress);
-         //we need to handle different reponse types upon given arguments
-         const assetBalances = JSON.parse(GenUtils.stringifyBIs(unlockedBalanceStr)).unlockedBalance;
-         // iterate through keys/asset types
-         Object.keys(assetBalances).forEach( assetType => assetBalances[assetType] = BigInteger.parse(assetBalances[assetType]))
-         return assetBalances;
-
       } else if (subaddressIdx === undefined) {
         unlockedBalanceStr = that._module.get_unlocked_balance_account(that._cppAddress, accountIdx);
       } else {
@@ -819,7 +806,7 @@ class MoneroWalletWasm extends MoneroWalletKeys {
       }
       
       // parse json string to BigInteger
-      return BigInteger.parse(JSON.parse(GenUtils.stringifyBIs(unlockedBalanceStr)).unlockedBalance);
+      return new HavenBalance(JSON.parse(GenUtils.stringifyBIs(unlockedBalanceStr)).unlockedBalance, assetType);
     });
   }
   
@@ -2180,13 +2167,14 @@ class MoneroWalletWasmProxy extends MoneroWallet {
     return this._invokeWorker("rescanBlockchain");
   }
   
-  async getBalance(accountIdx, subaddressIdx) {
-    return BigInteger.parse(await this._invokeWorker("getBalance", Array.from(arguments)));
+  async getBalance(accountIdx, subaddressIdx, assetType) {
+    const lockedBalance = await this._invokeWorker("getBalance", Array.from(arguments));
+    return new HavenBalance(lockedBalance);
   }
   
   async getUnlockedBalance(accountIdx, subaddressIdx) {
     let unlockedBalanceStr = await this._invokeWorker("getUnlockedBalance", Array.from(arguments));
-    return BigInteger.parse(unlockedBalanceStr);
+    return new HavenBalance(unlockedBalanceStr);
   }
   
   async getAccounts(includeSubaddresses, tag) {
