@@ -2172,7 +2172,7 @@ class MoneroWalletWasmProxy extends MoneroWallet {
     return new HavenBalance(lockedBalance);
   }
   
-  async getUnlockedBalance(accountIdx, subaddressIdx) {
+  async getUnlockedBalance(accountIdx, subaddressIdx, assetType) {
     let unlockedBalanceStr = await this._invokeWorker("getUnlockedBalance", Array.from(arguments));
     return new HavenBalance(unlockedBalanceStr);
   }
