@@ -7,3 +7,6 @@
       "emitDeclarationOnly": true
     }
   }
+
+
+ // find ./ -name '*.d.ts' -exec rm {} \; && tsc",

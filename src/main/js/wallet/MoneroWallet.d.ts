@@ -202,17 +202,19 @@ declare class MoneroWallet {
      *
      * @param {int} accountIdx - index of the account to get the balance of (optional)
      * @param {int} subaddressIdx - index of the subaddress to get the balance of (optional)
-     * @return {BigInteger} the balance of the wallet, account, or subaddress
+     * @param {string} assetType - asset type to get the balance of (optional)
+     * @return {HavenBalance} the balance of the wallet, account, or subaddress
      */
-    getBalance(accountIdx: any, subaddressIdx: any): BigInteger;
+    getBalance(accountIdx: any, subaddressIdx: any, assetType: string): any;
     /**
      * Get the unlocked balance of the wallet, account, or subaddress.
      *
      * @param {int} accountIdx - index of the account to get the unlocked balance of (optional)
      * @param {int} subaddressIdx - index of the subaddress to get the unlocked balance of (optional)
-     * @return {BigInteger} the unlocked balance of the wallet, account, or subaddress
+     * @param {string} assetType - asset type to get the balance of (optional)
+     * @return {HavenBalance} the unlocked balance of the wallet, account, or subaddress
      */
-    getUnlockedBalance(accountIdx: any, subaddressIdx: any): BigInteger;
+    getUnlockedBalance(accountIdx: any, subaddressIdx: any, assetType: string): any;
     /**
      * Get accounts with a given tag.
      *
