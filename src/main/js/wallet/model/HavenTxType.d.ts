@@ -7,8 +7,7 @@ export = HavenTxType;
 declare class HavenTxType {
 }
 declare namespace HavenTxType {
-    const CLASSIC: number;
-    const ONSHORE: number;
-    const OFFSHORE: number;
-    const OFFSHORE_TO_OFFSHORE: number;
+    const TRANSFER: number;
+    const EXCHANGE_FROM_USD: number;
+    const EXCHANGE_TO_USD: number;
 }

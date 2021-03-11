@@ -35,6 +35,6 @@ declare class MoneroTransfer {
      * @return {MoneroTransfer} the merged transfer
      */
     merge(transfer: any): MoneroTransfer;
-    toString(indent?: number): any;
+    toString(indent?: number): string;
     _validate(): void;
 }

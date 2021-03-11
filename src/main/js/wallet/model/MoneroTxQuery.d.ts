@@ -1,12 +1,11 @@
 export = MoneroTxQuery;
-declare const MoneroTxQuery_base: typeof import("./MoneroTxWallet");
 /**
  * <p>Configuration to query transactions.</p>
  *
  * @class
  * @extends {MoneroTxWallet}
  */
-declare class MoneroTxQuery extends MoneroTxQuery_base {
+declare class MoneroTxQuery extends MoneroTxWallet {
     /**
      * <p>Construct the transaction query.</p>
      *
@@ -64,8 +63,8 @@ declare class MoneroTxQuery extends MoneroTxQuery_base {
         paymentId: string;
         paymentIds: string;
         hasPaymentId: boolean;
-        transferQuery: object | import("./MoneroTransferQuery");
-        outputQuery: object | import("./MoneroOutputQuery");
+        transferQuery: object | MoneroTransferQuery;
+        outputQuery: object | MoneroOutputQuery;
     });
     getHashes(): any;
     setHashes(hashes: any): MoneroTxQuery;
@@ -86,3 +85,6 @@ declare class MoneroTxQuery extends MoneroTxQuery_base {
     setOutputQuery(outputQuery: any): MoneroTxQuery;
     meetsCriteria(tx: any, queryChildren: any): boolean;
 }
+import MoneroTxWallet = require("./MoneroTxWallet");
+import MoneroTransferQuery = require("./MoneroTransferQuery");
+import MoneroOutputQuery = require("./MoneroOutputQuery");

@@ -53,7 +53,7 @@ declare class MoneroUtils {
      * @param json is the json to convert to binary
      * @returns Uint8Array is the json converted to portable storage binary
      */
-    static jsonToBinary(json: any): any;
+    static jsonToBinary(json: any): Uint8Array;
     /**
      * Converts the given portable storage binary to JSON.
      *

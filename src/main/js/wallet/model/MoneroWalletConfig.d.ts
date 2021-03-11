@@ -30,7 +30,7 @@ declare class MoneroWalletConfig {
     setPassword(password: any): MoneroWalletConfig;
     getNetworkType(): any;
     setNetworkType(networkTypeOrStr: any): MoneroWalletConfig;
-    getServer(): import("../../common/MoneroRpcConnection");
+    getServer(): MoneroRpcConnection;
     setServer(server: any): MoneroWalletConfig;
     getServerUri(): any;
     setServerUri(serverUri: any): MoneroWalletConfig;
@@ -66,5 +66,6 @@ declare class MoneroWalletConfig {
     setCacheData(cacheData: any): MoneroWalletConfig;
 }
 declare namespace MoneroWalletConfig {
-    const SUPPORTED_FIELDS: {};
+    const SUPPORTED_FIELDS: string[];
 }
+import MoneroRpcConnection = require("../../common/MoneroRpcConnection");

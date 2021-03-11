@@ -64,5 +64,5 @@ declare class MoneroBlockHeader {
     getPricingRecord(): any;
     setPricingRecord(pricingRecord: any): MoneroBlockHeader;
     merge(header: any): MoneroBlockHeader;
-    toString(indent?: number): any;
+    toString(indent?: number): string;
 }

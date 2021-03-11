@@ -1,5 +1,4 @@
 export = MoneroDaemonRpc;
-declare const MoneroDaemonRpc_base: typeof import("./MoneroDaemon");
 /**
  * Copyright (c) woodser
  *
@@ -26,11 +25,11 @@ declare const MoneroDaemonRpc_base: typeof import("./MoneroDaemon");
  *
  * @implements {MoneroDaemon}
  */
-declare class MoneroDaemonRpc extends MoneroDaemonRpc_base {
+declare class MoneroDaemonRpc extends MoneroDaemon implements MoneroDaemon {
     static _normalizeConfig(uriOrConfigOrConnection: any, username: any, password: any, rejectUnauthorized: any, pollInterval: any, proxyToWorker: any): any;
     static _checkResponseStatus(resp: any): void;
-    static _convertRpcBlockHeader(rpcHeader: any): import("./model/MoneroBlockHeader");
-    static _convertRpcBlock(rpcBlock: any): import("./model/MoneroBlock");
+    static _convertRpcBlockHeader(rpcHeader: any): MoneroBlockHeader;
+    static _convertRpcBlock(rpcBlock: any): MoneroBlock;
     /**
      * Transfers RPC tx fields to a given MoneroTx without overwriting previous values.
      *
@@ -41,31 +40,31 @@ declare class MoneroDaemonRpc extends MoneroDaemonRpc_base {
      * @returns tx - same tx that was passed in or a new one if none given
      */
     static _convertRpcTx(rpcTx: any, tx: any): any;
-    static _convertRpcOutput(rpcOutput: any, tx: any): import("./model/MoneroOutput");
-    static _convertRpcBlockTemplate(rpcTemplate: any): import("./model/MoneroBlockTemplate");
-    static _convertRpcInfo(rpcInfo: any): import("./model/MoneroDaemonInfo");
+    static _convertRpcOutput(rpcOutput: any, tx: any): MoneroOutput;
+    static _convertRpcBlockTemplate(rpcTemplate: any): MoneroBlockTemplate;
+    static _convertRpcInfo(rpcInfo: any): MoneroDaemonInfo;
     /**
      * Initializes sync info from RPC sync info.
      *
      * @param rpcSyncInfo - rpc map to initialize the sync info from
      * @return {MoneroDaemonSyncInfo} is sync info initialized from the map
      */
-    static _convertRpcSyncInfo(rpcSyncInfo: any): import("./model/MoneroDaemonSyncInfo");
-    static _convertRpcHardForkInfo(rpcHardForkInfo: any): import("./model/MoneroHardForkInfo");
+    static _convertRpcSyncInfo(rpcSyncInfo: any): MoneroDaemonSyncInfo;
+    static _convertRpcHardForkInfo(rpcHardForkInfo: any): MoneroHardForkInfo;
     static _convertRpcConnectionSpan(rpcConnectionSpan: any): any;
-    static _convertRpcOutputHistogramEntry(rpcEntry: any): import("./model/MoneroOutputHistogramEntry");
-    static _convertRpcSubmitTxResult(rpcResult: any): import("./model/MoneroSubmitTxResult");
+    static _convertRpcOutputHistogramEntry(rpcEntry: any): MoneroOutputHistogramEntry;
+    static _convertRpcSubmitTxResult(rpcResult: any): MoneroSubmitTxResult;
     static _convertRpcTxPoolStats(rpcStats: any): any;
-    static _convertRpcAltChain(rpcChain: any): import("./model/MoneroAltChain");
-    static _convertRpcPeer(rpcPeer: any): import("./model/MoneroDaemonPeer");
-    static _convertRpcConnection(rpcConnection: any): import("./model/MoneroDaemonConnection");
+    static _convertRpcAltChain(rpcChain: any): MoneroAltChain;
+    static _convertRpcPeer(rpcPeer: any): MoneroDaemonPeer;
+    static _convertRpcConnection(rpcConnection: any): MoneroDaemonConnection;
     static _convertToRpcBan(ban: any): {
         host: any;
         ip: any;
         ban: any;
         seconds: any;
     };
-    static _convertRpcMiningStatus(rpcStatus: any): import("./model/MoneroMiningStatus");
+    static _convertRpcMiningStatus(rpcStatus: any): MoneroMiningStatus;
     static _convertRpcUpdateCheckResult(rpcResult: any): any;
     static _convertRpcUpdateDownloadResult(rpcResult: any): any;
     /**
@@ -74,7 +73,7 @@ declare class MoneroDaemonRpc extends MoneroDaemonRpc_base {
      * @param hex is the '0x' prefixed hexidecimal string to convert
      * @return BigInteger is the hexicedimal converted to decimal
      */
-    static _prefixedHexToBI(hex: any): import("../common/biginteger");
+    static _prefixedHexToBI(hex: any): BigInteger;
     /**
      * <p>Construct a daemon RPC client.<p>
      *
@@ -103,24 +102,24 @@ declare class MoneroDaemonRpc extends MoneroDaemonRpc_base {
      * @param {number} pollInterval - poll interval to query for updates in ms (default 5000)
      * @param {boolean} proxyToWorker - runs the daemon client in a web worker if true (default true if browser, false otherwise)
      */
-    constructor(uriOrConfigOrConnection: string | object | import("../common/MoneroRpcConnection"), username: string, password: string, rejectUnauthorized: boolean, pollInterval: number, proxyToWorker: boolean);
+    constructor(uriOrConfigOrConnection: string | object | MoneroRpcConnection, username: string, password: string, rejectUnauthorized: boolean, pollInterval: number, proxyToWorker: boolean);
     config: any;
-    _proxyPromise: unknown;
-    rpc: import("../common/MoneroRpcConnection");
-    listeners: {};
+    _proxyPromise: Promise<MoneroDaemonRpcProxy>;
+    rpc: MoneroRpcConnection;
+    listeners: any[];
     cachedHeaders: {};
     /**
      * Get the daemon's RPC connection.
      *
      * @return {MoneroRpcConnection} the daemon's rpc connection
      */
-    getRpcConnection(): import("../common/MoneroRpcConnection");
-    _getDaemonProxy(): unknown;
-    _startPollingHeaders(interval: any): any;
+    getRpcConnection(): MoneroRpcConnection;
+    _getDaemonProxy(): Promise<MoneroDaemonRpcProxy>;
+    _startPollingHeaders(interval: any): Promise<void>;
     isPollingHeaders: boolean;
     _stopPollingHeaders(): void;
-    _getBandwidthLimits(): unknown;
-    _setBandwidthLimits(downLimit: any, upLimit: any): unknown;
+    _getBandwidthLimits(): Promise<any[]>;
+    _setBandwidthLimits(downLimit: any, upLimit: any): Promise<any[]>;
     /**
      * Get a contiguous chunk of blocks starting from a given height up to a maximum
      * height or amount of block data fetched from the blockchain, whichever comes first.
@@ -130,7 +129,7 @@ declare class MoneroDaemonRpc extends MoneroDaemonRpc_base {
      * @param {number} maxReqSize - maximum amount of block data to fetch from the blockchain in bytes (default 3,000,000 bytes)
      * @return {MoneroBlock[]} are the resulting chunk of blocks
      */
-    _getMaxBlocks(startHeight: number, maxHeight: number, maxReqSize: number): import("./model/MoneroBlock")[];
+    _getMaxBlocks(startHeight: number, maxHeight: number, maxReqSize: number): MoneroBlock[];
     /**
      * Retrieves a header by height from the cache or fetches and caches a header
      * range if not already in the cache.
@@ -138,10 +137,40 @@ declare class MoneroDaemonRpc extends MoneroDaemonRpc_base {
      * @param {number} height - height of the header to retrieve from the cache
      * @param {number} maxHeight - maximum height of headers to cache
      */
-    _getBlockHeaderByHeightCached(height: number, maxHeight: number): unknown;
+    _getBlockHeaderByHeightCached(height: number, maxHeight: number): Promise<any>;
 }
 declare namespace MoneroDaemonRpc {
     const DEFAULT_ID: string;
     const MAX_REQ_SIZE: string;
     const NUM_HEADERS_PER_REQ: string;
 }
+import MoneroDaemon = require("./MoneroDaemon");
+/**
+ * Implements a MoneroDaemon by proxying requests to a web worker.
+ *
+ * @private
+ */
+declare class MoneroDaemonRpcProxy extends MoneroDaemon {
+    static connect(config: any): Promise<MoneroDaemonRpcProxy>;
+    constructor(daemonId: any, worker: any);
+    daemonId: any;
+    worker: any;
+    wrappedListeners: any[];
+    getRpcConnection(): Promise<MoneroRpcConnection>;
+    _invokeWorker(fnName: any, args: any): Promise<any>;
+}
+import MoneroRpcConnection = require("../common/MoneroRpcConnection");
+import MoneroBlock = require("./model/MoneroBlock");
+import MoneroBlockHeader = require("./model/MoneroBlockHeader");
+import MoneroOutput = require("./model/MoneroOutput");
+import MoneroBlockTemplate = require("./model/MoneroBlockTemplate");
+import MoneroDaemonInfo = require("./model/MoneroDaemonInfo");
+import MoneroDaemonSyncInfo = require("./model/MoneroDaemonSyncInfo");
+import MoneroHardForkInfo = require("./model/MoneroHardForkInfo");
+import MoneroOutputHistogramEntry = require("./model/MoneroOutputHistogramEntry");
+import MoneroSubmitTxResult = require("./model/MoneroSubmitTxResult");
+import MoneroAltChain = require("./model/MoneroAltChain");
+import MoneroDaemonPeer = require("./model/MoneroDaemonPeer");
+import MoneroDaemonConnection = require("./model/MoneroDaemonConnection");
+import MoneroMiningStatus = require("./model/MoneroMiningStatus");
+import BigInteger = require("../common/biginteger");

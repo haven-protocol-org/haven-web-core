@@ -1,5 +1,4 @@
 export = MoneroWalletRpc;
-declare const MoneroWalletRpc_base: typeof import("./MoneroWallet");
 /**
  * Copyright (c) woodser
  *
@@ -26,7 +25,7 @@ declare const MoneroWalletRpc_base: typeof import("./MoneroWallet");
  *
  * @implements {MoneroWallet}
  */
-declare class MoneroWalletRpc extends MoneroWalletRpc_base {
+declare class MoneroWalletRpc extends MoneroWallet implements MoneroWallet {
     /**
      * Remove criteria which requires looking up other transfers/outputs to
      * fulfill query.
@@ -34,10 +33,10 @@ declare class MoneroWalletRpc extends MoneroWalletRpc_base {
      * @param {MoneroTxQuery} query - the query to decontextualize
      * @return {MoneroTxQuery} a reference to the query for convenience
      */
-    static _decontextualize(query: import("./model/MoneroTxQuery")): import("./model/MoneroTxQuery");
+    static _decontextualize(query: MoneroTxQuery): MoneroTxQuery;
     static _isContextual(query: any): boolean;
-    static _convertRpcAccount(rpcAccount: any): import("./model/MoneroAccount");
-    static _convertRpcSubaddress(rpcSubaddress: any): import("./model/MoneroSubaddress");
+    static _convertRpcAccount(rpcAccount: any): MoneroAccount;
+    static _convertRpcSubaddress(rpcSubaddress: any): MoneroSubaddress;
     /**
      * Initializes a sent transaction.
      *
@@ -45,7 +44,7 @@ declare class MoneroWalletRpc extends MoneroWalletRpc_base {
      * @param {MoneroTxWallet} tx - existing transaction to initialize (optional)
      * @return {MoneroTxWallet} is the initialized send tx
      */
-    static _initSentTxWallet(config: import("./model/MoneroTxConfig"), tx: import("./model/MoneroTxWallet")): import("./model/MoneroTxWallet");
+    static _initSentTxWallet(config: MoneroTxConfig, tx: MoneroTxWallet): MoneroTxWallet;
     /**
      * Initializes a tx set from a RPC map excluding txs.
      *
@@ -53,7 +52,7 @@ declare class MoneroWalletRpc extends MoneroWalletRpc_base {
      * @return MoneroTxSet - initialized tx set
      * @return the resulting tx set
      */
-    static _convertRpcTxSet(rpcMap: any): import("./model/MoneroTxSet");
+    static _convertRpcTxSet(rpcMap: any): MoneroTxSet;
     /**
      * Initializes a MoneroTxSet from from a list of rpc txs.
      *
@@ -61,7 +60,7 @@ declare class MoneroWalletRpc extends MoneroWalletRpc_base {
      * @param txs - existing txs to further initialize (optional)
      * @return the converted tx set
      */
-    static _convertRpcSentTxsToTxSet(rpcTxs: any, txs: any): import("./model/MoneroTxSet");
+    static _convertRpcSentTxsToTxSet(rpcTxs: any, txs: any): MoneroTxSet;
     /**
      * Converts a rpc tx with a transfer to a tx set with a tx and transfer.
      *
@@ -70,7 +69,7 @@ declare class MoneroWalletRpc extends MoneroWalletRpc_base {
      * @param isOutgoing - specifies if the tx is outgoing if true, incoming if false, or decodes from type if undefined
      * @returns the initialized tx set with a tx
      */
-    static _convertRpcTxToTxSet(rpcTx: any, tx: any, isOutgoing: any): import("./model/MoneroTxSet");
+    static _convertRpcTxToTxSet(rpcTx: any, tx: any, isOutgoing: any): MoneroTxSet;
     /**
      * Builds a MoneroTxWallet from a RPC tx.
      *
@@ -79,9 +78,9 @@ declare class MoneroWalletRpc extends MoneroWalletRpc_base {
      * @param isOutgoing - specifies if the tx is outgoing if true, incoming if false, or decodes from type if undefined
      * @returns {MoneroTxWallet} is the initialized tx
      */
-    static _convertRpcTxWithTransfer(rpcTx: any, tx: any, isOutgoing: any): import("./model/MoneroTxWallet");
-    static _convertRpcTxWalletWithOutput(rpcOutput: any): import("./model/MoneroTxWallet");
-    static _convertRpcDescribeTransfer(rpcDescribeTransferResult: any): import("./model/MoneroTxSet");
+    static _convertRpcTxWithTransfer(rpcTx: any, tx: any, isOutgoing: any): MoneroTxWallet;
+    static _convertRpcTxWalletWithOutput(rpcOutput: any): MoneroTxWallet;
+    static _convertRpcDescribeTransfer(rpcDescribeTransferResult: any): MoneroTxSet;
     /**
      * Decodes a "type" from monero-wallet-rpc to initialize type and state
      * fields in the given transaction.
@@ -142,9 +141,9 @@ declare class MoneroWalletRpc extends MoneroWalletRpc_base {
      * @param {string} password - password to authenticate with monero-wallet-rpc (optional)
      * @param {boolean} rejectUnauthorized - rejects self-signed certificates if true (default true)
      */
-    constructor(uriOrConfigOrConnection: string | object | import("../common/MoneroRpcConnection"), username: string, password: string, rejectUnauthorized: boolean);
+    constructor(uriOrConfigOrConnection: string | object | MoneroRpcConnection, username: string, password: string, rejectUnauthorized: boolean);
     config: any;
-    rpc: import("../common/MoneroRpcConnection");
+    rpc: MoneroRpcConnection;
     addressCache: {};
     /**
      * Get the wallet's RPC connection.
@@ -178,7 +177,7 @@ declare class MoneroWalletRpc extends MoneroWalletRpc_base {
      * @param {MoneroRpcConnection|object} pathOrConfig.server - MoneroRpcConnection or equivalent JS object providing daemon configuration (optional)
      * @param {string} password is the wallet's password
      */
-    openWallet(pathOrConfig: string | object | import("./model/MoneroWalletConfig"), password: string): unknown;
+    openWallet(pathOrConfig: string | object | MoneroWalletConfig, password: string): Promise<void>;
     path: any;
     /**
      * <p>Create and open a wallet on the monero-wallet-rpc server.<p>
@@ -215,7 +214,7 @@ declare class MoneroWalletRpc extends MoneroWalletRpc_base {
      * @param {MoneroRpcConnection|object} config.server - MoneroRpcConnection or equivalent JS object providing daemon configuration (optional)
      * @param {boolean} config.saveCurrent - specifies if the current RPC wallet should be saved before being closed (default true)
      */
-    createWallet(config: object | import("./model/MoneroWalletConfig")): unknown;
+    createWallet(config: object | MoneroWalletConfig): Promise<void>;
     /**
      * Create and open a new wallet with a randomly generated seed on the RPC server.
      *
@@ -223,7 +222,7 @@ declare class MoneroWalletRpc extends MoneroWalletRpc_base {
      * @param {string} password - wallet's password
      * @param {string} language - language for the wallet's mnemonic phrase
      */
-    _createWalletRandom(name: string, password: string, language: string): any;
+    _createWalletRandom(name: string, password: string, language: string): Promise<void>;
     /**
      * Create and open a wallet from an existing mnemonic phrase on the RPC server,
      * closing the currently open wallet if applicable.
@@ -236,7 +235,7 @@ declare class MoneroWalletRpc extends MoneroWalletRpc_base {
      * @param {string} seedOffset - offset used to derive a new seed from the given mnemonic to recover a secret wallet from the mnemonic phrase
      * @param {boolean} saveCurrent - specifies if the current RPC wallet should be saved before being closed
      */
-    _createWalletFromMnemonic(name: string, password: string, mnemonic: string, restoreHeight: any, language: string, seedOffset: string, saveCurrent: boolean): any;
+    _createWalletFromMnemonic(name: string, password: string, mnemonic: string, restoreHeight: any, language: string, seedOffset: string, saveCurrent: boolean): Promise<void>;
     /**
      * Create a wallet on the RPC server from an address, view key, and (optionally) spend key.
      *
@@ -249,7 +248,7 @@ declare class MoneroWalletRpc extends MoneroWalletRpc_base {
      * @param restoreHeight - block height to restore (i.e. scan the chain) from (default = 0)
      * @param language - wallet and mnemonic's language (default = "English")
      */
-    _createWalletFromKeys(name: any, password: any, address: any, viewKey: any, spendKey: any, restoreHeight: any, language: any, saveCurrent: any): any;
+    _createWalletFromKeys(name: any, password: any, address: any, viewKey: any, spendKey: any, restoreHeight: any, language: any, saveCurrent: any): Promise<void>;
     /**
      * Get a list of available languages for the wallet's mnemonic phrase.
      *
@@ -259,19 +258,30 @@ declare class MoneroWalletRpc extends MoneroWalletRpc_base {
     /**
      * Save and close the current wallet and stop the RPC server.
      */
-    stop(): any;
-    _clear(): any;
-    _getBalances(accountIdx: any, subaddressIdx: any): unknown;
-    _getAccountIndices(getSubaddressIndices: any): unknown;
-    _getSubaddressIndices(accountIdx: any): unknown;
-    _getTransfersAux(query: any): unknown;
-    _getOutputsAux(query: any): unknown;
+    stop(): Promise<void>;
+    _clear(): Promise<void>;
+    _getBalances(accountIdx: any, subaddressIdx: any): Promise<BigInteger[]>;
+    _getAccountIndices(getSubaddressIndices: any): Promise<any>;
+    _getSubaddressIndices(accountIdx: any): Promise<any[]>;
+    _getTransfersAux(query: any): Promise<any[]>;
+    _getOutputsAux(query: any): Promise<any[]>;
     /**
      * Common method to get key images.
      *
      * @param all - pecifies to get all xor only new images from last import
      * @return {MoneroKeyImage[]} are the key images
      */
-    _rpcExportKeyImages(all: any): import("../daemon/model/MoneroKeyImage")[];
-    _rpcSweepAccount(config: any): unknown;
+    _rpcExportKeyImages(all: any): MoneroKeyImage[];
+    _rpcSweepAccount(config: any): Promise<any>;
 }
+import MoneroWallet = require("./MoneroWallet");
+import MoneroRpcConnection = require("../common/MoneroRpcConnection");
+import MoneroWalletConfig = require("./model/MoneroWalletConfig");
+import BigInteger = require("../common/biginteger");
+import MoneroKeyImage = require("../daemon/model/MoneroKeyImage");
+import MoneroTxQuery = require("./model/MoneroTxQuery");
+import MoneroAccount = require("./model/MoneroAccount");
+import MoneroSubaddress = require("./model/MoneroSubaddress");
+import MoneroTxConfig = require("./model/MoneroTxConfig");
+import MoneroTxWallet = require("./model/MoneroTxWallet");
+import MoneroTxSet = require("./model/MoneroTxSet");

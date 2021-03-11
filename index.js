@@ -74,6 +74,7 @@ module.exports.MoneroTxWallet = require("./src/main/js/wallet/model/MoneroTxWall
 module.exports.MoneroTxQuery = require("./src/main/js/wallet/model/MoneroTxQuery");
 module.exports.MoneroWalletListener = require("./src/main/js/wallet/model/MoneroWalletListener");
 module.exports.MoneroWalletConfig = require("./src/main/js/wallet/model/MoneroWalletConfig");
+module.exports.HavenBalance = require("./src/main/js/wallet/model/HavenBalance");
 
 // export daemon, wallet, and utils classes
 module.exports.MoneroUtils = require("./src/main/js/common/MoneroUtils");

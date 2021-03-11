@@ -1,12 +1,10 @@
 export = MoneroCheckTx;
-declare const MoneroCheckTx_base: typeof import("./MoneroCheck");
 /**
  * Results from checking a transaction key.
  *
  * @extends {MoneroCheck}
  */
-declare class MoneroCheckTx extends MoneroCheckTx_base {
-    constructor(state: any);
+declare class MoneroCheckTx extends MoneroCheck {
     toJson(): any;
     inTxPool(): any;
     setInTxPool(inTxPool: any): MoneroCheckTx;
@@ -15,3 +13,4 @@ declare class MoneroCheckTx extends MoneroCheckTx_base {
     getReceivedAmount(): any;
     setReceivedAmount(receivedAmount: any): MoneroCheckTx;
 }
+import MoneroCheck = require("./MoneroCheck");

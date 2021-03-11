@@ -1,17 +1,10 @@
 export = MoneroIncomingTransfer;
-declare const MoneroIncomingTransfer_base: typeof import("./MoneroTransfer");
 /**
  * Models an incoming transfer of funds to the wallet.
  *
  * @extends {MoneroTransfer}
  */
-declare class MoneroIncomingTransfer extends MoneroIncomingTransfer_base {
-    /**
-     * Construct the model.
-     *
-     * @param {MoneroTransfer|object} state is existing state to initialize from (optional)
-     */
-    constructor(state: import("./MoneroTransfer") | object);
+declare class MoneroIncomingTransfer extends MoneroTransfer {
     getSubaddressIndex(): any;
     setSubaddressIndex(subaddressIndex: any): MoneroIncomingTransfer;
     getAddress(): any;
@@ -27,3 +20,4 @@ declare class MoneroIncomingTransfer extends MoneroIncomingTransfer_base {
     getNumSuggestedConfirmations(): number;
     setNumSuggestedConfirmations(numSuggestedConfirmations: any): MoneroIncomingTransfer;
 }
+import MoneroTransfer = require("./MoneroTransfer");

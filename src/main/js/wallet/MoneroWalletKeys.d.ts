@@ -1,12 +1,11 @@
 export = MoneroWalletKeys;
-declare const MoneroWalletKeys_base: typeof import("./MoneroWallet");
 /**
  * Implements a MoneroWallet which only manages keys using WebAssembly.
  *
  * @implements {MoneroWallet}
  * @hideconstructor
  */
-declare class MoneroWalletKeys extends MoneroWalletKeys_base {
+declare class MoneroWalletKeys extends MoneroWallet implements MoneroWallet {
     /**
      * <p>Create a wallet using WebAssembly bindings to monero-core.</p>
      *
@@ -30,11 +29,11 @@ declare class MoneroWalletKeys extends MoneroWalletKeys_base {
      * @param {string} config.language - language of the wallet's mnemonic phrase (defaults to "English" or auto-detected)
      * @return {MoneroWalletKeys} the created wallet
      */
-    static createWallet(config: import("./model/MoneroWalletConfig") | object): MoneroWalletKeys;
-    static _createWalletRandom(networkType: any, language: any): unknown;
-    static _createWalletFromMnemonic(networkType: any, mnemonic: any, seedOffset: any): unknown;
-    static _createWalletFromKeys(networkType: any, address: any, privateViewKey: any, privateSpendKey: any, language: any): unknown;
-    static getMnemonicLanguages(): unknown;
+    static createWallet(config: MoneroWalletConfig | object): MoneroWalletKeys;
+    static _createWalletRandom(networkType: any, language: any): Promise<any>;
+    static _createWalletFromMnemonic(networkType: any, mnemonic: any, seedOffset: any): Promise<any>;
+    static _createWalletFromKeys(networkType: any, address: any, privateViewKey: any, privateSpendKey: any, language: any): Promise<any>;
+    static getMnemonicLanguages(): Promise<any>;
     /**
      * Internal constructor which is given the memory address of a C++ wallet
      * instance.
@@ -49,3 +48,5 @@ declare class MoneroWalletKeys extends MoneroWalletKeys_base {
     _module: any;
     _assertNotClosed(): void;
 }
+import MoneroWallet = require("./MoneroWallet");
+import MoneroWalletConfig = require("./model/MoneroWalletConfig");

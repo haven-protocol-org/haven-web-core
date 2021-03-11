@@ -1,9 +1,8 @@
 export = MoneroRpcError;
-declare const MoneroRpcError_base: typeof import("./MoneroError");
 /**
  * Error when interacting with Monero RPC.
  */
-declare class MoneroRpcError extends MoneroRpcError_base {
+declare class MoneroRpcError extends MoneroError {
     /**
      * Constructs the error.
      *
@@ -18,3 +17,4 @@ declare class MoneroRpcError extends MoneroRpcError_base {
     getRpcMethod(): string;
     getRpcParams(): any;
 }
+import MoneroError = require("./MoneroError");

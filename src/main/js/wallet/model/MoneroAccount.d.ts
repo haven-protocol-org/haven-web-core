@@ -18,5 +18,5 @@ declare class MoneroAccount {
     setTag(tag: any): MoneroAccount;
     getSubaddresses(): any;
     setSubaddresses(subaddresses: any): MoneroAccount;
-    toString(indent?: number): any;
+    toString(indent?: number): string;
 }

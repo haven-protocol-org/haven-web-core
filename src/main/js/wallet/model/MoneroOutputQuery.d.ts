@@ -1,11 +1,10 @@
 export = MoneroOutputQuery;
-declare const MoneroOutputQuery_base: typeof import("./MoneroOutputWallet");
 /**
  * Configuration to query wallet outputs.
  *
  * @extends {MoneroOutputWallet}
  */
-declare class MoneroOutputQuery extends MoneroOutputQuery_base {
+declare class MoneroOutputQuery extends MoneroOutputWallet {
     /**
      * <p>Construct the output query.</p>
      *
@@ -41,9 +40,9 @@ declare class MoneroOutputQuery extends MoneroOutputQuery_base {
         accountIndex: any;
         subaddressIndex: any;
         subaddressIndices: any[];
-        amount: import("../../common/biginteger");
-        minAmount: import("../../common/biginteger");
-        maxAmount: import("../../common/biginteger");
+        amount: BigInteger;
+        minAmount: BigInteger;
+        maxAmount: BigInteger;
         isLocked: boolean;
         isSpent: boolean;
         keyImage: object | any;
@@ -66,5 +65,7 @@ declare class MoneroOutputQuery extends MoneroOutputQuery_base {
     meetsCriteria(output: any, queryParent: any): boolean;
 }
 declare namespace MoneroOutputQuery {
-    const _EMPTY_OUTPUT: import("./MoneroOutputWallet");
+    const _EMPTY_OUTPUT: MoneroOutputWallet;
 }
+import MoneroOutputWallet = require("./MoneroOutputWallet");
+import BigInteger = require("../../common/biginteger");

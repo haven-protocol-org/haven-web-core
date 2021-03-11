@@ -46,7 +46,7 @@ declare class MoneroWallet {
      * @param {string} username - username to authenticate with the daemon (optional)
      * @param {string} password - password to authenticate with the daemon (optional)
      */
-    setDaemonConnection(uriOrConnection: string | any, username: string, password: string): any;
+    setDaemonConnection(uriOrConnection: string | any, username: string, password: string): Promise<void>;
     /**
      * Get the wallet's daemon connection.
      *
@@ -163,22 +163,22 @@ declare class MoneroWallet {
      * @param {int} day - day of the height to get as a number between 1 and 31
      * @return the blockchain's approximate height at the given date
      */
-    getHeightByDate(year: any, month: any, day: any): any;
+    getHeightByDate(year: any, month: any, day: any): Promise<void>;
     /**
      * Synchronize the wallet with the daemon as a one-time synchronous process.
      *
      * @param {MoneroWalletListener|number} listenerOrStartHeight - listener xor start height (defaults to no sync listener, the last synced block)
      * @param {number} startHeight - startHeight if not given in first arg (defaults to last synced block)
      */
-    sync(listenerOrStartHeight: any | number, startHeight: number): any;
+    sync(listenerOrStartHeight: any | number, startHeight: number): Promise<void>;
     /**
      * Start an asynchronous thread to continuously synchronize the wallet with the daemon.
      */
-    startSyncing(): any;
+    startSyncing(): Promise<void>;
     /**
      * Stop synchronizing the wallet with the daemon.
      */
-    stopSyncing(): any;
+    stopSyncing(): Promise<void>;
     /**
      * <p>Rescan the blockchain for spent outputs.</p>
      *
@@ -188,7 +188,7 @@ declare class MoneroWallet {
      * so the wallet will not rescan spent outputs.  Then the wallet connects to a trusted
      * daemon.  This method should be manually invoked to rescan outputs.</p>
      */
-    rescanSpent(): any;
+    rescanSpent(): Promise<void>;
     /**
      * <p>Rescan the blockchain from scratch, losing any information which cannot be recovered from
      * the blockchain itself.</p>
@@ -196,7 +196,7 @@ declare class MoneroWallet {
      * <p>WARNING: This method discards local wallet data like destination addresses, tx secret keys,
      * tx notes, etc.</p>
      */
-    rescanBlockchain(): any;
+    rescanBlockchain(): Promise<void>;
     /**
      * Get the balance of the wallet, account, or subaddress.
      *
@@ -204,7 +204,7 @@ declare class MoneroWallet {
      * @param {int} subaddressIdx - index of the subaddress to get the balance of (optional)
      * @return {BigInteger} the balance of the wallet, account, or subaddress
      */
-    getBalance(accountIdx: any, subaddressIdx: any): any;
+    getBalance(accountIdx: any, subaddressIdx: any): BigInteger;
     /**
      * Get the unlocked balance of the wallet, account, or subaddress.
      *
@@ -212,7 +212,7 @@ declare class MoneroWallet {
      * @param {int} subaddressIdx - index of the subaddress to get the unlocked balance of (optional)
      * @return {BigInteger} the unlocked balance of the wallet, account, or subaddress
      */
-    getUnlockedBalance(accountIdx: any, subaddressIdx: any): any;
+    getUnlockedBalance(accountIdx: any, subaddressIdx: any): BigInteger;
     /**
      * Get accounts with a given tag.
      *
@@ -295,7 +295,7 @@ declare class MoneroWallet {
      * @param {string[]} missingTxHashes - populated with hashes of unfound or unmet transactions that were queried by hash (throws error if undefined and queried transaction hashes are unfound or unmet)
      * @return {MoneroTxWallet[]} wallet transactions per the configuration
      */
-    getTxs(query: (import("./model/MoneroTxQuery") | string[] | object), missingTxHashes: string[]): any[];
+    getTxs(query: (MoneroTxQuery | string[] | object), missingTxHashes: string[]): any[];
     /**
      * <p>Get incoming and outgoing transfers to and from this wallet.  An outgoing
      * transfer represents a total amount sent from one or more subaddresses
@@ -321,7 +321,7 @@ declare class MoneroWallet {
      * @param {MoneroTxQuery} query.txQuery - get transfers whose transaction meets this query (optional)
      * @return {MoneroTransfer[]} are wallet transfers per the configuration
      */
-    getTransfers(query: (import("./model/MoneroTransferQuery") | object)): any[];
+    getTransfers(query: (MoneroTransferQuery | object)): any[];
     /**
      * Get all of the wallet's incoming transfers.
      *
@@ -357,7 +357,7 @@ declare class MoneroWallet {
      * @param {MoneroTxQuery} query.txQuery - get outputs whose transaction meets this filter (optional)
      * @return {MoneroOutputWallet[]} are queried outputs
      */
-    getOutputs(query: (import("./model/MoneroOutputQuery") | object)): any[];
+    getOutputs(query: (MoneroOutputQuery | object)): any[];
     /**
      * Export all outputs in hex format.
      *
@@ -406,7 +406,7 @@ declare class MoneroWallet {
      * @param {int} config.unlockHeight - minimum height for the transaction to unlock (default 0)
      * @return {MoneroTxWallet} the created transaction
      */
-    createTx(config: import("./model/MoneroTxConfig") | object): any;
+    createTx(config: MoneroTxConfig | object): any;
     /**
      * Create one or more transactions to transfer funds from this wallet.
      *
@@ -424,7 +424,7 @@ declare class MoneroWallet {
      * @param {boolean} config.canSplit - allow funds to be transferred using multiple transactions (default true)
      * @return {MoneroTxWallet[]} the created transactions
      */
-    createTxs(config: import("./model/MoneroTxConfig") | object): any[];
+    createTxs(config: MoneroTxConfig | object): any[];
     /**
      * Sweep an output by key image.
      *
@@ -436,7 +436,7 @@ declare class MoneroWallet {
      * @param {MoneroTxPriority} config.priority - transaction priority (default MoneroTxPriority.NORMAL)
      * @return {MoneroTxWallet} the created transaction
      */
-    sweepOutput(config: import("./model/MoneroTxConfig")): any;
+    sweepOutput(config: MoneroTxConfig): any;
     /**
      * Sweep all unlocked funds according to the given configuration.
      *
@@ -450,7 +450,7 @@ declare class MoneroWallet {
      * @param {int} config.unlockHeight - minimum height for the transactions to unlock (default 0)
      * @return {MoneroTxWallet[]} the created transactions
      */
-    sweepUnlocked(config: import("./model/MoneroTxConfig") | object): any[];
+    sweepUnlocked(config: MoneroTxConfig | object): any[];
     /**
      * <p>Sweep all unmixable dust outputs back to the wallet to make them easier to spend and mix.</p>
      *
@@ -569,7 +569,7 @@ declare class MoneroWallet {
      * @param message - message included with the signature to further authenticate the proof (optional)
      * @return the reserve proof signature
      */
-    getReserveProofWallet(message: any): any;
+    getReserveProofWallet(message: any): Promise<void>;
     /**
      * Generate a signature to prove an available amount in an account.
      *
@@ -578,7 +578,7 @@ declare class MoneroWallet {
      * @param {string} message - message to include with the signature to further authenticate the proof (optional)
      * @return {string} the reserve proof signature
      */
-    getReserveProofAccount(accountIdx: any, amount: any, message: string): string;
+    getReserveProofAccount(accountIdx: any, amount: BigInteger, message: string): string;
     /**
      * Proves a wallet has a disposable reserve using a signature.
      *
@@ -608,14 +608,14 @@ declare class MoneroWallet {
      * @param {string} txHash - hash of the transaction to set a note for
      * @param {string} note - the transaction note
      */
-    setTxNote(txHash: string, note: string): any;
+    setTxNote(txHash: string, note: string): Promise<void>;
     /**
      * Set notes for multiple transactions.
      *
      * @param {string[]} txHashes - transactions to set notes for
      * @param {string[]} notes - notes to set for the transactions
      */
-    setTxNotes(txHashes: string[], notes: string[]): any;
+    setTxNotes(txHashes: string[], notes: string[]): Promise<void>;
     /**
      * Get address book entries.
      *
@@ -640,26 +640,26 @@ declare class MoneroWallet {
      * @param {boolean} setDescription - specifies if the description should be updated
      * @param {string} description - updated description
      */
-    editAddressBookEntry(index: number, setAddress: boolean, address: string, setDescription: boolean, description: string): any;
+    editAddressBookEntry(index: number, setAddress: boolean, address: string, setDescription: boolean, description: string): Promise<void>;
     /**
      * Delete an address book entry.
      *
      * @param {int} entryIdx - index of the entry to delete
      */
-    deleteAddressBookEntry(entryIdx: any): any;
+    deleteAddressBookEntry(entryIdx: any): Promise<void>;
     /**
      * Tag accounts.
      *
      * @param {string} tag - tag to apply to the specified accounts
      * @param {int[]} accountIndices - indices of the accounts to tag
      */
-    tagAccounts(tag: string, accountIndices: any[]): any;
+    tagAccounts(tag: string, accountIndices: any[]): Promise<void>;
     /**
      * Untag accounts.
      *
      * @param {int[]} accountIndices - indices of the accounts to untag
      */
-    untagAccounts(accountIndices: any[]): any;
+    untagAccounts(accountIndices: any[]): Promise<void>;
     /**
      * Return all account tags.
      *
@@ -672,21 +672,21 @@ declare class MoneroWallet {
      * @param {string} tag - tag to set a description for
      * @param {string} label - label to set for the tag
      */
-    setAccountTagLabel(tag: string, label: string): any;
+    setAccountTagLabel(tag: string, label: string): Promise<void>;
     /**
      * Creates a payment URI from a send configuration.
      *
      * @param {MoneroTxConfig} config - specifies configuration for a potential tx
      * @return {string} the payment uri
      */
-    createPaymentUri(config: import("./model/MoneroTxConfig")): string;
+    createPaymentUri(config: MoneroTxConfig): string;
     /**
      * Parses a payment URI to a tx config.
      *
      * @param {string} uri - payment uri to parse
      * @return {MoneroTxConfig} the send configuration parsed from the uri
      */
-    parsePaymentUri(uri: string): import("./model/MoneroTxConfig");
+    parsePaymentUri(uri: string): MoneroTxConfig;
     /**
      * Get an attribute.
      *
@@ -700,7 +700,7 @@ declare class MoneroWallet {
      * @param {string} key - attribute key
      * @param {string} val - attribute value
      */
-    setAttribute(key: string, val: string): any;
+    setAttribute(key: string, val: string): Promise<void>;
     /**
      * Start mining.
      *
@@ -708,11 +708,11 @@ declare class MoneroWallet {
      * @param {boolean} backgroundMining - specifies if mining should occur in the background (optional)
      * @param {boolean} ignoreBattery - specifies if the battery should be ignored for mining (optional)
      */
-    startMining(numThreads: any, backgroundMining: boolean, ignoreBattery: boolean): any;
+    startMining(numThreads: any, backgroundMining: boolean, ignoreBattery: boolean): Promise<void>;
     /**
      * Stop mining.
      */
-    stopMining(): any;
+    stopMining(): Promise<void>;
     /**
      * Indicates if importing multisig data is needed for returning a correct balance.
      *
@@ -793,7 +793,7 @@ declare class MoneroWallet {
      *
      * @param {boolean} save - specifies if the wallet should be saved before being closed (default false)
      */
-    close(save: boolean): any;
+    close(save: boolean): Promise<void>;
     /**
      * Indicates if this wallet is closed or not.
      *
@@ -804,3 +804,7 @@ declare class MoneroWallet {
 declare namespace MoneroWallet {
     const DEFAULT_LANGUAGE: string;
 }
+import MoneroTxQuery = require("./model/MoneroTxQuery");
+import MoneroTransferQuery = require("./model/MoneroTransferQuery");
+import MoneroOutputQuery = require("./model/MoneroOutputQuery");
+import MoneroTxConfig = require("./model/MoneroTxConfig");

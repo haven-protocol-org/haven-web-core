@@ -1,4 +1,4 @@
-
+const BigInteger = require("../../common/biginteger");
 
 /**
  * Haven balance model, holds pairs of asset and amount/balance
@@ -12,7 +12,7 @@
       if (typeof stateOrAmount === "object") {
         
         // deserialize balances
-        Object.entries(stateOrAsset).forEach( ([assetType, amount]) => this.setAssetBalance(assetType, amount));
+        Object.entries(stateOrAmount).forEach( ([assetType, amount]) => this.setAssetBalance(assetType, amount));
       }
       
       // construct from individual params
@@ -34,9 +34,13 @@
         this.state[asset] = amount;
     }
     
-    getBalances() {
+    toDict() {
       return this.state;
     }
+
+    toArray() {
+        return Object.entries(this.state);
+      }
     
     
     toString(indent = 0) {

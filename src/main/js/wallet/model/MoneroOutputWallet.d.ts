@@ -1,18 +1,11 @@
 export = MoneroOutputWallet;
-declare const MoneroOutputWallet_base: typeof import("../../daemon/model/MoneroOutput");
 /**
  * Models a Monero output with wallet extensions.
  *
  * @class
  * @extends {MoneroOutput}
  */
-declare class MoneroOutputWallet extends MoneroOutputWallet_base {
-    /**
-     * Construct the model.
-     *
-     * @param {MoneroOutputWallet|object} state is existing state to initialize from (optional)
-     */
-    constructor(state: MoneroOutputWallet | object);
+declare class MoneroOutputWallet extends MoneroOutput {
     getAccountIndex(): any;
     setAccountIndex(accountIndex: any): MoneroOutputWallet;
     getSubaddressIndex(): any;
@@ -29,3 +22,4 @@ declare class MoneroOutputWallet extends MoneroOutputWallet_base {
     setIsFrozen(isFrozen: any): MoneroOutputWallet;
     isLocked(): any;
 }
+import MoneroOutput = require("../../daemon/model/MoneroOutput");

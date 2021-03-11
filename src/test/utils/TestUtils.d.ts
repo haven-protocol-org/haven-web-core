@@ -37,7 +37,7 @@ declare class TestUtils {
      */
     static getWalletKeys(): any;
     static testUnsignedBigInteger(num: any, nonZero: any): void;
-    static getExternalWalletAddress(): unknown;
+    static getExternalWalletAddress(): Promise<any>;
     static txsMergeable(tx1: any, tx2: any): boolean;
 }
 declare namespace TestUtils {
@@ -64,6 +64,7 @@ declare namespace TestUtils {
         const password_1: string;
         export { password_1 as password };
     }
-    const TX_POOL_WALLET_TRACKER: import("./TxPoolWalletTracker");
+    const TX_POOL_WALLET_TRACKER: TxPoolWalletTracker;
     const PROXY_TO_WORKER: any;
 }
+import TxPoolWalletTracker = require("./TxPoolWalletTracker");

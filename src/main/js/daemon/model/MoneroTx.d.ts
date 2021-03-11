@@ -113,7 +113,7 @@ declare class MoneroTx {
      * @return {MoneroTx} this for method chaining
      */
     merge(tx: any): MoneroTx;
-    toString(indent?: number): any;
+    toString(indent?: number): string;
 }
 declare namespace MoneroTx {
     const DEFAULT_PAYMENT_ID: string;

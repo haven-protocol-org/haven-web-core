@@ -21,6 +21,8 @@ declare class MoneroTxConfig {
      * @param {MoneroTxConfig|object} config - configures the transaction to create (optional)
      * @param {string} config.address - single destination address
      * @param {BigInteger} config.amount - single destination amount
+     * @param {string} config.currency - used currency
+     * @param {HavenTxType} config.txType - determines type of exchange/transfer
      * @param {int} config.accountIndex - source account index to transfer funds from
      * @param {int} config.subaddressIndex - source subaddress index to transfer funds from
      * @param {int[]} config.subaddressIndices - source subaddress indices to transfer funds from
@@ -36,7 +38,7 @@ declare class MoneroTxConfig {
      * @param {boolean} config.sweepEachSubaddress - for sweep requests, sweep each subaddress individually instead of together if true
      * @param {string} config.keyImage - key image to sweep (ignored except in sweepOutput() requests)
      */
-    constructor(config: MoneroTxConfig | object, ...args: {});
+    constructor(config: MoneroTxConfig | object, ...args: any[]);
     state: any;
     copy(): MoneroTxConfig;
     toJson(): any;
@@ -59,21 +61,23 @@ declare class MoneroTxConfig {
      * @param {BigInteger} amount - the amount to set for the single destination
      * @return {MoneroTxConfig} this configuration for chaining
      */
-    setAmount(amount: any): MoneroTxConfig;
+    setAmount(amount: BigInteger): MoneroTxConfig;
     /**
      * Get the amount of a single-destination configuration.
      *
      * @return {BigInteger} the amount of the single destination
      */
-    getAmount(): any;
+    getAmount(): BigInteger;
     addDestination(destination: any): MoneroTxConfig;
     getDestinations(): any;
-    setDestinations(destinations: any, ...args: {}): MoneroTxConfig;
+    setDestinations(destinations: any, ...args: any[]): MoneroTxConfig;
     setDestination(destination: any): MoneroTxConfig;
     getPaymentId(): any;
     setPaymentId(paymentId: any): MoneroTxConfig;
     getPriority(): any;
     setPriority(priority: any): MoneroTxConfig;
+    getCurrency(): any;
+    setCurrency(currency: any): MoneroTxConfig;
     getTxType(): any;
     setTxType(txType: any): MoneroTxConfig;
     getFee(): any;
@@ -82,7 +86,7 @@ declare class MoneroTxConfig {
     setAccountIndex(accountIndex: any): MoneroTxConfig;
     setSubaddressIndex(subaddressIndex: any): MoneroTxConfig;
     getSubaddressIndices(): any;
-    setSubaddressIndices(subaddressIndices: any, ...args: {}): MoneroTxConfig;
+    setSubaddressIndices(subaddressIndices: any, ...args: any[]): MoneroTxConfig;
     getUnlockHeight(): any;
     setUnlockHeight(unlockHeight: any): MoneroTxConfig;
     getRelay(): any;

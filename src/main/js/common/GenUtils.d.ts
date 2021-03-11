@@ -61,7 +61,7 @@ declare class GenUtils {
      * @param arg is the argument to test
      * @returns true if the argument is a number, false otherwise
      */
-    static isNumber(arg: any): any;
+    static isNumber(arg: any): boolean;
     /**
      * Indicates if the given argument is an integer.
      *
@@ -78,7 +78,7 @@ declare class GenUtils {
      * @param arg is the argument to test as being an array
      * @returns true if the argument is an array, false otherwise
      */
-    static isArray(arg: any): any;
+    static isArray(arg: any): boolean;
     /**
      * Indicates if the given argument is a string.
      *
@@ -141,7 +141,7 @@ declare class GenUtils {
     /**
      * Determines if the given string is base32.
      */
-    static isBase32(str: any): any;
+    static isBase32(str: any): boolean;
     /**
      * Asserts that the given argument is base58.
      *
@@ -152,7 +152,7 @@ declare class GenUtils {
     /**
      * Determines if the given string is base58.
      */
-    static isBase58(str: any): any;
+    static isBase58(str: any): boolean;
     /**
      * Asserts that the given argument is base64.
      *
@@ -305,14 +305,14 @@ declare class GenUtils {
      * arguments[0] is assumed to be an array of functions to invoke
      * arguments[1...n] are args to invoke the functions with
      */
-    static invoke(...args: {}): void;
+    static invoke(...args: any[]): void;
     /**
      * Returns the power set of the given array.
      *
      * @param arr is the array to get the power set of
      * @returns [][] is the power set of the given array
      */
-    static getPowerSet(arr: any): {};
+    static getPowerSet(arr: any): any[];
     /**
      * Returns the power set of the given array whose elements are the given size.
      *
@@ -320,14 +320,14 @@ declare class GenUtils {
      * @param size is the required size of the elements within the power set
      * returns [][] is the power set of the given array whose elements are the given size
      */
-    static getPowerSetOfLength(arr: any, size: any): {};
+    static getPowerSetOfLength(arr: any, size: any): any[];
     /**
      * Returns an array of indices of the given size.
      *
      * @param size specifies the size to get indices for
      * @returns array of the given size with indices starting at 0
      */
-    static getIndices(size: any): {};
+    static getIndices(size: any): number[];
     /**
      * Returns a new array containing unique elements of the given array.
      *
@@ -341,7 +341,7 @@ declare class GenUtils {
      * @param arr is the array to copy
      * @returns a copy of the given array
      */
-    static copyArray(arr: any): {};
+    static copyArray(arr: any): any[];
     /**
      * Removes every instance of the given value from the given array.
      *
@@ -356,7 +356,7 @@ declare class GenUtils {
      * @param arr is the array to convert to lowercase
      * @returns a copy of the given array where each element is lowercase
      */
-    static toLowerCaseArray(arr: any): {};
+    static toLowerCaseArray(arr: any): any[];
     /**
      * Listifies the given argument.
      *
@@ -419,7 +419,7 @@ declare class GenUtils {
      * @param arr is the array to get combinations from
      * @param combinationSize specifies the size of each combination
      */
-    static getCombinations(arr: any, combinationSize: any): {};
+    static getCombinations(arr: any, combinationSize: any): any[][];
     /**
      * Gets an 'a' element that is downloadable when clicked.
      *
@@ -427,7 +427,7 @@ declare class GenUtils {
      * @param contents are the string contents of the file to download
      * @returns 'a' dom element with downloadable file
      */
-    static getDownloadableA(name: any, contents: any): any;
+    static getDownloadableA(name: any, contents: any): HTMLAnchorElement;
     /**
      * Returns the given node's outer HTML.
      *
@@ -468,14 +468,14 @@ declare class GenUtils {
      * @param str is the string to test
      * @returns true if the string contains whitespace, false otherwise
      */
-    static hasWhitespace(str: any): any;
+    static hasWhitespace(str: any): boolean;
     /**
      * Indicates if the given character is whitespace.
      *
      * @param char is the character to test
      * @returns true if the given character is whitespace, false otherwise
      */
-    static isWhitespace(char: any): any;
+    static isWhitespace(char: any): boolean;
     /**
      * Indicates if the given character is a newline.
      *
@@ -509,7 +509,7 @@ declare class GenUtils {
      *
      * @returns StyleSheet is the internal stylesheet
      */
-    static getInternalStyleSheet(): any;
+    static getInternalStyleSheet(): CSSStyleSheet;
     /**
      * Returns the document's internal stylesheet as text.
      *
@@ -546,7 +546,7 @@ declare class GenUtils {
      * @param img is the image to convert
      * @param quality is a number between 0 and 1 specifying the image quality
      */
-    static imgToDataUrl(img: any, quality: any): any;
+    static imgToDataUrl(img: any, quality: any): string;
     /**
      * Determines if the image at the given URL is accessible.
      *
@@ -605,7 +605,7 @@ declare class GenUtils {
      *
      * Source: https://stackoverflow.com/questions/105034/create-guid-uuid-in-javascript
      */
-    static getUUID(): any;
+    static getUUID(): string;
     /**
      * Indicates if the current environment is a browser.
      *
@@ -625,7 +625,7 @@ declare class GenUtils {
      *
      * @returns the IE version number of null if not IE
      */
-    static getIEVersion(): any;
+    static getIEVersion(): number;
     /**
      * Gets a parameter value.
      *
@@ -635,7 +635,7 @@ declare class GenUtils {
      * @param url is a URL to get the parameter from, uses the window's current href if not given
      * @returns the parameter's value
      */
-    static getParameterByName(name: any, url: any): any;
+    static getParameterByName(name: any, url: any): string;
     /**
      * Gets a non-cryptographically secure random number within a given range.
      *
@@ -652,7 +652,7 @@ declare class GenUtils {
      * @param max is the maximum range of the ints to generate, inclusive
      * @param count is the number of random ints to get
      */
-    static getRandomInts(min: any, max: any, count: any): {};
+    static getRandomInts(min: any, max: any, count: any): any[];
     /**
      * Gets a given number of unique random ints within a range.
      *
@@ -660,7 +660,7 @@ declare class GenUtils {
      * @param max is the maximum range of the ints to generate, inclusive
      * @param count is the number of unique random ints to get
      */
-    static getUniqueRandomInts(min: any, max: any, count: any): {};
+    static getUniqueRandomInts(min: any, max: any, count: any): any[];
     /**
      * Randomize array element order in-place using Durstenfeld shuffle algorithm.
      *

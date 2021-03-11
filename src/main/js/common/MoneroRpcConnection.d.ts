@@ -48,7 +48,7 @@ declare class MoneroRpcConnection {
      *
      * E.g. "/get_transactions" with params
      */
-    sendPathRequest(path: any, params: any): unknown;
+    sendPathRequest(path: any, params: any): Promise<any>;
     /**
      * Sends a binary RPC request.
      *
@@ -56,7 +56,7 @@ declare class MoneroRpcConnection {
      * @paramm params are the request parameters
      * @return a Uint8Array with the binary response
      */
-    sendBinaryRequest(path: any, params: any): unknown;
+    sendBinaryRequest(path: any, params: any): Promise<any>;
 }
 declare namespace MoneroRpcConnection {
     namespace DEFAULT_CONFIG {
@@ -65,5 +65,5 @@ declare namespace MoneroRpcConnection {
         const password: any;
         const rejectUnauthorized: boolean;
     }
-    const SUPPORTED_FIELDS: {};
+    const SUPPORTED_FIELDS: string[];
 }

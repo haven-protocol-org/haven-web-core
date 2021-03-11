@@ -4,7 +4,7 @@ declare class BigInteger {
     constructor(n: any, s: any, token: any);
     _d: any;
     _s: any;
-    toString(base: any): string;
+    toString(base: any): any;
     add(n: any): any;
     negate(): BigInteger;
     abs(): BigInteger;
@@ -15,23 +15,23 @@ declare class BigInteger {
     multiply(n: any): any;
     multiplySingleDigit(n: any): any;
     square(): BigInteger;
-    quotient(n: any): any;
+    quotient(n: any): BigInteger;
     divide: any;
-    remainder(n: any): any;
-    divRem(n: any): {};
-    divRemSmall(n: any): {};
+    remainder(n: any): BigInteger;
+    divRem(n: any): BigInteger[];
+    divRemSmall(n: any): BigInteger[];
     isEven(): boolean;
     isOdd(): boolean;
     sign(): any;
     isPositive(): boolean;
     isNegative(): boolean;
     isZero(): boolean;
-    exp10(n: any): any;
+    exp10(n: any): BigInteger;
     pow(n: any): BigInteger;
     modPow(exponent: any, modulus: any): BigInteger;
-    log(): any;
+    log(): number;
     valueOf(): any;
-    toJSValue(): any;
+    toJSValue(): number;
     lowVal(): any;
 }
 declare namespace BigInteger {
@@ -44,9 +44,9 @@ declare namespace BigInteger {
     export { M_ONE };
     export { ZERO as _0 };
     export { ONE as _1 };
-    export const small: {};
-    export const digits: any;
-    export const radixRegex: {};
+    export const small: BigInteger[];
+    export const digits: string[];
+    export const radixRegex: RegExp[];
     export function parse(s: any, base: any): BigInteger;
     export { MAX_EXP };
 }

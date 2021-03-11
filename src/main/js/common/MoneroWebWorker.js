@@ -575,12 +575,12 @@ self.rescanBlockchain = async function(walletId) {
   return self.WORKER_OBJECTS[walletId].rescanBlockchain();
 }
 
-self.getBalance = async function(walletId, accountIdx, subaddressIdx) {
-  return (await self.WORKER_OBJECTS[walletId].getBalance(accountIdx, subaddressIdx)).toJson();
+self.getBalance = async function(walletId, accountIdx, subaddressIdx, assetType) {
+  return (await self.WORKER_OBJECTS[walletId].getBalance(accountIdx, subaddressIdx, assetType)).toJson();
 }
 
-self.getUnlockedBalance = async function(walletId, accountIdx, subaddressIdx) {
-  return (await self.WORKER_OBJECTS[walletId].getUnlockedBalance(accountIdx, subaddressIdx)).toJson();
+self.getUnlockedBalance = async function(walletId, accountIdx, subaddressIdx, assetType) {
+  return (await self.WORKER_OBJECTS[walletId].getUnlockedBalance(accountIdx, subaddressIdx, assetType)).toJson();
 }
 
 self.getAccounts = async function(walletId, includeSubaddresses, tag) {

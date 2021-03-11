@@ -1,11 +1,10 @@
 export = MoneroBlock;
-declare const MoneroBlock_base: typeof import("./MoneroBlockHeader");
 /**
  * Models a Monero block in the blockchain.
  *
  * @extends {MoneroBlockHeader}
  */
-declare class MoneroBlock extends MoneroBlock_base {
+declare class MoneroBlock extends MoneroBlockHeader {
     static _mergeTx(txs: any, tx: any): void;
     /**
      * Construct the model.
@@ -13,7 +12,7 @@ declare class MoneroBlock extends MoneroBlock_base {
      * @param {MoneroBlock|MoneroBlockHeader|object} state is existing state to initialize from (optional)
      * @param {MoneroBlock.DeserializationType} txType informs the tx deserialization type (MoneroTx, MoneroTxWallet, MoneroTxQuery)
      */
-    constructor(state: MoneroBlock | import("./MoneroBlockHeader") | object, txType: {
+    constructor(state: MoneroBlock | MoneroBlockHeader | object, txType: {
         TX: number;
         TX_WALLET: number;
         TX_QUERY: number;
@@ -34,3 +33,4 @@ declare namespace MoneroBlock {
         const TX_QUERY: number;
     }
 }
+import MoneroBlockHeader = require("./MoneroBlockHeader");

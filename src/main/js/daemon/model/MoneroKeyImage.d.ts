@@ -18,5 +18,5 @@ declare class MoneroKeyImage {
     copy(): MoneroKeyImage;
     toJson(): any;
     merge(keyImage: any): MoneroKeyImage;
-    toString(indent?: number): any;
+    toString(indent?: number): string;
 }

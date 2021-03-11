@@ -2,7 +2,7 @@ export = MoneroError;
 /**
  * Exception when interacting with a Monero wallet or daemon.
  */
-declare class MoneroError {
+declare class MoneroError extends Error {
     /**
      * Constructs the error.
      *
@@ -12,5 +12,4 @@ declare class MoneroError {
     constructor(message: string, code: any);
     code: any;
     getCode(): any;
-    toString(): any;
 }

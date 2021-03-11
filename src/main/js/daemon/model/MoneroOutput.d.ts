@@ -27,5 +27,5 @@ declare class MoneroOutput {
     copy(): MoneroOutput;
     toJson(): any;
     merge(output: any): MoneroOutput;
-    toString(indent?: number): any;
+    toString(indent?: number): string;
 }

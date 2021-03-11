@@ -16,5 +16,5 @@ declare class TxPoolWalletTracker {
      *
      * @param wallets have transactions to wait on if in the pool
      */
-    waitForWalletTxsToClearPool(wallets: any): any;
+    waitForWalletTxsToClearPool(wallets: any): Promise<void>;
 }

@@ -1,5 +1,4 @@
 export = MoneroWalletWasm;
-declare const MoneroWalletWasm_base: typeof import("./MoneroWalletKeys");
 /**
  * Implements a MoneroWallet using WebAssembly bindings to monero-project's wallet2.
  *
@@ -7,7 +6,7 @@ declare const MoneroWalletWasm_base: typeof import("./MoneroWalletKeys");
  * @implements {MoneroWallet}
  * @hideconstructor
  */
-declare class MoneroWalletWasm extends MoneroWalletWasm_base {
+declare class MoneroWalletWasm extends MoneroWalletKeys implements MoneroWallet {
     /**
      * Check if a wallet exists at a given path.
      *
@@ -59,7 +58,7 @@ declare class MoneroWalletWasm extends MoneroWalletWasm_base {
      * @param {fs} fs - Node.js compatible file system to use (defaults to disk or in-memory FS if browser)
      * @return {MoneroWalletWasm} the opened wallet
      */
-    static openWallet(configOrPath: import("./model/MoneroWalletConfig") | object | string, password: string, networkType: string | number, daemonUriOrConnection: string | import("../common/MoneroRpcConnection"), proxyToWorker: boolean, fs: any): MoneroWalletWasm;
+    static openWallet(configOrPath: MoneroWalletConfig | object | string, password: string, networkType: string | number, daemonUriOrConnection: string | MoneroRpcConnection, proxyToWorker: boolean, fs: any): MoneroWalletWasm;
     /**
      * <p>Create a wallet using WebAssembly bindings to wallet2.h.<p>
      *
@@ -96,23 +95,23 @@ declare class MoneroWalletWasm extends MoneroWalletWasm_base {
      * @param {fs} config.fs - Node.js compatible file system to use (defaults to disk or in-memory FS if browser)
      * @return {MoneroWalletWasm} the created wallet
      */
-    static createWallet(config: object | import("./model/MoneroWalletConfig")): MoneroWalletWasm;
-    static _createWalletRandom(path: any, password: any, networkType: any, daemonUriOrConnection: any, language: any, proxyToWorker: any, fs: any): unknown;
-    static _createWalletFromMnemonic(path: any, password: any, networkType: any, mnemonic: any, daemonUriOrConnection: any, restoreHeight: any, seedOffset: any, proxyToWorker: any, fs: any): unknown;
-    static _createWalletFromKeys(path: any, password: any, networkType: any, address: any, viewKey: any, spendKey: any, daemonUriOrConnection: any, restoreHeight: any, language: any, proxyToWorker: any, fs: any): unknown;
+    static createWallet(config: object | MoneroWalletConfig): MoneroWalletWasm;
+    static _createWalletRandom(path: any, password: any, networkType: any, daemonUriOrConnection: any, language: any, proxyToWorker: any, fs: any): Promise<any>;
+    static _createWalletFromMnemonic(path: any, password: any, networkType: any, mnemonic: any, daemonUriOrConnection: any, restoreHeight: any, seedOffset: any, proxyToWorker: any, fs: any): Promise<any>;
+    static _createWalletFromKeys(path: any, password: any, networkType: any, address: any, viewKey: any, spendKey: any, daemonUriOrConnection: any, restoreHeight: any, language: any, proxyToWorker: any, fs: any): Promise<any>;
     static _getFs(): any;
-    static _openWalletData(path: any, password: any, networkType: any, keysData: any, cacheData: any, daemonUriOrConnection: any, proxyToWorker: any, fs: any): unknown;
+    static _openWalletData(path: any, password: any, networkType: any, keysData: any, cacheData: any, daemonUriOrConnection: any, proxyToWorker: any, fs: any): Promise<any>;
     static _sanitizeBlock(block: any): any;
     static _sanitizeTxWallet(tx: any): any;
     static _sanitizeAccount(account: any): any;
     static _sanitizeSubaddress(subaddress: any): any;
     static _deserializeBlocks(blocksJsonStr: any): {
-        blocks: {};
-        missingTxHashes: {};
+        blocks: any[];
+        missingTxHashes: any[];
     };
-    static _deserializeTxs(query: any, blocksJsonStr: any, missingTxHashes: any): {};
-    static _deserializeTransfers(query: any, blocksJsonStr: any): {};
-    static _deserializeOutputs(query: any, blocksJsonStr: any): {};
+    static _deserializeTxs(query: any, blocksJsonStr: any, missingTxHashes: any): any[];
+    static _deserializeTransfers(query: any, blocksJsonStr: any): any[];
+    static _deserializeOutputs(query: any, blocksJsonStr: any): any[];
     /**
      * Internal constructor which is given the memory address of a C++ wallet
      * instance.
@@ -130,7 +129,7 @@ declare class MoneroWalletWasm extends MoneroWalletWasm_base {
     constructor(cppAddress: any, path: string, password: string, fs: any, rejectUnauthorized: boolean, rejectUnauthorizedFnId: string);
     _path: string;
     _password: string;
-    _listeners: {};
+    _listeners: any[];
     _fs: any;
     _isClosed: boolean;
     _wasmListener: WalletWasmListener;
@@ -160,7 +159,7 @@ declare class MoneroWalletWasm extends MoneroWalletWasm_base {
      *
      * @return {MoneroNetworkType} the wallet's network type
      */
-    getNetworkType(): import("../daemon/model/MoneroNetworkType");
+    getNetworkType(): MoneroNetworkType;
     /**
      * Get the height of the first block that the wallet scans.
      *
@@ -172,48 +171,48 @@ declare class MoneroWalletWasm extends MoneroWalletWasm_base {
      *
      * @param {number} syncHeight - height of the first block that the wallet scans
      */
-    setSyncHeight(syncHeight: number): unknown;
+    setSyncHeight(syncHeight: number): Promise<any>;
     /**
      * Register a listener to receive wallet notifications.
      *
      * @param {MoneroWalletListener} listener - listener to receive wallet notifications
      */
-    addListener(listener: import("./model/MoneroWalletListener")): any;
+    addListener(listener: MoneroWalletListener): Promise<void>;
     /**
      * Unregister a listener to receive wallet notifications.
      *
      * @param {MoneroWalletListener} listener - listener to unregister
      */
-    removeListener(listener: import("./model/MoneroWalletListener")): any;
+    removeListener(listener: MoneroWalletListener): Promise<void>;
     /**
      * Get the listeners registered with the wallet.
      *
      * @return {MoneroWalletListener[]} the registered listeners
      */
-    getListeners(): import("./model/MoneroWalletListener")[];
+    getListeners(): MoneroWalletListener[];
     /**
      * Move the wallet from its current path to the given path.
      *
      * @param {string} path is the new wallet's path
      * @param {string} password is the new wallet's password
      */
-    moveTo(path: string, password: string): any;
+    moveTo(path: string, password: string): Promise<void>;
     _syncingEnabled: boolean;
     /**
      * Get the wallet's keys and cache data.
      *
      * @return {DataView[]} is the keys and cache data respectively
      */
-    getData(): any[];
+    getData(): DataView[];
     /**
      * Loop while syncing enabled.
      */
-    _runSyncLoop(): any;
+    _runSyncLoop(): Promise<void>;
     _syncLoopRunning: boolean;
     /**
      * Enables or disables listening in the c++ wallet.
      */
-    _setIsListening(isEnabled: any): unknown;
+    _setIsListening(isEnabled: any): Promise<any>;
     /**
      * Set the path of the wallet on the browser main thread if run as a web worker.
      *
@@ -222,6 +221,8 @@ declare class MoneroWalletWasm extends MoneroWalletWasm_base {
     _setBrowserMainPath(browserMainPath: string): void;
     _browserMainPath: string;
 }
+import MoneroWallet = require("./MoneroWallet");
+import MoneroWalletKeys = require("./MoneroWalletKeys");
 /**
  * Receives notifications directly from wasm c++.
  *
@@ -232,7 +233,11 @@ declare class WalletWasmListener {
     _wallet: any;
     onSyncProgress(height: any, startHeight: any, endHeight: any, percentDone: any, message: any): void;
     onNewBlock(height: any): void;
-    onBalancesChanged(newBalanceStr: any, newUnlockedBalanceStr: any, assetType: string): void;
+    onBalancesChanged(newBalanceStr: any, newUnlockedBalanceStr: any, assetType: any): void;
     onOutputReceived(height: any, txHash: any, amountStr: any, accountIdx: any, subaddressIdx: any, version: any, unlockHeight: any, isLocked: any): void;
     onOutputSpent(height: any, txHash: any, amountStr: any, accountIdx: any, subaddressIdx: any, version: any): void;
 }
+import MoneroNetworkType = require("../daemon/model/MoneroNetworkType");
+import MoneroWalletListener = require("./model/MoneroWalletListener");
+import MoneroWalletConfig = require("./model/MoneroWalletConfig");
+import MoneroRpcConnection = require("../common/MoneroRpcConnection");

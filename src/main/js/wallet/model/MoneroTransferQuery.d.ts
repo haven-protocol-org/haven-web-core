@@ -1,11 +1,10 @@
 export = MoneroTransferQuery;
-declare const MoneroTransferQuery_base: typeof import("./MoneroTransfer");
 /**
  * Configuration to query wallet transfers.
  *
  * @extends {MoneroTransfer}
  */
-declare class MoneroTransferQuery extends MoneroTransferQuery_base {
+declare class MoneroTransferQuery extends MoneroTransfer {
     /**
      * <p>Construct the transfer query.</p>
      *
@@ -34,7 +33,7 @@ declare class MoneroTransferQuery extends MoneroTransferQuery_base {
      * @param {object|MoneroTxQuery} config.txQuery - get transfers whose tx match this tx query
      */
     constructor(config: {
-        amount: any;
+        amount: BigInteger;
         accountIndex: any;
         subaddressIndex: any;
         subaddressIndices: any[];
@@ -43,7 +42,7 @@ declare class MoneroTransferQuery extends MoneroTransferQuery_base {
         isIncoming: boolean;
         isOutgoing: boolean;
         hasDestinations: boolean;
-        txQuery: object | import("./MoneroTxQuery");
+        txQuery: any;
     });
     getTxQuery(): any;
     setTxQuery(txQuery: any): MoneroTransferQuery;
@@ -70,3 +69,4 @@ declare class MoneroTransferQuery extends MoneroTransferQuery_base {
     setIsLocked(isLocked: any): any;
     meetsCriteria(transfer: any, queryParent: any): boolean;
 }
+import MoneroTransfer = require("./MoneroTransfer");
