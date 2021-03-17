@@ -1,4 +1,4 @@
-const BigInteger = require("../../common/biginteger");
+const HavenBalance = require("./HavenBalance");
 const GenUtils = require("../../common/GenUtils");
 
 /**
@@ -12,15 +12,15 @@ class MoneroSubaddress {
       this.setAddress(stateOrAddress);
     } else {
       this.state = stateOrAddress;
-      if (this.state.balance !== undefined && !(this.state.balance instanceof BigInteger)) this.state.balance = BigInteger.parse(this.state.balance);
-      if (this.state.unlockedBalance !== undefined && !(this.state.unlockedBalance instanceof BigInteger)) this.state.unlockedBalance = BigInteger.parse(this.state.unlockedBalance);
+      if (this.state.balance !== undefined && !(this.state.balance instanceof HavenBalance)) this.state.balance = new HavenBalance(this.state.balance);
+      if (this.state.unlockedBalance !== undefined && !(this.state.unlockedBalance instanceof HavenBalance)) this.state.unlockedBalance = new HavenBalance(this.state.unlockedBalance);
     }
   }
   
   toJson() {
     let json = Object.assign({}, this.state);
-    if (json.balance) json.balance = json.balance.toString();
-    if (json.unlockedBalance) json.unlockedBalance = json.unlockedBalance.toString();
+    if (json.balance) json.balance = json.balance.toJson();
+    if (json.unlockedBalance) json.unlockedBalance = json.unlockedBalance.toJson();
     return json;
   }
   
