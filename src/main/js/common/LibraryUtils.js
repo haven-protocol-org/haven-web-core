@@ -38,7 +38,7 @@ class LibraryUtils {
     
     // load module
     delete LibraryUtils.WASM_MODULE;
-  //  LibraryUtils.WASM_MODULE = require("../../../../dist/haven_offshore1.4.12_keys")();
+  //  LibraryUtils.WASM_MODULE = require("../../../../dist/haven_offshore1.4.16_keys")();
     return new Promise(function(resolve, reject) {
       LibraryUtils.WASM_MODULE.then(module => {
         LibraryUtils.WASM_MODULE = module
@@ -63,7 +63,7 @@ class LibraryUtils {
     
     // load module
     delete LibraryUtils.WASM_MODULE;
-    LibraryUtils.WASM_MODULE = require("../../../../dist/haven_offshore1.4.12")();
+    LibraryUtils.WASM_MODULE = require("../../../../dist/haven_offshore1.4.16")();
     return new Promise(function(resolve, reject) {
       LibraryUtils.WASM_MODULE.then(module => {
         LibraryUtils.WASM_MODULE = module
@@ -123,9 +123,9 @@ class LibraryUtils {
   
   /**
    * Set the path to load HsavenWebWorker.dist.js when running this library in
-   * a web worker (defaults to "/HavenWebWorker1.4.12.dist.js").
+   * a web worker (defaults to "/HavenWebWorker1.4.16.dist.js").
    * 
-   * @param {string} workerDistPath - path to load HavenWebWorker1.4.12.dist.js
+   * @param {string} workerDistPath - path to load HavenWebWorker1.4.16.dist.js
    */
   static setWorkerDistPath(workerDistPath) {
     let path = workerDistPath ? workerDistPath : LibraryUtils.WORKER_DIST_PATH_DEFAULT;
@@ -185,7 +185,7 @@ class LibraryUtils {
   }
 }
 
-LibraryUtils.WORKER_DIST_PATH_DEFAULT = "/HavenWebWorker1.4.12.js";
+LibraryUtils.WORKER_DIST_PATH_DEFAULT = "/HavenWebWorker1.4.16.js";
 LibraryUtils.WORKER_DIST_PATH = LibraryUtils.WORKER_DIST_PATH_DEFAULT;
 
 module.exports = LibraryUtils;
