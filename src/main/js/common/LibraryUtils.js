@@ -38,7 +38,7 @@ class LibraryUtils {
     
     // load module
     delete LibraryUtils.WASM_MODULE;
-  //  LibraryUtils.WASM_MODULE = require("../../../../dist/haven_offshore1.4.22_keys")();
+  //  LibraryUtils.WASM_MODULE = require("../../../../dist/haven_offshore1.4.40_keys")();
     return new Promise(function(resolve, reject) {
       LibraryUtils.WASM_MODULE.then(module => {
         LibraryUtils.WASM_MODULE = module
@@ -63,7 +63,7 @@ class LibraryUtils {
     
     // load module
     delete LibraryUtils.WASM_MODULE;
-    LibraryUtils.WASM_MODULE = require("../../../../dist/haven_offshore1.4.22")();
+    LibraryUtils.WASM_MODULE = require("../../../../dist/haven_offshore1.4.40")();
     return new Promise(function(resolve, reject) {
       LibraryUtils.WASM_MODULE.then(module => {
         LibraryUtils.WASM_MODULE = module
@@ -122,15 +122,15 @@ class LibraryUtils {
   }
   
   /**
-   * Set the path to load HsavenWebWorker.dist.js when running this library in
-   * a web worker (defaults to "/HavenWebWorker1.4.22.dist.js").
+   * Set the path to load HavenWebWorker1.4.40.dist.js when running this library in
+   * a web worker (defaults to "/HavenWebWorker1.4.40.dist.js").
    * 
-   * @param {string} workerDistPath - path to load HavenWebWorker1.4.22.dist.js
+   * @param {string} workerDistPath - path to load HavenWebWorker1.4.40.dist.js
    */
   static setWorkerDistPath(workerDistPath) {
-    let path = workerDistPath ? workerDistPath : LibraryUtils.WORKER_DIST_PATH_DEFAULT;
-    if (path !== LibraryUtils.WORKER_DIST_PATH) delete LibraryUtils.WORKER;
-    LibraryUtils.WORKER_DIST_PATH = path; 
+    let path = workerDistPath ? workerDistPath : LibraryUtils.WEB_WORKER_DIST_PATH_DEFAULT;
+    if (path !== LibraryUtils.WEB_WORKER_DIST_PATH) delete LibraryUtils.WORKER;
+    LibraryUtils.WEB_WORKER_DIST_PATH = path; 
   }
   
   /**
@@ -140,9 +140,18 @@ class LibraryUtils {
    */
   static getWorker() {
     
+    // tiny wrapper to make webworker work in worker_threads nodejs
+    const Worker = require("web-worker");
+
+
+
     // one time initialization
     if (!LibraryUtils.WORKER) {
-      LibraryUtils.WORKER = new Worker(LibraryUtils.WORKER_DIST_PATH);
+
+      // here we distinguihs between our two different workers one for, one for node
+      const workerPath = GenUtils.isBrowser() ? LibraryUtils.WEB_WORKER_DIST_PATH : LibraryUtils.WORKER_THREAD_DIST_PATH;
+
+      LibraryUtils.WORKER = new Worker(workerPath);
       LibraryUtils.WORKER_OBJECTS = {};  // store per object running in the worker
       
       // catch worker messages
@@ -185,7 +194,20 @@ class LibraryUtils {
   }
 }
 
-LibraryUtils.WORKER_DIST_PATH_DEFAULT = "/HavenWebWorker1.4.22.js";
-LibraryUtils.WORKER_DIST_PATH = LibraryUtils.WORKER_DIST_PATH_DEFAULT;
+LibraryUtils.WEB_WORKER_DIST_PATH_DEFAULT =  "/HavenWebWorker1.4.40.js";
+LibraryUtils.WEB_WORKER_DIST_PATH = LibraryUtils.WEB_WORKER_DIST_PATH_DEFAULT;
+LibraryUtils.WORKER_THREAD_DIST_PATH_DEFAULT =  "../../../../dist/HavenWorkerThread1.4.40.js";
+LibraryUtils.WORKER_THREAD_DIST_PATH = LibraryUtils.WORKER_THREAD_DIST_PATH_DEFAULT;
+
+
+   // when we are in nodejs env, set correct path to web worker
+   if (!GenUtils.isBrowser()) {
+
+    const path = require("path");
+    const workerPath = path.join(__dirname, LibraryUtils.WORKER_THREAD_DIST_PATH)
+    LibraryUtils.WORKER_THREAD_DIST_PATH = workerPath;
+  
+  }
+
 
 module.exports = LibraryUtils;
