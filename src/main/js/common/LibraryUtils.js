@@ -38,7 +38,7 @@ class LibraryUtils {
     
     // load module
     delete LibraryUtils.WASM_MODULE;
-  //  LibraryUtils.WASM_MODULE = require("../../../../dist/haven_offshore1.4.40_keys")();
+  //  LibraryUtils.WASM_MODULE = require("../../../../dist/haven_offshore1.4.43_keys")();
     return new Promise(function(resolve, reject) {
       LibraryUtils.WASM_MODULE.then(module => {
         LibraryUtils.WASM_MODULE = module
@@ -63,7 +63,7 @@ class LibraryUtils {
     
     // load module
     delete LibraryUtils.WASM_MODULE;
-    LibraryUtils.WASM_MODULE = require("../../../../dist/haven_offshore1.4.40")();
+    LibraryUtils.WASM_MODULE = require("../../../../dist/haven_offshore1.4.43")();
     return new Promise(function(resolve, reject) {
       LibraryUtils.WASM_MODULE.then(module => {
         LibraryUtils.WASM_MODULE = module
@@ -122,10 +122,10 @@ class LibraryUtils {
   }
   
   /**
-   * Set the path to load HavenWebWorker1.4.40.dist.js when running this library in
-   * a web worker (defaults to "/HavenWebWorker1.4.40.dist.js").
+   * Set the path to load HavenWebWorker1.4.43.dist.js when running this library in
+   * a web worker (defaults to "/HavenWebWorker1.4.43.dist.js").
    * 
-   * @param {string} workerDistPath - path to load HavenWebWorker1.4.40.dist.js
+   * @param {string} workerDistPath - path to load HavenWebWorker1.4.43.dist.js
    */
   static setWorkerDistPath(workerDistPath) {
     let path = workerDistPath ? workerDistPath : LibraryUtils.WEB_WORKER_DIST_PATH_DEFAULT;
@@ -194,9 +194,9 @@ class LibraryUtils {
   }
 }
 
-LibraryUtils.WEB_WORKER_DIST_PATH_DEFAULT =  "/HavenWebWorker1.4.40.js";
+LibraryUtils.WEB_WORKER_DIST_PATH_DEFAULT =  "/HavenWebWorker1.4.43.js";
 LibraryUtils.WEB_WORKER_DIST_PATH = LibraryUtils.WEB_WORKER_DIST_PATH_DEFAULT;
-LibraryUtils.WORKER_THREAD_DIST_PATH_DEFAULT =  "../../../../dist/HavenWorkerThread1.4.40.js";
+LibraryUtils.WORKER_THREAD_DIST_PATH_DEFAULT =  "../../../../dist/HavenWorkerThread1.4.43.js";
 LibraryUtils.WORKER_THREAD_DIST_PATH = LibraryUtils.WORKER_THREAD_DIST_PATH_DEFAULT;
 
 
