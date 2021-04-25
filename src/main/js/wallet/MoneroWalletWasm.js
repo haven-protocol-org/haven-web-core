@@ -2042,11 +2042,11 @@ class MoneroWalletWasmProxy extends MoneroWallet {
   async setDaemonConnection(uriOrRpcConnection, username, password) {
     if (!uriOrRpcConnection) await this._invokeWorker("setDaemonConnection");
     else {
-      let connection = uriOrRpcConnection instanceof MoneroRpcConnection? uriOrRpcConnection : new MoneroRpcConnection({uri: uriOrRpcConnection, username: username, password: password});
+      let connection = uriOrRpcConnection instanceof MoneroRpcConnection? uriOrRpcConnection : new MoneroRpcConnection(uriOrRpcConnection, username, password);
       await this._invokeWorker("setDaemonConnection", connection.getConfig());
     }
-  }
-  
+  }  
+
   async getDaemonConnection() {
     let rpcConfig = await this._invokeWorker("getDaemonConnection");
     return rpcConfig ? new MoneroRpcConnection(rpcConfig) : undefined;
