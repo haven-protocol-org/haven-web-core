@@ -271,7 +271,7 @@ EMCC_LINKER_FLAGS_BASE
 --bind -s MODULARIZE=1 \
 -s 'EXPORT_NAME=\"haven_javascript\"' \
 -s ERROR_ON_UNDEFINED_SYMBOLS=0 \
--s ASSERTIONS=1 \
+-s ASSERTIONS=0 \
 -s EXIT_RUNTIME=0 \
 -s PRECISE_F32=1 \
 -s EXCEPTION_DEBUG=0 \
@@ -281,6 +281,7 @@ EMCC_LINKER_FLAGS_BASE
 -s RESERVED_FUNCTION_POINTERS=5 \
 -s EXTRA_EXPORTED_RUNTIME_METHODS='[\"UTF8ToString\",\"stringToUTF8\",\"lengthBytesUTF8\",\"intArrayToString\",\"makeBigInt\",\"getTempRet0\",\"addFunction\"]' \
 -s WASM=1 \
+-s 'ENVIRONMENT=\"webview\"' \
 -s ALLOW_MEMORY_GROWTH=1 \
 -g0 \ "
     # • Disabling exception catching does not introduce silent failures 
