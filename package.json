@@ -1,7 +1,7 @@
 {
   "name": "haven-wallet-core",
   "description": "A JavaScript library for using Haven",
-  "version": "1.4.45",
+  "version": "1.4.48",
   "license": "MIT",
   "repository": "https://github.com/haven-protocol-org/haven-web-core",
   "private": false,
@@ -37,7 +37,7 @@
     "web-worker": "git://github.com/haven-protocol-org/web-worker.git"
   },
   "devDependencies": {
-    "@babel/core": "^7.13.16",
+    "@babel/core": "^7.14.0",
     "babel-core": "6.26.3",
     "babel-loader": "8.0.2",
     "eslint": "5.6.0",
