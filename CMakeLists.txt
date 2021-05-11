@@ -282,7 +282,6 @@ EMCC_LINKER_FLAGS_BASE
 -s RESERVED_FUNCTION_POINTERS=5 \
 -s EXTRA_EXPORTED_RUNTIME_METHODS='[\"UTF8ToString\",\"stringToUTF8\",\"lengthBytesUTF8\",\"intArrayToString\",\"makeBigInt\",\"getTempRet0\",\"addFunction\"]' \
 -s WASM=1 \
--s 'ENVIRONMENT=\"webview\"' \
 -s ALLOW_MEMORY_GROWTH=1 \
 -g0 \ "
     # • Disabling exception catching does not introduce silent failures 
