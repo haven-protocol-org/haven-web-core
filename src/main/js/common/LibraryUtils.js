@@ -122,10 +122,10 @@ class LibraryUtils {
   }
   
   /**
-   * Set the path to load HavenWebWorker1.4.48.dist.js when running this library in
-   * a web worker (defaults to "/HavenWebWorker1.4.48.dist.js").
+   * Set the path to load HavenWebWorker1.4.49.dist.js when running this library in
+   * a web worker (defaults to "/HavenWebWorker1.4.49.dist.js").
    * 
-   * @param {string} workerDistPath - path to load HavenWebWorker1.4.48.dist.js
+   * @param {string} workerDistPath - path to load HavenWebWorker1.4.49.dist.js
    */
   static setWorkerDistPath(workerDistPath) {
     let path = workerDistPath ? workerDistPath : LibraryUtils.WEB_WORKER_DIST_PATH_DEFAULT;
@@ -148,10 +148,7 @@ class LibraryUtils {
     // one time initialization
     if (!LibraryUtils.WORKER) {
 
-      // here we distinguihs between our two different workers one for, one for node
-      const workerPath = GenUtils.isBrowser() ? LibraryUtils.WEB_WORKER_DIST_PATH : LibraryUtils.WORKER_THREAD_DIST_PATH;
-
-      LibraryUtils.WORKER = new Worker(workerPath);
+      LibraryUtils.WORKER = new Worker(LibraryUtils.WORKER_DIST_PATH);
       LibraryUtils.WORKER_OBJECTS = {};  // store per object running in the worker
       
       // catch worker messages
@@ -194,20 +191,14 @@ class LibraryUtils {
   }
 }
 
-LibraryUtils.WEB_WORKER_DIST_PATH_DEFAULT =  "/HavenWebWorker1.4.48.js";
-LibraryUtils.WEB_WORKER_DIST_PATH = LibraryUtils.WEB_WORKER_DIST_PATH_DEFAULT;
-LibraryUtils.WORKER_THREAD_DIST_PATH_DEFAULT =  "../../../../dist/HavenWorkerThread1.4.48.js";
-LibraryUtils.WORKER_THREAD_DIST_PATH = LibraryUtils.WORKER_THREAD_DIST_PATH_DEFAULT;
+LibraryUtils.WORKER_DIST_PATH_DEFAULT =  "./HavenWebWorker1.4.49.js";
+LibraryUtils.WORKER_NODE_DIST_PATH_DEFAULT = "./MoneroWebWorker.js";
+LibraryUtils.WORKER_DIST_PATH = GenUtils.isBrowser() ? LibraryUtils.WORKER_DIST_PATH_DEFAULT : 
+function() {
 
-
-   // when we are in nodejs env, set correct path to web worker
-   if (!GenUtils.isBrowser()) {
-
-    const path = require("path");
-    const workerPath = path.join(__dirname, LibraryUtils.WORKER_THREAD_DIST_PATH)
-    LibraryUtils.WORKER_THREAD_DIST_PATH = workerPath;
-  
-  }
+  const path = require("path");
+  return path.join(__dirname, LibraryUtils.WORKER_THREAD_DIST_PATH_DEFAULT);
+}();
 
 
 module.exports = LibraryUtils;
