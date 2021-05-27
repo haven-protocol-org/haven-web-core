@@ -38,7 +38,7 @@ class LibraryUtils {
     
     // load module
     delete LibraryUtils.WASM_MODULE;
-  //  LibraryUtils.WASM_MODULE = require("../../../../dist/haven_offshore1.4.49_keys")();
+  //  LibraryUtils.WASM_MODULE = require("../../../../dist/haven_offshore1.4.50_keys")();
     return new Promise(function(resolve, reject) {
       LibraryUtils.WASM_MODULE.then(module => {
         LibraryUtils.WASM_MODULE = module
@@ -63,7 +63,7 @@ class LibraryUtils {
     
     // load module
     delete LibraryUtils.WASM_MODULE;
-    LibraryUtils.WASM_MODULE = require("../../../../dist/haven_offshore1.4.49")();
+    LibraryUtils.WASM_MODULE = require("../../../../dist/haven_offshore1.4.50")();
     return new Promise(function(resolve, reject) {
       LibraryUtils.WASM_MODULE.then(module => {
         LibraryUtils.WASM_MODULE = module
@@ -122,10 +122,10 @@ class LibraryUtils {
   }
   
   /**
-   * Set the path to load HavenWebWorker1.4.49.dist.js when running this library in
-   * a web worker (defaults to "/HavenWebWorker1.4.49.dist.js").
+   * Set the path to load HavenWebWorker1.4.50.dist.js when running this library in
+   * a web worker (defaults to "/HavenWebWorker1.4.50.dist.js").
    * 
-   * @param {string} workerDistPath - path to load HavenWebWorker1.4.49.dist.js
+   * @param {string} workerDistPath - path to load HavenWebWorker1.4.50.dist.js
    */
   static setWorkerDistPath(workerDistPath) {
     let path = workerDistPath ? workerDistPath : LibraryUtils.WEB_WORKER_DIST_PATH_DEFAULT;
@@ -191,13 +191,13 @@ class LibraryUtils {
   }
 }
 
-LibraryUtils.WORKER_DIST_PATH_DEFAULT =  "./HavenWebWorker1.4.49.js";
+LibraryUtils.WORKER_DIST_PATH_DEFAULT =  "./HavenWebWorker1.4.50.js";
 LibraryUtils.WORKER_NODE_DIST_PATH_DEFAULT = "./MoneroWebWorker.js";
 LibraryUtils.WORKER_DIST_PATH = GenUtils.isBrowser() ? LibraryUtils.WORKER_DIST_PATH_DEFAULT : 
 function() {
 
   const path = require("path");
-  return path.join(__dirname, LibraryUtils.WORKER_THREAD_DIST_PATH_DEFAULT);
+  return path.join(__dirname, LibraryUtils.WORKER_NODE_DIST_PATH_DEFAULT);
 }();
 
 
