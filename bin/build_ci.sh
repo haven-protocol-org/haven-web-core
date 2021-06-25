@@ -16,9 +16,17 @@
 
 # build haven offshore translations directory
 cd ./external/haven-web-cpp/external/haven-offshore || exit 1
+git checkout bugfix/wallet_api
+git pull
+./apply-patch.sh
+cd monero 
+mkdir -p build/release
+cd build/release
+cmake ../..
+make obj_common -j3
 # HOST_NCORES=$(nproc 2>/dev/null || shell nproc 2>/dev/null || sysctl -n hw.ncpu 2>/dev/null || echo 1)
-./build-haven.sh -j3		# don't exit because this will build translations directory even if build fails
-cd ../../../../ || exit 1
+#./build-haven.sh -j3		# don't exit because this will build translations directory even if build fails
+cd ../../../../../../../ || exit 1
 
 # build boost
 ./bin/build_boost_emscripten.sh || exit 1
