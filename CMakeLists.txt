@@ -36,7 +36,7 @@ include_directories("${HAVEN_CPP}/external/libsodium/include/sodium")
 # haven-offshore
 ##################
 
-set(HAVEN_OFFSHORE "${HAVEN_CPP}/external/haven-offshore/monero")
+set(HAVEN_OFFSHORE "${HAVEN_CPP}/external/haven")
 set(HAVEN_OFFSHORE_SRC "${HAVEN_OFFSHORE}/src")
 
 # headers
@@ -67,7 +67,7 @@ include_directories("${HAVEN_OFFSHORE}/contrib/epee/include/net")
 #include_directories("${HAVEN_OFFSHORE_SRC}/wallet/api")
 
 if (CMAKE_HOST_APPLE)
-    include_directories("${HAVEN_OFFSHORE}/build/Darwin/release-v0.16/release/translations")
+    include_directories("${HAVEN_OFFSHORE}/build/Darwin/develop/release/translations")
 else()
     include_directories("${HAVEN_OFFSHORE}/build/release/translations")
 endif()
@@ -272,18 +272,19 @@ EMCC_LINKER_FLAGS_BASE
 --bind -s MODULARIZE=1 \
 -s 'EXPORT_NAME=\"haven_javascript\"' \
 -s ERROR_ON_UNDEFINED_SYMBOLS=0 \
--s ASSERTIONS=0 \
+-s ASSERTIONS=1 \
 -s EXIT_RUNTIME=0 \
 -s PRECISE_F32=1 \
--s EXCEPTION_DEBUG=0 \
--s DEMANGLE_SUPPORT=0 \
+-s EXCEPTION_DEBUG=1 \
+-s DEMANGLE_SUPPORT=1 \
 -s NO_DYNAMIC_EXECUTION=1 \
 -s NODEJS_CATCH_EXIT=0 \
 -s RESERVED_FUNCTION_POINTERS=5 \
 -s EXPORTED_RUNTIME_METHODS='[\"UTF8ToString\",\"stringToUTF8\",\"lengthBytesUTF8\",\"intArrayToString\",\"makeBigInt\",\"getTempRet0\",\"addFunction\"]' \
 -s WASM=1 \
 -s ALLOW_MEMORY_GROWTH=1 \
--g0 \ "
+-s SAFE_HEAP=0 \
+-g \ "
     # • Disabling exception catching does not introduce silent failures 
     # • Probably don't need PRECISE_F32 but wouldn't want to not use it
     #

@@ -1,7 +1,7 @@
 {
   "name": "haven-wallet-core",
   "description": "A JavaScript library for using Haven",
-  "version": "1.4.51",
+  "version": "1.4.54",
   "license": "MIT",
   "repository": "https://github.com/haven-protocol-org/haven-web-core",
   "private": false,
@@ -14,9 +14,6 @@
     "test": "node --experimental-wasm-threads --experimental-wasm-bulk-memory node_modules/mocha/bin/_mocha 'src/test/TestAll' --timeout 900000000 --exit",
     "debug-test": "node --experimental-wasm-threads --inspect-brk --experimental-wasm-bulk-memory node_modules/mocha/bin/_mocha 'src/test/TestAll' --timeout 900000000 --exit",
     "jsdoc": "jsdoc -r -c ./configs/jsdoc_config.js -d ./docs"
-  },
-  "engines": {
-    "node": "7.4.0"
   },
   "dependencies": {
     "ajv": "^6.12.6",
