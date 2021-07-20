@@ -1,7 +1,7 @@
 {
   "name": "haven-wallet-core",
   "description": "A JavaScript library for using Haven",
-  "version": "1.4.54",
+  "version": "1.4.57",
   "license": "MIT",
   "repository": "https://github.com/haven-protocol-org/haven-web-core",
   "private": false,
