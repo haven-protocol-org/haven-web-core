@@ -21,8 +21,8 @@ declare class MoneroTxConfig {
      * @param {MoneroTxConfig|object} config - configures the transaction to create (optional)
      * @param {string} config.address - single destination address
      * @param {BigInteger} config.amount - single destination amount
-     * @param {string} config.currency - used currency
-     * @param {HavenTxType} config.txType - determines type of exchange/transfer
+     * @param {string} config.sourceCurrency - used source currency
+     * @param {string} config.destinationCurrency - used destination currency
      * @param {int} config.accountIndex - source account index to transfer funds from
      * @param {int} config.subaddressIndex - source subaddress index to transfer funds from
      * @param {int[]} config.subaddressIndices - source subaddress indices to transfer funds from
