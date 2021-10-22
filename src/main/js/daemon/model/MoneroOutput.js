@@ -56,6 +56,15 @@ class MoneroOutput {
     this.state.amount = amount;
     return this;
   }
+
+  getCurrency() {
+    return this.state.currency;
+  }
+
+  setCurrency(currency) {
+    this.state.currency = currency;
+    return this;
+  }
   
   getIndex() {
     return this.state.index;

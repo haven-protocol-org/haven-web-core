@@ -1681,8 +1681,8 @@ class MoneroWalletWasm extends MoneroWalletKeys {
             function(height, startHeight, endHeight, percentDone, message) { that._wasmListener.onSyncProgress(height, startHeight, endHeight, percentDone, message); },
             function(height) { that._wasmListener.onNewBlock(height); },
             function(newBalanceStr, newUnlockedBalanceStr, assetType) { that._wasmListener.onBalancesChanged(newBalanceStr, newUnlockedBalanceStr, assetType); },
-            function(height, txHash, amountStr, accountIdx, subaddressIdx, version, unlockHeight, isLocked) { that._wasmListener.onOutputReceived(height, txHash, amountStr, accountIdx, subaddressIdx, version, unlockHeight, isLocked); },
-            function(height, txHash, amountStr, accountIdx, subaddressIdx, version, unlockHeight, isLocked) { that._wasmListener.onOutputReceived(height, txHash, amountStr, accountIdx, subaddressIdx, version, unlockHeight, isLocked); },
+            function(height, txHash, amountStr, assetType, accountIdx, subaddressIdx, version, unlockHeight, isLocked) { that._wasmListener.onOutputReceived(height, txHash, amountStr, assetType, accountIdx, subaddressIdx, version, unlockHeight, isLocked); },
+            function(height, txHash, amountStr, assetType, accountIdx, subaddressIdx, version, unlockHeight, isLocked) { that._wasmListener.onOutputReceived(height, txHash, amountStr, assetType, accountIdx, subaddressIdx, version, unlockHeight, isLocked); },
         )} else {
         that._wasmListenerHandle = that._module.set_listener(that._cppAddress, that._wasmListenerHandle, undefined, undefined, undefined, undefined, undefined);
       }
@@ -1828,13 +1828,14 @@ class WalletWasmListener {
     for (let listener of this._wallet.getListeners()) listener.onBalancesChanged(BigInteger.parse(newBalanceStr), BigInteger.parse(newUnlockedBalanceStr), assetType);
   }
   
-  onOutputReceived(height, txHash, amountStr, accountIdx, subaddressIdx, version, unlockHeight, isLocked) {
+  onOutputReceived(height, txHash, amountStr, assetType, accountIdx, subaddressIdx, version, unlockHeight, isLocked) {
     
     // build received output
     let output = new MoneroOutputWallet();
     output.setAmount(BigInteger.parse(amountStr));
     output.setAccountIndex(accountIdx);
     output.setSubaddressIndex(subaddressIdx);
+    output.setCurrency(assetType);
     let tx = new MoneroTxWallet();
     tx.setHash(txHash);
     tx.setVersion(version);
@@ -1859,13 +1860,14 @@ class WalletWasmListener {
     for (let listener of this._wallet.getListeners()) listener.onOutputReceived(tx.getOutputs()[0]);
   }
   
-  onOutputSpent(height, txHash, amountStr, accountIdx, subaddressIdx, version) {
+  onOutputSpent(height, txHash, amountStr, assetType, accountIdx, subaddressIdx, version) {
     
     // build spent output
     let output = new MoneroOutputWallet();
     output.setAmount(BigInteger.parse(amountStr));
     output.setAccountIndex(accountIdx);
     output.setSubaddressIndex(subaddressIdx);
+    utput.setCurrency(assetType);
     let tx = new MoneroTxWallet();
     tx.setHash(txHash);
     tx.setVersion(version);
