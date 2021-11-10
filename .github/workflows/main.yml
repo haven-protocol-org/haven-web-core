@@ -26,8 +26,8 @@ jobs:
         git clone https://github.com/emscripten-core/emsdk.git
         cd emsdk
         git pull
-        ./emsdk install latest-upstream
-        ./emsdk activate latest-upstream
+        ./emsdk install 2.0.31
+        ./emsdk activate 2.0.31
 
     - name: Install Haven dependencies
       run: |
