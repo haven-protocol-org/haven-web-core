@@ -16,7 +16,7 @@
 
 # build haven offshore translations directory
 cd ./external/haven-web-cpp/external/haven || exit 1
-git checkout refactoring
+git checkout develop
 git pull
 mkdir -p build/release
 cd build/release
