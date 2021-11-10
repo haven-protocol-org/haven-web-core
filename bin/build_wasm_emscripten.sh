@@ -9,9 +9,8 @@ export BOOST_LIB=$BOOSTROOT/lib
 export BOOST_IGNORE_SYSTEM_PATHS=1
 export BOOST_LIBRARYDIR=$BOOSTROOT/lib
 
-# bump version
-NPM_VERSION=$(npm --no-git-tag-version version patch)
-NPM_VERSION=$(echo $NPM_VERSION | cut -c 2-)
+# get current package version
+NPM_VERSION=$(node -p -e "require('./package.json').version")
 
 
 # export build names for versioning
