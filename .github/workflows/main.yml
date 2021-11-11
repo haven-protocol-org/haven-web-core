@@ -59,7 +59,10 @@ jobs:
         name: libs
         path: dist/*
     - name: Publish
-      uses: JS-DevTools/npm-publish@v1
-      with:
-        registry: https://registry.npmjs.org/
-        token: ${{ secrets.NPM_TOKEN }}r
+    - uses: actions/setup-node@v1
+        with:
+          node-version: 14
+      - run: npm publish
+      - env:
+        NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+
