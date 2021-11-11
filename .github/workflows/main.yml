@@ -9,6 +9,7 @@ jobs:
       CPPZMQ_VERSION: v4.3.0
       CFLAGS: -fPIC
       CXXFLAGS: -fPIC
+      NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
     runs-on: ubuntu-18.04
     steps:
     - uses: actions/checkout@v1
@@ -63,6 +64,3 @@ jobs:
       with:
         node-version: 14
     - run: npm publish
-    - env:
-      NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
-
