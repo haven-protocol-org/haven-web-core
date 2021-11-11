@@ -60,9 +60,9 @@ jobs:
         path: dist/*
     - name: Publish
     - uses: actions/setup-node@v1
-        with:
-          node-version: 14
-        run: npm publish
-        env:
-          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+      with:
+        node-version: 14
+      run: npm publish
+      env:
+        NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
 
