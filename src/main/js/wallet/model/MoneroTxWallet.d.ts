@@ -38,6 +38,8 @@ declare class MoneroTxWallet extends MoneroTx {
     setNumDummyOutputs(numDummyOutputs: any): MoneroTxWallet;
     getExtraHex(): any;
     setExtraHex(extraHex: any): MoneroTxWallet;
+    toString(indent?: number, oneLine?: boolean): string;
+    toCsv(fields?: string[]): string[];
 }
 import MoneroTx = require("../../daemon/model/MoneroTx");
 import BigInteger = require("../../common/biginteger");

@@ -62,20 +62,6 @@ class MoneroTxWallet extends MoneroTx {
     if (state.changeAmount !== undefined && !(state.changeAmount instanceof BigInteger)) state.changeAmount = BigInteger.parse(state.changeAmount);
   }
   
-  toJson() {
-    let json = Object.assign({}, this.state, super.toJson()); // merge json onto inherited state
-    if (this.getIncomingTransfers()) {
-      json.incomingTransfers = [];
-      for (let incomingTransfer of this.getIncomingTransfers()) json.incomingTransfers.push(incomingTransfer.toJson());
-    }
-    if (this.getOutgoingTransfer()) json.outgoingTransfer = this.getOutgoingTransfer().toJson();
-    if (this.getInputSum()) json.inputSum = this.getInputSum().toString();
-    if (this.getOutputSum()) json.outputSum = this.getOutputSum().toString();
-    if (this.getChangeAmount()) json.changeAmount = this.getChangeAmount().toString();
-    delete json.block;  // do not serialize parent block
-    delete json.txSet;  // do not serialize parent tx set
-    return json;
-  }
   
   getTxSet() {
     return this.state.txSet;
@@ -338,7 +324,7 @@ class MoneroTxWallet extends MoneroTx {
     return this;  // for chaining
   }
   
-  toString(indent = 0, oneLine) {
+  toString(indent = 0, oneLine = false) {
     let str = "";
     
     // represent tx with one line string
@@ -378,6 +364,92 @@ class MoneroTxWallet extends MoneroTx {
     str += GenUtils.kvLine("Num dummy outputs", this.getNumDummyOutputs(), indent);
     str += GenUtils.kvLine("Extra hex", this.getExtraHex(), indent);
     return str.slice(0, str.length - 1);  // strip last newline
+  }
+
+  //returns an array (response) of "lines of" strings
+  //the fields names can be specified and their order will be preserved
+  toCsv(fields = []){
+    if( fields.length < 1){
+      fields = ["Height","UnlockHeight","Timestamp","Hash","Confirmed","Locked","Version","Mined","PaymentID","Key","InOut","PaymentID","Confirmations","Fee","Amount","TxAmount","Currency","Address"];
+    }
+    let response = [];
+
+    var incomingTransfers = this.getIncomingTransfers();
+    if (incomingTransfers) {
+      for (let i = 0; i < incomingTransfers.length; i++) {
+
+        let csvdata = {};
+        csvdata["Height"] = this.getHeight();
+        csvdata["UnlockHeight"] = this.getUnlockHeight();
+        csvdata["Timestamp"] = (this.isConfirmed() ? this.getBlock().getTimestamp() : this.getReceivedTimestamp());
+        csvdata["Hash"] = this.getHash();
+        csvdata["Confirmed"] = (this.isConfirmed() ? "Y" : "N");
+        csvdata["Locked"] = (this.isLocked() ? "Y" : "N");
+        csvdata["Version"] = this.getVersion();
+        csvdata["Mined"] = (this.isMinerTx() ? "Y" : "N");
+        csvdata["PaymentID"] = this.getPaymentId();
+        csvdata["Key"] = this.getKey();
+        csvdata["InOut"] = "In";
+        csvdata["PaymentID"] = this.getPaymentId();
+        csvdata["Confirmations"] = this.getNumConfirmations();
+        csvdata["Fee"] = this.getFee();
+        csvdata["Amount"] = this.getIncomingAmount().toString();
+        csvdata["Currency"] = incomingTransfers[i].getCurrency().toString();
+        csvdata["Address"] = incomingTransfers[i].getAddress();
+        
+        let ordereddata = [];
+        for (let f = 0; f < fields.length; f++) {
+          ordereddata.push( csvdata[ fields[f] ] );
+        }
+        response.push( ordereddata.join(',') );
+      }
+    }
+
+    var outgoingTransfer = this.getOutgoingTransfer();
+    if (outgoingTransfer) {
+
+        let csvdata = {};
+        csvdata["Height"] = this.getHeight();
+        csvdata["UnlockHeight"] = this.getUnlockHeight();
+        csvdata["Timestamp"] = (this.isConfirmed() ? this.getBlock().getTimestamp() : this.getReceivedTimestamp());
+        csvdata["Hash"] = this.getHash();
+        csvdata["Confirmed"] = (this.isConfirmed() ? "Y" : "N");
+        csvdata["Locked"] = (this.isLocked() ? "Y" : "N");
+        csvdata["Version"] = this.getVersion();
+        csvdata["Mined"] = (this.isMinerTx() ? "Y" : "N");
+        csvdata["PaymentID"] = (this.getPaymentId() ? this.getPaymentId().toString() : "");
+        csvdata["Key"] = (this.getKey() ? this.getKey().toString() : "");
+        csvdata["InOut"] = "Out";
+        csvdata["Confirmations"] = this.getNumConfirmations();
+        csvdata["Fee"] = this.getFee();
+        csvdata["Amount"] = this.getOutgoingAmount().toString();
+        csvdata["Currency"] = outgoingTransfer.getCurrency().toString();
+        csvdata["Address"] = "";
+        
+        let ordereddata = [];
+        for (let f = 0; f < fields.length; f++) {
+          ordereddata.push( csvdata[ fields[f] ] );
+        }
+        response.push( ordereddata.join(',') );
+
+    }
+
+    return response;
+  }
+
+  toJson() {
+    let json = Object.assign({}, this.state, super.toJson()); // merge json onto inherited state
+    if (this.getIncomingTransfers()) {
+      json.incomingTransfers = [];
+      for (let incomingTransfer of this.getIncomingTransfers()) json.incomingTransfers.push(incomingTransfer.toJson());
+    }
+    if (this.getOutgoingTransfer()) json.outgoingTransfer = this.getOutgoingTransfer().toJson();
+    if (this.getInputSum()) json.inputSum = this.getInputSum().toString();
+    if (this.getOutputSum()) json.outputSum = this.getOutputSum().toString();
+    if (this.getChangeAmount()) json.changeAmount = this.getChangeAmount().toString();
+    delete json.block;  // do not serialize parent block
+    delete json.txSet;  // do not serialize parent tx set
+    return json;
   }
   
   // private helper to merge transfers
