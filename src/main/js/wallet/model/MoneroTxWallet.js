@@ -366,9 +366,10 @@ class MoneroTxWallet extends MoneroTx {
     return str.slice(0, str.length - 1);  // strip last newline
   }
 
-  //returns an array (response) of "lines of" strings
-  //the fields names can be specified and their order will be preserved
-  toCsv(fields = []){
+  // I'm sure there's better name for this... but its used for csv output so
+  // outputs an object with string representation of the tx data in an array of js objects
+  // taking in a list of fields to return
+  toCsvObj(fields = []){
     if( fields.length < 1){
       fields = ["Height","UnlockHeight","Timestamp","Hash","Confirmed","Locked","Version","Mined","PaymentID","Key","InOut","PaymentID","Confirmations","Fee","Amount","TxAmount","Currency","Address"];
     }
@@ -392,16 +393,16 @@ class MoneroTxWallet extends MoneroTx {
         csvdata["InOut"] = "In";
         csvdata["PaymentID"] = this.getPaymentId();
         csvdata["Confirmations"] = this.getNumConfirmations();
-        csvdata["Fee"] = this.getFee();
+        csvdata["Fee"] = 0;// fees on corresponding outgoing line this.getFee();
         csvdata["Amount"] = this.getIncomingAmount().toString();
         csvdata["Currency"] = incomingTransfers[i].getCurrency().toString();
         csvdata["Address"] = incomingTransfers[i].getAddress();
         
-        let ordereddata = [];
+        let fielddata = {};
         for (let f = 0; f < fields.length; f++) {
-          ordereddata.push( csvdata[ fields[f] ] );
+          fielddata[ fields[f] ] = csvdata[ fields[f] ];
         }
-        response.push( ordereddata.join(',') );
+        response.push( fielddata );
       }
     }
 
@@ -426,15 +427,34 @@ class MoneroTxWallet extends MoneroTx {
         csvdata["Currency"] = outgoingTransfer.getCurrency().toString();
         csvdata["Address"] = "";
         
-        let ordereddata = [];
+        let fielddata = {};
         for (let f = 0; f < fields.length; f++) {
-          ordereddata.push( csvdata[ fields[f] ] );
+          fielddata[ fields[f] ] = csvdata[ fields[f] ];
         }
-        response.push( ordereddata.join(',') );
+        response.push( fielddata );
 
     }
 
     return response;
+  }
+
+  //returns an array (response) of "lines of" strings with commas seperating them
+  //the fields names can be specified and their order will be preserved
+  toCsv(fields = []){
+
+    let csvObjArray = this.toCsvObj(fields);
+    let response = [];
+    for (let i = 0; i < csvObjArray.length; i++) {
+      let ordereddata = {};
+      for (let f = 0; f < fields.length; f++) {
+        ordereddata.push( csvObjArray[ fields[f] ] );
+      }
+      response.push( ordereddata.join(',') );
+      
+    }
+
+    return response;
+
   }
 
   toJson() {

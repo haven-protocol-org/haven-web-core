@@ -39,6 +39,7 @@ declare class MoneroTxWallet extends MoneroTx {
     getExtraHex(): any;
     setExtraHex(extraHex: any): MoneroTxWallet;
     toString(indent?: number, oneLine?: boolean): string;
+    toCsvObj(fields?: string[]): any;
     toCsv(fields?: string[]): string[];
 }
 import MoneroTx = require("../../daemon/model/MoneroTx");
