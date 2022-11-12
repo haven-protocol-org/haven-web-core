@@ -767,6 +767,17 @@ class MoneroWalletWasm extends MoneroWalletKeys {
       });
     });
   }
+
+  async getCollateralRequirements(sourceAssetType, destinationAssetType, amount) {
+    let that = this;
+    return that._module.queueTask(async function() {
+      that._assertNotClosed();
+      return new Promise(function(resolve, reject) {
+        let callbackFn = function() { resolve(); }
+        that._module.getCollateralRequirements(that._cppAddress, sourceAssetType, destinationAssetType, amount.toString(), callbackFn);
+      });
+    });
+  }
   
   async getBalance(accountIdx, subaddressIdx, assetType) {
     let that = this;

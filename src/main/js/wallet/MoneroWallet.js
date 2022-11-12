@@ -274,6 +274,18 @@ class MoneroWallet {
   async rescanBlockchain() {
     throw new MoneroError("Not supported");
   }
+
+  /**
+   * Get the collateral requirements of an onshore/offshore tx
+   * 
+   * @param {string} sourceAssetType - source asset type of onshore/offshore
+   * @param {string} destinationAssetType - destination asset type of onshore/offshore
+   * @param {BigIntegr string} amount - amount to onshore/offshore
+   * @return {BigInteger} required collateral for onshore/offshore tx
+   */
+  async getCollateralRequirements(sourceAssetType, destinationAssetType, amount)
+      throw new MoneroError("Not supported");
+    }
   
   /**
    * Get the balance of the wallet, account, or subaddress.
