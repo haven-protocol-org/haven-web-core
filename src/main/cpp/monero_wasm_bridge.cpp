@@ -403,7 +403,7 @@ void monero_wasm_bridge::rescan_blockchain(int handle, emscripten::val callback)
   callback();
 }
 
-void monero_wasm_bridge::get_collateral_requirements(const string& source_asset_type, const string& destination_asset_type, uint64_t amount,  emscripten::val callback) {
+void monero_wasm_bridge::get_collateral_requirements(int handle, const string& source_asset_type, const string& destination_asset_type, uint64_t amount,  emscripten::val callback) {
   monero_wallet* wallet = (monero_wallet*) handle;
   callback((long) wallet->get_collateral_requirements(source_asset_type, destination_asset_type, amount));
 }
