@@ -283,7 +283,7 @@ class MoneroWallet {
    * @param {BigIntegr string} amount - amount to onshore/offshore
    * @return {BigInteger} required collateral for onshore/offshore tx
    */
-  async getCollateralRequirements(sourceAssetType, destinationAssetType, amount)
+  async getCollateralRequirements(sourceAssetType, destinationAssetType, amount){
       throw new MoneroError("Not supported");
     }
   
