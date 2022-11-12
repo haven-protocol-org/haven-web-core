@@ -10,7 +10,7 @@ jobs:
       CFLAGS: -fPIC
       CXXFLAGS: -fPIC
       NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
-    runs-on: ubuntu-18.04
+    runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v1
       with:
@@ -59,11 +59,11 @@ jobs:
       with:
         name: libs
         path: dist/*
-    - name: Publish
-      uses: actions/setup-node@v1
-      with:
-        node-version: 14
-        registry-url: https://registry.npmjs.org/
-    - run: |
-        echo //registry.npmjs.org/:_authToken=$NPM_TOKEN > .npmrc
-        npm publish
+    # - name: Publish
+    #   uses: actions/setup-node@v1
+    #   with:
+    #     node-version: 16
+    #     registry-url: https://registry.npmjs.org/
+    # - run: |
+    #     echo //registry.npmjs.org/:_authToken=$NPM_TOKEN > .npmrc
+    #     npm publish
