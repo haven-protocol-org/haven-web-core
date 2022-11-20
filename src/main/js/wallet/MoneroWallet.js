@@ -276,6 +276,35 @@ class MoneroWallet {
   }
 
   /**
+   * Get circulating supply of all assets
+   * 
+   * @return {HavenCirculatingSupply}
+   */
+  async getCirculatingSupply(){
+    throw new MoneroError("Not supported");
+  }
+
+  /**
+   * Get block cap of latest block
+   * 
+   * @return {BigInteger} block cap
+   */
+  async getBlockCap(){
+      throw new MoneroError("Not supported");
+  }
+
+  /**
+   * Get max destination amount for tx
+   * 
+   * @param {string} sourceAssetType - source asset type
+   * @param {string} destinationAssetType - destination asset type
+   * @return {BigInteger} max destination amount
+   */
+  async getMaxDestinationAmount(sourceAssetType, destinationAssetType){
+    throw new MoneroError("Not supported");
+  }
+
+  /**
    * Get the collateral requirements of an onshore/offshore tx
    * 
    * @param {string} sourceAssetType - source asset type of onshore/offshore

@@ -575,6 +575,22 @@ self.rescanBlockchain = async function(walletId) {
   return self.WORKER_OBJECTS[walletId].rescanBlockchain();
 }
 
+self.getCirculatingSupply = async function(walletId) {
+  return (await self.WORKER_OBJECTS[walletId].getCirculatingSupply()).toJson();
+}
+
+self.getBlockCap = async function(walletId) {
+  return (await self.WORKER_OBJECTS[walletId].getBlockCap()).toString()
+}
+
+self.getMaxDestinationAmount = async function(walletId, sourceAssetType, destinationAssetType) {
+  return (await self.WORKER_OBJECTS[walletId].getMaxDestinationAmount(sourceAssetType, destinationAssetType)).toString();
+}
+
+self.getCollateralRequirements = async function(walletId, sourceAssetType, destinationAssetType, amount) {
+  return (await self.WORKER_OBJECTS[walletId].getCollateralRequirements(sourceAssetType, destinationAssetType, amount)).toString();
+}
+
 self.getBalance = async function(walletId, accountIdx, subaddressIdx, assetType) {
   return (await self.WORKER_OBJECTS[walletId].getBalance(accountIdx, subaddressIdx, assetType)).toJson();
 }

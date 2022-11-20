@@ -403,10 +403,61 @@ void monero_wasm_bridge::rescan_blockchain(int handle, emscripten::val callback)
   callback();
 }
 
-void monero_wasm_bridge::get_collateral_requirements(int handle, const string& source_asset_type, const string& destination_asset_type, uint64_t amount,  emscripten::val callback) {
+void monero_wasm_bridge::get_circulating_supply(int handle, emscripten::val callback) {
+
   monero_wallet* wallet = (monero_wallet*) handle;
-  callback((long) wallet->get_collateral_requirements(source_asset_type, destination_asset_type, amount));
+  std::vector<std::pair<std::string, std::string>> circulating_supply = wallet->get_circulating_supply();
+  std::map<std::string, std::string> circulating_supply_map(circulating_supply.begin(), circulating_supply.end());
+
+  rapidjson::Document doc;
+  doc.SetObject();
+  doc.AddMember("circulating_supply", monero_utils::to_rapidjson_val(doc.GetAllocator(), circulating_supply_map), doc.GetAllocator());
+  callback(monero_utils::serialize(doc));
+
 }
+
+void monero_wasm_bridge::get_block_cap(int handle, emscripten::val callback) {
+  monero_wallet* wallet = (monero_wallet*) handle;
+
+  rapidjson::Document doc;
+  doc.SetObject();
+  rapidjson::Value value;
+  doc.AddMember("block_cap", rapidjson::Value().SetUint64(wallet->get_block_cap()), doc.GetAllocator());
+  callback(monero_utils::serialize(doc));
+}
+
+
+void monero_wasm_bridge::get_collateral_requirements(int handle, const string& source_asset_type, const string& destination_asset_type, const string& str_amount,  emscripten::val callback) {
+  monero_wallet* wallet = (monero_wallet*) handle;
+
+  uint64_t amount = std::stoull(str_amount);
+  rapidjson::Document doc;
+  doc.SetObject();
+  rapidjson::Value value;
+
+  try {
+    doc.AddMember("collateral_requirements", rapidjson::Value().SetUint64(wallet->get_collateral_requirements(source_asset_type, destination_asset_type, amount)), doc.GetAllocator());
+    callback(monero_utils::serialize(doc));
+  } catch (exception& e) {
+    callback(string(e.what()));
+  }
+}
+
+void monero_wasm_bridge::get_max_destination_amount(int handle, const string& source_asset_type, const string& destination_asset_type, emscripten::val callback){
+  monero_wallet* wallet = (monero_wallet*) handle;
+
+  rapidjson::Document doc;
+  doc.SetObject();
+  rapidjson::Value value;
+
+  try {
+    doc.AddMember("max_destination_amount", rapidjson::Value().SetUint64(wallet->get_max_destination_amount(source_asset_type, destination_asset_type)), doc.GetAllocator());
+    callback(monero_utils::serialize(doc));
+  } catch (exception& e) {
+    callback(string(e.what()));
+  }
+}
+
 
 string monero_wasm_bridge::get_balance_wallet(int handle) {
   monero_wallet* wallet = (monero_wallet*) handle;

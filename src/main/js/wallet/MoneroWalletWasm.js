@@ -29,6 +29,7 @@ const MoneroWalletKeys = require("./MoneroWalletKeys");
 const MoneroWalletListener = require("./model/MoneroWalletListener");
 const { assertArray } = require("../common/GenUtils");
 const HavenBalance = require("./model/HavenBalance");
+const HavenCirculatingSupply = require("./model/HavenCirculatingSupply");
 
 /**
  * Implements a MoneroWallet using WebAssembly bindings to monero-project's wallet2.
@@ -768,13 +769,54 @@ class MoneroWalletWasm extends MoneroWalletKeys {
     });
   }
 
+  async getCirculatingSupply() {
+    let that = this;
+    return that._module.queueTask(async function() {
+      that._assertNotClosed();
+      return new Promise(function(resolve, reject) {
+        let callbackFn = function(resp) { 
+          const circulatingSupply = new HavenCirculatingSupply(JSON.parse(GenUtils.stringifyBIs(resp)).circulating_supply)
+          resolve(circulatingSupply); }
+        that._module.get_circulating_supply(that._cppAddress, callbackFn);
+      });
+    });
+  }
+
+  async getBlockCap() {
+    let that = this;
+    return that._module.queueTask(async function() {
+      that._assertNotClosed();
+      return new Promise(function(resolve, reject) {
+        let callbackFn = function(resp) { 
+          const amount = BigInteger.parse(JSON.parse(GenUtils.stringifyBIs(resp)).block_cap)
+          resolve(amount); }
+        that._module.get_block_cap(that._cppAddress, callbackFn);
+      });
+    });
+  }
+
+  async getMaxDestinationAmount(sourceAssetType, destinationAssetType) {
+    let that = this;
+    return that._module.queueTask(async function() {
+      that._assertNotClosed();
+      return new Promise(function(resolve, reject) {
+        let callbackFn = function(resp) { 
+          const amount = BigInteger.parse(JSON.parse(GenUtils.stringifyBIs(resp)).max_destination_amount)
+          resolve(amount); }
+        that._module.get_max_destination_amount(that._cppAddress, sourceAssetType, destinationAssetType, callbackFn);
+      });
+    });
+  }
+
   async getCollateralRequirements(sourceAssetType, destinationAssetType, amount) {
     let that = this;
     return that._module.queueTask(async function() {
       that._assertNotClosed();
       return new Promise(function(resolve, reject) {
-        let callbackFn = function() { resolve(); }
-        that._module.getCollateralRequirements(that._cppAddress, sourceAssetType, destinationAssetType, amount.toString(), callbackFn);
+        let callbackFn = function(resp) { 
+          const amount = BigInteger.parse(JSON.parse(GenUtils.stringifyBIs(resp)).collateral_requirements)
+          resolve(amount); }
+        that._module.get_collateral_requirements(that._cppAddress, sourceAssetType, destinationAssetType, amount.toString(), callbackFn);
       });
     });
   }
@@ -2178,6 +2220,26 @@ class MoneroWalletWasmProxy extends MoneroWallet {
     
   async rescanBlockchain() {
     return this._invokeWorker("rescanBlockchain");
+  }
+
+  async getCirculatingSupply() {
+    const circulatingSupply = await this._invokeWorker("getCirculatingSupply");
+    return new HavenCirculatingSupply(circulatingSupply);
+  }
+  
+  async getBlockCap() {
+    const blockCap = await this._invokeWorker("getBlockCap");
+    return BigInteger.parse(blockCap);
+  }
+  
+  async getMaxDestinationAmount (sourceAssetType, destinationAssetType) {
+    const maxAmount = await this._invokeWorker("getMaxDestinationAmount",Array.from(arguments));
+    return BigInteger.parse(maxAmount);
+  }
+  
+  async getCollateralRequirements(sourceAssetType, destinationAssetType, amount) {
+    const collateral = await this._invokeWorker("getCollateralRequirements", Array.from(arguments));
+    return BigInteger.parse(collateral);
   }
   
   async getBalance(accountIdx, subaddressIdx, assetType) {
