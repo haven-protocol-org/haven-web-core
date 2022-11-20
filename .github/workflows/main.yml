@@ -59,11 +59,11 @@ jobs:
       with:
         name: libs
         path: dist/*
-    # - name: Publish
-    #   uses: actions/setup-node@v1
-    #   with:
-    #     node-version: 16
-    #     registry-url: https://registry.npmjs.org/
-    # - run: |
-    #     echo //registry.npmjs.org/:_authToken=$NPM_TOKEN > .npmrc
-    #     npm publish
+    - name: Publish
+      uses: actions/setup-node@v1
+      with:
+        node-version: 16
+        registry-url: https://registry.npmjs.org/
+    - run: |
+        echo //registry.npmjs.org/:_authToken=$NPM_TOKEN > .npmrc
+        npm publish
