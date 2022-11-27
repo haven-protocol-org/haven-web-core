@@ -60,6 +60,7 @@ class MoneroTxWallet extends MoneroTx {
     if (state.inputSum !== undefined && !(state.inputSum instanceof BigInteger)) state.inputSum = BigInteger.parse(state.inputSum);
     if (state.outputSum !== undefined && !(state.outputSum instanceof BigInteger)) state.outputSum = BigInteger.parse(state.outputSum);
     if (state.changeAmount !== undefined && !(state.changeAmount instanceof BigInteger)) state.changeAmount = BigInteger.parse(state.changeAmount);
+    if (state.collateralAmount !== undefined && !(state.collateralAmount instanceof BigInteger)) state.collateralAmount = BigInteger.parse(state.collateralAmount);
   }
   
   
@@ -232,6 +233,15 @@ class MoneroTxWallet extends MoneroTx {
     this.state.changeAddress = changeAddress;
     return this;
   }
+
+  getCollateralAmount() {
+    return this.state.collateralAmount;
+  }
+  
+  setCollateralAmount(collateralAmount) {
+    this.state.collateralAmount = collateralAmount;
+    return this;
+  }
   
   getChangeAmount() {
     return this.state.changeAmount;
@@ -318,6 +328,7 @@ class MoneroTxWallet extends MoneroTx {
     this.setOutputSum(GenUtils.reconcile(this.getOutputSum(), tx.getOutputSum()));
     this.setChangeAddress(GenUtils.reconcile(this.getChangeAddress(), tx.getChangeAddress()));
     this.setChangeAmount(GenUtils.reconcile(this.getChangeAmount(), tx.getChangeAmount()));
+    this.setCollateralAmount(GenUtils.reconcile(this.getCollateralAmount(), tx.getCollateralAmount()));
     this.setNumDummyOutputs(GenUtils.reconcile(this.getNumDummyOutputs(), tx.getNumDummyOutputs()));
     this.setExtraHex(GenUtils.reconcile(this.getExtraHex(), tx.getExtraHex()));
     
@@ -467,6 +478,7 @@ class MoneroTxWallet extends MoneroTx {
     if (this.getInputSum()) json.inputSum = this.getInputSum().toString();
     if (this.getOutputSum()) json.outputSum = this.getOutputSum().toString();
     if (this.getChangeAmount()) json.changeAmount = this.getChangeAmount().toString();
+    if (this.getCollateralAmount()) json.collateralAmount = this.getCollateralAmount().toString();
     delete json.block;  // do not serialize parent block
     delete json.txSet;  // do not serialize parent tx set
     return json;
