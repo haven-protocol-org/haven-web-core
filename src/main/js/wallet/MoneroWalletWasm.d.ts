@@ -126,7 +126,7 @@ declare class MoneroWalletWasm extends MoneroWalletKeys implements MoneroWallet 
      * @param {boolean} rejectUnauthorized - specifies if unauthorized requests (e.g. self-signed certificates) should be rejected
      * @param {string} rejectUnauthorizedFnId - unique identifier for http_client_wasm to query rejectUnauthorized
      */
-    constructor(cppAddress: any, path: string, password: string, fs: any, rejectUnauthorized: boolean, rejectUnauthorizedFnId: string);
+    constructor(cppAddress: int, path: string, password: string, fs: FileSystem, rejectUnauthorized: boolean, rejectUnauthorizedFnId: string);
     _path: string;
     _password: string;
     _listeners: any[];
@@ -197,13 +197,98 @@ declare class MoneroWalletWasm extends MoneroWalletKeys implements MoneroWallet 
      * @param {string} password is the new wallet's password
      */
     moveTo(path: string, password: string): Promise<void>;
+    setDaemonConnection(uriOrRpcConnection: any, username: any, password: any, rejectUnauthorized: any): Promise<any>;
+    getDaemonConnection(): Promise<any>;
+    isConnected(): Promise<any>;
+    getVersion(): Promise<void>;
+    getPath(): Promise<string>;
+    getIntegratedAddress(paymentId: any): Promise<any>;
+    decodeIntegratedAddress(integratedAddress: any): Promise<any>;
+    getHeight(): Promise<any>;
+    getDaemonHeight(): Promise<any>;
+    getHeightByDate(year: any, month: any, day: any): Promise<any>;
+    sync(listenerOrStartHeight: any, startHeight: any): Promise<any>;
     _syncingEnabled: boolean;
+    rescanSpent(): Promise<any>;
+    rescanBlockchain(): Promise<any>;
+    getCirculatingSupply(): Promise<any>;
+    getBlockCap(): Promise<any>;
+    getMaxDestinationAmount(sourceAssetType: any, destinationAssetType: any): Promise<any>;
+    getCollateralRequirements(sourceAssetType: any, destinationAssetType: any, amount: any): Promise<any>;
+    getBalance(accountIdx: any, subaddressIdx: any, assetType: any): Promise<any>;
+    getUnlockedBalance(accountIdx: any, subaddressIdx: any, assetType: any): Promise<any>;
+    getAccounts(includeSubaddresses: any, tag: any): Promise<any>;
+    getAccount(accountIdx: any, includeSubaddresses: any): Promise<any>;
+    createAccount(label: any): Promise<any>;
+    getSubaddresses(accountIdx: any, subaddressIndices: any): Promise<any>;
+    createSubaddress(accountIdx: any, label: any): Promise<any>;
+    getTxs(query: any, missingTxHashes: any): Promise<any>;
+    getTransfers(query: any): Promise<any>;
+    getOutputs(query: any): Promise<any>;
+    getOutputsHex(): Promise<any>;
+    importOutputsHex(outputsHex: any): Promise<any>;
+    getKeyImages(): Promise<any>;
+    importKeyImages(keyImages: any): Promise<any>;
+    getNewKeyImagesFromLastImport(): Promise<void>;
+    createTxs(config: any): Promise<any>;
+    sweepOutput(config: any): Promise<any>;
+    sweepUnlocked(config: any): Promise<any>;
+    sweepDust(relay: any): Promise<any>;
+    relayTxs(txsOrMetadatas: any): Promise<any>;
+    parseTxSet(txSet: any): Promise<any>;
+    signTxs(unsignedTxHex: any): Promise<any>;
+    submitTxs(signedTxHex: any): Promise<any>;
+    signMessage(message: any): Promise<any>;
+    verifyMessage(message: any, address: any, signature: any): Promise<any>;
+    getTxKey(txHash: any): Promise<any>;
+    checkTxKey(txHash: any, txKey: any, address: any): Promise<any>;
+    getTxProof(txHash: any, address: any, message: any): Promise<any>;
+    checkTxProof(txHash: any, address: any, message: any, signature: any): Promise<any>;
+    getSpendProof(txHash: any, message: any): Promise<any>;
+    checkSpendProof(txHash: any, message: any, signature: any): Promise<any>;
+    getReserveProofWallet(message: any): Promise<any>;
+    getReserveProofAccount(accountIdx: any, amount: any, message: any): Promise<any>;
+    checkReserveProof(address: any, message: any, signature: any): Promise<any>;
+    getTxNotes(txHashes: any): Promise<any>;
+    setTxNotes(txHashes: any, notes: any): Promise<any>;
+    getAddressBookEntries(entryIndices: any): Promise<any>;
+    addAddressBookEntry(address: any, description: any): Promise<any>;
+    editAddressBookEntry(index: any, setAddress: any, address: any, setDescription: any, description: any): Promise<any>;
+    deleteAddressBookEntry(entryIdx: any): Promise<any>;
+    tagAccounts(tag: any, accountIndices: any): Promise<any>;
+    untagAccounts(accountIndices: any): Promise<any>;
+    getAccountTags(): Promise<any>;
+    setAccountTagLabel(tag: any, label: any): Promise<any>;
+    createPaymentUri(config: any): Promise<any>;
+    parsePaymentUri(uri: any): Promise<any>;
+    getAttribute(key: any): Promise<any>;
+    setAttribute(key: any, val: any): Promise<any>;
+    startMining(numThreads: any, backgroundMining: any, ignoreBattery: any): Promise<void>;
+    isMultisigImportNeeded(): Promise<any>;
+    isMultisig(): Promise<any>;
+    getMultisigInfo(): Promise<any>;
+    prepareMultisig(): Promise<any>;
+    makeMultisig(multisigHexes: any, threshold: any, password: any): Promise<any>;
+    exchangeMultisigKeys(multisigHexes: any, password: any): Promise<any>;
+    getMultisigHex(): Promise<any>;
+    importMultisigHex(multisigHexes: any): Promise<any>;
+    signMultisigTxHex(multisigTxHex: any): Promise<any>;
+    submitMultisigTxHex(signedMultisigTxHex: any): Promise<any>;
     /**
      * Get the wallet's keys and cache data.
      *
      * @return {DataView[]} is the keys and cache data respectively
      */
     getData(): DataView[];
+    save(): Promise<void>;
+    close(save: any): Promise<void>;
+    getTx(...args: any[]): Promise<any>;
+    getIncomingTransfers(...args: any[]): Promise<any[]>;
+    getOutgoingTransfers(...args: any[]): Promise<any[]>;
+    createTx(...args: any[]): Promise<any>;
+    relayTx(...args: any[]): Promise<string>;
+    getTxNote(...args: any[]): Promise<string>;
+    setTxNote(...args: any[]): Promise<void>;
     /**
      * Loop while syncing enabled.
      */
@@ -234,8 +319,8 @@ declare class WalletWasmListener {
     onSyncProgress(height: any, startHeight: any, endHeight: any, percentDone: any, message: any): void;
     onNewBlock(height: any): void;
     onBalancesChanged(newBalanceStr: any, newUnlockedBalanceStr: any, assetType: any): void;
-    onOutputReceived(height: any, txHash: any, amountStr: any, accountIdx: any, subaddressIdx: any, version: any, unlockHeight: any, isLocked: any): void;
-    onOutputSpent(height: any, txHash: any, amountStr: any, accountIdx: any, subaddressIdx: any, version: any): void;
+    onOutputReceived(height: any, txHash: any, amountStr: any, assetType: any, accountIdx: any, subaddressIdx: any, version: any, unlockHeight: any, isLocked: any): void;
+    onOutputSpent(height: any, txHash: any, amountStr: any, assetType: any, accountIdx: any, subaddressIdx: any, version: any): void;
 }
 import MoneroNetworkType = require("../daemon/model/MoneroNetworkType");
 import MoneroWalletListener = require("./model/MoneroWalletListener");
