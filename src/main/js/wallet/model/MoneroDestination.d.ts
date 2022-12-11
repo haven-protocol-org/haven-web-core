@@ -15,6 +15,10 @@ declare class MoneroDestination {
     setAddress(address: any): MoneroDestination;
     getAmount(): any;
     setAmount(amount: any): MoneroDestination;
+    getCurrency():any;
+    setCurrency(currency: any): MoneroDestination
+    getIsCollateral() :any;
+    setIsCollateral(isCollateral: any): MoneroDestination
     copy(): MoneroDestination;
     toJson(): any;
     toString(indent?: number): string;

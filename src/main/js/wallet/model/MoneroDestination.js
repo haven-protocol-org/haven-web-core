@@ -39,6 +39,24 @@ class MoneroDestination {
     this.state.address = address;
     return this;
   }
+
+  getCurrency() {
+    return this.state.currency;
+  }
+
+  setCurrency(currency) {
+    this.state.currency = currency;
+    return this;
+  }
+
+  getIsCollateral() {
+    return this.state.isCollateral;
+  }
+
+  setIsCollateral(isCollateral) {
+    this.state.isCollateral = isCollateral;
+    return this;
+  }
   
   getAmount() {
     return this.state.amount;
@@ -62,6 +80,8 @@ class MoneroDestination {
   toString(indent = 0) {
     let str = GenUtils.kvLine("Address", this.getAddress(), indent);
     str += GenUtils.kvLine("Amount", this.getAmount() ? this.getAmount().toString() : undefined, indent);
+    str += GenUtils.kvLine("Currency", this.getCurrency() ? this.getCurrency().toString() : undefined, indent);
+    str += GenUtils.kvLine("is Collaetral", this.getIsCollateral() ? this.getIsCollateral().toString() : undefined, indent);
     return str.slice(0, str.length - 1);  // strip last newline
   }
 }
