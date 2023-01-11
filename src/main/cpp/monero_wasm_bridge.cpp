@@ -422,8 +422,12 @@ void monero_wasm_bridge::get_block_cap(int handle, emscripten::val callback) {
   rapidjson::Document doc;
   doc.SetObject();
   rapidjson::Value value;
-  doc.AddMember("block_cap", rapidjson::Value().SetUint64(wallet->get_block_cap()), doc.GetAllocator());
-  callback(monero_utils::serialize(doc));
+  try {
+    doc.AddMember("block_cap", rapidjson::Value().SetUint64(wallet->get_block_cap()), doc.GetAllocator());
+    callback(monero_utils::serialize(doc));
+  } catch (exception& e) {
+    callback(string(e.what()));
+  }
 }
 
 
