@@ -1,6 +1,7 @@
 const assert = require("assert");
 const GenUtils = require("./GenUtils");
 const MoneroError = require("./MoneroError");
+const ThreadPool = require("./ThreadPool");
 
 /**
  * Collection of helper utilities for the library.
@@ -8,6 +9,37 @@ const MoneroError = require("./MoneroError");
  * @hideconstructor
  */
 class LibraryUtils {
+  
+  /**
+   * Log a message.
+   *
+   * @param {int} level - log level of the message
+   * @param {string} msg - message to log
+   */
+  static log(level, msg) {
+    assert(level === parseInt(level, 10) && level >= 0, "Log level must be an integer >= 0");
+    if (LibraryUtils.LOG_LEVEL >= level) console.log(msg);
+  }
+  
+  /**
+   * Set the library's log level with 0 being least verbose.
+   *
+   * @param {int} level - the library's log level
+   */
+  static async setLogLevel(level) {
+    assert(level === parseInt(level, 10) && level >= 0, "Log level must be an integer >= 0");
+    LibraryUtils.LOG_LEVEL = level;
+    if (LibraryUtils.WORKER) await LibraryUtils.invokeWorker(GenUtils.getUUID(), "setLogLevel", [level]);
+  }
+  
+  /**
+   * Get the library's log level.
+   *
+   * @return {int} the library's log level
+   */
+  static getLogLevel() {
+    return LibraryUtils.LOG_LEVEL;
+  }
   
   /**
    * Get the total memory used by WebAssembly.
@@ -33,7 +65,7 @@ class LibraryUtils {
    */
   static async loadKeysModule() {
     
-    // use cache if suitable, core module supersedes keys module because it is superset
+    // use cache if suitable, full module supersedes keys module because it is superset
     if (LibraryUtils.WASM_MODULE) return LibraryUtils.WASM_MODULE;
     
     // load module
@@ -50,16 +82,16 @@ class LibraryUtils {
   }
   
   /**
-   * Load the WebAssembly core module with caching.
+   * Load the WebAssembly full module with caching.
    * 
-   * The core module is a superset of the keys module and overrides it.
+   * The full module is a superset of the keys module and overrides it.
    * 
-   * TODO: this is separate static function from loadKeysModule() because webpack cannot bundle WebWorker using runtime param for conditional import
+   * TODO: this is separate static function from loadKeysModule() because webpack cannot bundle worker using runtime param for conditional import
    */
-  static async loadCoreModule() {
+  static async loadFullModule() {
     
-    // use cache if suitable, core module supersedes keys module because it is superset
-    if (LibraryUtils.WASM_MODULE && LibraryUtils.CORE_LOADED) return LibraryUtils.WASM_MODULE;
+    // use cache if suitable, full module supersedes keys module because it is superset
+    if (LibraryUtils.WASM_MODULE && LibraryUtils.FULL_LOADED) return LibraryUtils.WASM_MODULE;
     
     // load module
     delete LibraryUtils.WASM_MODULE;
@@ -68,7 +100,7 @@ class LibraryUtils {
       LibraryUtils.WASM_MODULE.then(module => {
         LibraryUtils.WASM_MODULE = module
         delete LibraryUtils.WASM_MODULE.then;
-        LibraryUtils.CORE_LOADED = true;
+        LibraryUtils.FULL_LOADED = true;
         LibraryUtils._initWasmModule(LibraryUtils.WASM_MODULE);
         resolve(LibraryUtils.WASM_MODULE);
       });
@@ -79,23 +111,8 @@ class LibraryUtils {
    * Private helper to initialize the wasm module with data structures to synchronize access.
    */
   static _initWasmModule(wasmModule) {
-    
-    // initialize data structure to synchronize access to wasm module
-    const async = require("async");
-    wasmModule.taskQueue = async.queue(function(asyncFn, callback) {
-      if (asyncFn.then) asyncFn.then(resp => { callback(resp); }).catch(err => { callback(undefined, err); });
-      else asyncFn().then(resp => { callback(resp); }).catch(err => { callback(undefined, err); });
-    }, 1);
-    
-    // initialize method to synchronize access to wasm module
-    wasmModule.queueTask = async function(asyncFn) {
-      return new Promise(function(resolve, reject) {
-        wasmModule.taskQueue.push(asyncFn, function(resp, err) {
-          if (err !== undefined) reject(err);
-          else resolve(resp);
-        });
-      });
-    }
+    wasmModule.taskQueue = new ThreadPool(1);
+    wasmModule.queueTask = async function(asyncFn) { return wasmModule.taskQueue.submit(asyncFn); }
   }
   
   /**
@@ -132,13 +149,13 @@ class LibraryUtils {
     if (path !== LibraryUtils.WEB_WORKER_DIST_PATH) delete LibraryUtils.WORKER;
     LibraryUtils.WEB_WORKER_DIST_PATH = path; 
   }
-  
+
   /**
-   * Get a singleton instance of a web worker to share.
+   * Get a singleton instance of a worker to share.
    * 
    * @return {Worker} a worker to share among wallet instances
    */
-  static getWorker() {
+  static async getWorker() {
     
     // tiny wrapper to make webworker work in worker_threads nodejs
     const Worker = require("web-worker");
@@ -151,7 +168,13 @@ class LibraryUtils {
       LibraryUtils.WORKER = new Worker(LibraryUtils.WORKER_DIST_PATH);
       LibraryUtils.WORKER_OBJECTS = {};  // store per object running in the worker
       
-      // catch worker messages
+      // receive worker errors
+      LibraryUtils.WORKER.onerror = function(err) {
+        console.error("Error posting message to MoneroWebWorker.js; is it copied to the app's build directory (e.g. in the root)?");
+        console.log(err);
+      };
+      
+      // receive worker messages
       LibraryUtils.WORKER.onmessage = function(e) {
         
         // lookup object id, callback function, and this arg
@@ -166,12 +189,15 @@ class LibraryUtils {
         // invoke callback function with this arg and arguments
         callbackFn.apply(thisArg, e.data.slice(2));
       }
+      
+      // set worker log level
+      await LibraryUtils.setLogLevel(LibraryUtils.getLogLevel());
     }
     return LibraryUtils.WORKER;
   }
   
   /**
-   * Invoke a web worker function and get the result with error handling.
+   * Invoke a worker function and get the result with error handling.
    * 
    * @param {objectId} identifies the worker object to invoke
    * @param {string} fnName is the name of the function to invoke
@@ -180,17 +206,19 @@ class LibraryUtils {
    */
   static async invokeWorker(objectId, fnName, args) {
     assert(fnName.length >= 2);
-    let worker = LibraryUtils.getWorker();
+    let worker = await LibraryUtils.getWorker();
     if (!LibraryUtils.WORKER_OBJECTS[objectId]) LibraryUtils.WORKER_OBJECTS[objectId] = {callbacks: {}};
     return new Promise(function(resolve, reject) {
-      LibraryUtils.WORKER_OBJECTS[objectId].callbacks["on" + fnName.charAt(0).toUpperCase() + fnName.substring(1)] = function(resp) {  // TODO: this defines function once per callback
+      let callbackId = GenUtils.getUUID();
+      LibraryUtils.WORKER_OBJECTS[objectId].callbacks[callbackId] = function(resp) {  // TODO: this defines function once per callback
         resp ? (resp.error ? reject(new MoneroError(resp.error)) : resolve(resp.result)) : resolve();
       };
-      worker.postMessage([objectId, fnName].concat(args === undefined ? [] : GenUtils.listify(args)));
+      worker.postMessage([objectId, fnName, callbackId].concat(args === undefined ? [] : GenUtils.listify(args)));
     });
   }
 }
 
+LibraryUtils.LOG_LEVEL = 0;
 LibraryUtils.WORKER_DIST_PATH_DEFAULT =  "./HavenWebWorker2.2.3.js";
 LibraryUtils.WORKER_NODE_DIST_PATH_DEFAULT = "./MoneroWebWorker.js";
 LibraryUtils.WORKER_DIST_PATH = GenUtils.isBrowser() ? LibraryUtils.WORKER_DIST_PATH_DEFAULT : 

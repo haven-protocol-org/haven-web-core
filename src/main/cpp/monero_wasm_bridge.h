@@ -10,22 +10,32 @@
 using namespace std;
 using namespace emscripten;
 
+// override tools::dns_utils::get_account_address_as_str_from_url() so error caught when sending to invalid address
+namespace tools {
+  namespace dns_utils {
+    std::string get_account_address_as_str_from_url(const std::string& url, bool& dnssec_valid, std::function<std::string(const std::string&, const std::vector<std::string>&, bool)> dns_confirm);
+  }
+}
+
 namespace monero_wasm_bridge
 {
 
   // ------------------------------ UTILITIES ---------------------------------
 
-  string malloc_binary_from_json(const string &args_string);
-  string binary_to_json(const string &args_string);
-  string binary_blocks_to_json(const string &args_string);
+  string get_integrated_address_util(int network_type, const string& standard_address, const string& payment_id);
+  string validate_address(const string& address, int network_type);
+  string get_exception_message(int exception_ptr);
+  string malloc_binary_from_json(const string& args_string);
+  string binary_to_json(const string& args_string);
+  string binary_blocks_to_json(const string& args_string);
 
   // ------------------------- STATIC WALLET UTILS ----------------------------
 
-  void open_core_wallet(const string& password, int network_type, const string& keys_data, const string& cache_data, const string& daemon_uri, const string& daemon_username, const string& daemon_password, const string& reject_unauthorized_fn_id, emscripten::val callback);
-  void create_core_wallet_random(const string& password, int network_type, const string& daemon_uri, const string& daemon_username, const string& daemon_password, const string& reject_unauthorized_fn_id, const string& language, emscripten::val callback);
-  void create_core_wallet_from_mnemonic(const string& password, int network_type, const string& mnemonic, const string& daemon_uri, const string& daemon_username, const string& daemon_password, const string& reject_unauthorized_fn_id, long restore_height, const string& seed_offset, emscripten::val callback);
-  void create_core_wallet_from_keys(const string& password, int network_type, const string& address, const string& view_key, const string& spend_key, const string& daemon_uri, const string& daemon_username, const string& daemon_password, const string& reject_unauthorized_fn_id, long restore_height, const string& language, emscripten::val callback);
-  string get_core_wallet_mnemonic_languages();
+  void open_wallet_full(const string& password, int network_type, const string& keys_data, const string& cache_data, const string& daemon_uri, const string& daemon_username, const string& daemon_password, const string& reject_unauthorized_fn_id, emscripten::val callback);
+  void create_full_wallet_random(const string& password, int network_type, const string& daemon_uri, const string& daemon_username, const string& daemon_password, const string& reject_unauthorized_fn_id, const string& language, emscripten::val callback);
+  void create_full_wallet_from_mnemonic(const string& password, int network_type, const string& mnemonic, const string& daemon_uri, const string& daemon_username, const string& daemon_password, const string& reject_unauthorized_fn_id, long restore_height, const string& seed_offset, emscripten::val callback);
+  void create_full_wallet_from_keys(const string& password, int network_type, const string& address, const string& view_key, const string& spend_key, const string& daemon_uri, const string& daemon_username, const string& daemon_password, const string& reject_unauthorized_fn_id, long restore_height, const string& language, emscripten::val callback);
+  string get_full_wallet_mnemonic_languages();
 
   void create_keys_wallet_random(int network_type, const string& language, emscripten::val callback);
   void create_keys_wallet_from_mnemonic(int network_type, const string& mnemonic, const string& seed_offset, emscripten::val callback);
@@ -37,7 +47,7 @@ namespace monero_wasm_bridge
   bool is_view_only(int handle);
   void set_daemon_connection(int handle, const string& uri, const string& username, const string& password, emscripten::val callback);
   string get_daemon_connection(int handle);
-  void is_connected(int handle, emscripten::val callback);
+  void is_connected_to_daemon(int handle, emscripten::val callback);
   void get_daemon_max_peer_height(int handle, emscripten::val callback);
   string get_version(int handle);
   string get_mnemonic(int handle);
@@ -88,30 +98,33 @@ namespace monero_wasm_bridge
   void get_txs(int handle, const string& tx_query_json, emscripten::val callback);
   void get_transfers(int handle, const string& transfer_query_json, emscripten::val callback);
   void get_outputs(int handle, const string& output_query_json, emscripten::val callback);
-  void get_outputs_hex(int handle, emscripten::val callback);
-  void import_outputs_hex(int handle, const string& outputs_hex, emscripten::val callback);
-  void get_key_images(int handle, emscripten::val callback);
+  void export_outputs(int handle, bool all, emscripten::val callback);
+  void import_outputs(int handle, const string& outputs_hex, emscripten::val callback);
+  void export_key_images(int handle, bool all, emscripten::val callback);
   void import_key_images(int handle, const string& key_images_str, emscripten::val callback);
   //  emscripten::function("get_new_key_images_from_last_import", &monero_wasm_bridge::get_new_key_images_from_last_import);
+  void freeze_output(int handle, const string& key_image, emscripten::val callback);
+  void thaw_output(int handle, const string& key_image, emscripten::val callback);
+  void is_output_frozen(int handle, const string& key_image, emscripten::val callback);
   void create_txs(int handle, const string& config_json, emscripten::val callback);
   void sweep_output(int handle, const string& config_json, emscripten::val callback);
   void sweep_unlocked(int handle, const string& config_json, emscripten::val callback);
   void sweep_dust(int handle, bool relay, emscripten::val callback);
   void relay_txs(int handle, const string& args, emscripten::val callback);
-  string parse_tx_set(int handle, const string& tx_set_str);
+  string describe_tx_set(int handle, const string& tx_set_str);
   string sign_txs(int handle, const string& unsigned_tx_hex);
   void submit_txs(int handle, const string& signed_tx_hex, emscripten::val callback);
-  string sign_message(int handle, const string& msg);
-  bool verify_message(int handle, const string& msg, const string& address, const string& signature);
+  string sign_message(int handle, const string& msg, uint32_t signature_type_num, uint32_t account_idx, uint32_t subaddress_idx);
+  string verify_message(int handle, const string& msg, const string& address, const string& signature);
   string get_tx_key(int handle, const string& tx_hash);
-  string check_tx_key(int handle, const string& tx_hash, const string& tx_key, const string& address);
-  string get_tx_proof(int handle, const string& tx_hash, const string& address, const string& message);
-  string check_tx_proof(int handle, const string& tx_hash, const string& address, const string& message, const string& signature);
-  string get_spend_proof(int handle, const string& tx_hash, const string& message);
-  bool check_spend_proof(int handle, const string& tx_hash, const string& message, const string& signature);
-  string get_reserve_proof_wallet(int handle, const string& message);
-  string get_reserve_proof_account(int handle, uint32_t account_idx, const string& amount_str, const string& message);
-  string check_reserve_proof(int handle, const string& address, const string& message, const string& signature);
+  void check_tx_key(int handle, const string& tx_hash, const string& tx_key, const string& address, emscripten::val callback);
+  void get_tx_proof(int handle, const string& tx_hash, const string& address, const string& message, emscripten::val callback);
+  void check_tx_proof(int handle, const string& tx_hash, const string& address, const string& message, const string& signature, emscripten::val callback);
+  void get_spend_proof(int handle, const string& tx_hash, const string& message, emscripten::val callback);
+  void check_spend_proof(int handle, const string& tx_hash, const string& message, const string& signature, emscripten::val callback);
+  void get_reserve_proof_wallet(int handle, const string& message, emscripten::val callback);
+  void get_reserve_proof_account(int handle, uint32_t account_idx, const string& amount_str, const string& message, emscripten::val callback);
+  void check_reserve_proof(int handle, const string& address, const string& message, const string& signature, emscripten::val callback);
   string get_tx_notes(int handle, const string& args);
   void set_tx_notes(int handle, const string& args);
   string get_address_book_entries(int handle, const string& args);
@@ -122,19 +135,20 @@ namespace monero_wasm_bridge
   void untag_accounts(int handle, const string& args);
   string get_account_tags(int handle);
   void set_account_tag_label(int handle, const string& tag, const string& label);
-  string create_payment_uri(int handle, const string& config_json);
+  string get_payment_uri(int handle, const string& config_json);
   string parse_payment_uri(int handle, const string& uri);
   string get_attribute(int handle, const string& key);
   void set_attribute(int handle, const string& key, const string& val);
   bool is_multisig_import_needed(int handle);
   string get_multisig_info(int handle);
   string prepare_multisig(int handle);
-  string make_multisig(int handle, const string& args);
-  string exchange_multisig_keys(int handle, const string& args);
-  string get_multisig_hex(int handle);
+  void make_multisig(int handle, const string& args, emscripten::val callback);
+  void exchange_multisig_keys(int handle, const string& args, emscripten::val callback);
+  string export_multisig_hex(int handle);
   void import_multisig_hex(int handle, const string& args, emscripten::val callback);
-  string sign_multisig_tx_hex(int handle, const string& multisig_tx_hex);
+  void sign_multisig_tx_hex(int handle, const string& multisig_tx_hex, emscripten::val callback);
   void submit_multisig_tx_hex(int handle, const string& signed_multisig_tx_hex, emscripten::val callback);
+  void change_wallet_password(int handle, const string& old_password, const string& new_password, emscripten::val callback);
   void close(int handle, bool save, emscripten::val callback);
   string get_keys_file_buffer(int handle, string password, bool view_only);
   string get_cache_file_buffer(int handle, string password);

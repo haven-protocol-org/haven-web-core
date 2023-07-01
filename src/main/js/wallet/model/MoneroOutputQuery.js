@@ -1,4 +1,5 @@
 const BigInteger = require("../../common/biginteger");
+const MoneroError = require("../../common/MoneroError");
 const MoneroOutputWallet = require("./MoneroOutputWallet");
 
 /**
@@ -32,8 +33,8 @@ class MoneroOutputQuery extends MoneroOutputWallet {
    * @param {BigInteger} config.amount - get outputs with this amount
    * @param {BigInteger} config.minAmount - get outputs with amount greater than or equal to this amount
    * @param {BigInteger} config.maxAmount - get outputs with amount less than or equal to this amount
-   * @param {boolean} config.isLocked - get locked xor unlocked outputs
    * @param {boolean} config.isSpent - get spent xor unspent outputs
+   * @param {boolean} config.isFrozen - get frozen xor thawed outputs
    * @param {object|MoneroKeyImage} config.keyImage - get outputs with a key image matching fields defined in this key image
    * @param {string} config.keyImage.hex - get outputs with this key image hex
    * @param {string} config.keyImage.signature - get outputs with this key image signature
@@ -48,6 +49,7 @@ class MoneroOutputQuery extends MoneroOutputWallet {
     if (this.state.maxAmount !== undefined && !(this.state.maxAmount instanceof BigInteger)) this.state.maxAmount = BigInteger.parse(this.state.maxAmount);
     if (this.state.txQuery && !(this.state.txQuery instanceof MoneroTxQuery)) this.state.txQuery = new MoneroTxQuery(this.state.txQuery);
     if (this.state.txQuery) this.state.txQuery.setOutputQuery(this);
+    if (this.state.isLocked !== undefined) throw new MoneroError("isLocked must be part of tx query, not output query");
   }
   
   copy() {
@@ -99,29 +101,6 @@ class MoneroOutputQuery extends MoneroOutputWallet {
     return this;
   }
   
-  /**
-   * Indicates if the this query will fetch locked outputs, unlocked outputs, or both (null).
-   * 
-   * @return true if locked outputs queried, false of unlocked outputs queried, undefined if both
-   */
-  isLocked() {
-    if (this.state.txQuery === undefined) return undefined;
-    return txQuery.isLocked();
-  }
-  
-  /**
-   * Convenience method to query outputs by the locked state of their tx.
-   * 
-   * @param isLocked specifies if the output's tx must be locked or unlocked (optional)
-   * @return {MoneroOutputQuery} this query for chaining
-   */
-  setIsLocked(isLocked) {
-    const MoneroTxQuery = require("./MoneroTxQuery");
-    if (this.state.txQuery === undefined) this.state.txQuery = new MoneroTxQuery();
-    this.state.txQuery.setIsLocked(isLocked);
-    return this;
-  }
-  
   meetsCriteria(output, queryParent) {
     if (!(output instanceof MoneroOutputWallet)) throw new Error("Output not given to MoneroOutputQuery.meetsCriteria(output)");
     if (queryParent === undefined) queryParent = true;
@@ -131,6 +110,7 @@ class MoneroOutputQuery extends MoneroOutputWallet {
     if (this.getSubaddressIndex() !== undefined && this.getSubaddressIndex() !== output.getSubaddressIndex()) return false;
     if (this.getAmount() !== undefined && this.getAmount().compare(output.getAmount()) !== 0) return false;
     if (this.isSpent() !== undefined && this.isSpent() !== output.isSpent()) return false;
+    if (this.isFrozen() !== undefined && this.isFrozen() !== output.isFrozen()) return false;
     
     // filter on output's key image
     if (this.getKeyImage() !== undefined) {

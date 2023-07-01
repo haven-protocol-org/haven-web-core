@@ -203,6 +203,15 @@ class MoneroDaemonInfo {
     return this;
   }
   
+  getAdjustedTimestamp() {
+    return this.state.adjustedTimestamp;
+  }
+  
+  setAdjustedTimestamp(adjustedTimestamp) {
+    this.state.adjustedTimestamp = adjustedTimestamp;
+    return this;
+  }
+  
   getTarget() {
     return this.state.target;
   }
@@ -281,6 +290,33 @@ class MoneroDaemonInfo {
   
   setCredits(credits) {
     this.state.credits = credits;
+    return this;
+  }
+  
+  isBusySyncing() {
+    return this.state.isBusySyncing;
+  }
+  
+  setIsBusySyncing(isBusySyncing) {
+    this.state.isBusySyncing = isBusySyncing;
+    return this;
+  }
+  
+  isSynchronized() {
+    return this.state.isSynchronized;
+  }
+  
+  setIsSynchronized(isSynchronized) {
+    this.state.isSynchronized = isSynchronized;
+    return this;
+  }
+  
+  isRestricted() {
+    return this.state.isRestricted;
+  }
+  
+  setIsRestricted(isRestricted) {
+    this.state.isRestricted = isRestricted;
     return this;
   }
 }

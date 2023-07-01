@@ -1,3 +1,5 @@
+const MoneroError = require("../common/MoneroError");
+
 /**
  * Copyright (c) woodser
  *
@@ -26,6 +28,33 @@
  * @interface
  */
 class MoneroDaemon {
+    
+  /**
+   * Register a listener to receive daemon notifications.
+   * 
+   * @param {MoneroDaemonListener} listener - listener to receive daemon notifications
+   */
+  async addListener(listener) {
+    throw new MoneroError("Subclass must implement");
+  }
+  
+  /**
+   * Unregister a listener to receive daemon notifications.
+   * 
+   * @param {MoneroDaemonListener} listener - listener to unregister
+   */
+  async removeListener(listener) {
+    throw new MoneroError("Subclass must implement");
+  }
+  
+  /**
+   * Get the listeners registered with the daemon.
+   * 
+   * @return {MoneroDaemonListener[]} the registered listeners
+   */
+  getListeners() {
+    throw new MoneroError("Subclass must implement");
+  }
   
   /**
    * Indicates if the client is connected to the daemon via RPC.
@@ -509,20 +538,20 @@ class MoneroDaemon {
   }
   
   /**
-   * Get known peers including their last known online status.
+   * Get peers with active incoming or outgoing connections to the node.
    * 
-   * @return {MoneroDaemonPeer[]} known peers
+   * @return {MoneroPeer[]} the daemon's peers
    */
-  async getKnownPeers() {
+  async getPeers() {
     throw new MoneroError("Subclass must implement");
   }
   
   /**
-   * Get incoming and outgoing connections to the node.
+   * Get known peers including their last known online status.
    * 
-   * @return {MoneroDaemonConnection[]} daemon's peer connections
+   * @return {MoneroPeer[]} the daemon's known peers
    */
-  async getConnections() {
+  async getKnownPeers() {
     throw new MoneroError("Subclass must implement");
   }
   
@@ -648,25 +677,7 @@ class MoneroDaemon {
    * 
    * @return {MoneroBlockHeader} header of the next block added to the chain
    */
-  async getNextBlockHeader() {
-    throw new MoneroError("Subclass must implement");
-  }
-  
-  /**
-   * Register a listener to be notified when blocks are added to the chain.
-   * 
-   * @param {function} listener - invoked with MoneroBlockHeaders as blocks are added to the chain
-   */
-  async addBlockListener(listener) {
-    throw new MoneroError("Subclass must implement");
-  }
-  
-  /**
-   * Unregister a listener to be notified when blocks are added to the chain.
-   * 
-   * @param {function} listener - previously registered listener to be unregistered
-   */
-  async removeBlockListener(listener) {
+  async waitForNextBlockHeader() {
     throw new MoneroError("Subclass must implement");
   }
   

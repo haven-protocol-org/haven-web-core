@@ -1,24 +1,26 @@
 const assert = require("assert");
 const GenUtils = require("./GenUtils");
+const HttpClient = require("./HttpClient");
 const LibraryUtils = require("./LibraryUtils");
 const MoneroBan = require("../daemon/model/MoneroBan");
 const MoneroBlock = require("../daemon/model/MoneroBlock");
+const MoneroDaemonListener = require("../daemon/model/MoneroDaemonListener");
 const MoneroDaemonRpc = require("../daemon/MoneroDaemonRpc");
 const MoneroError = require("./MoneroError");
 const MoneroKeyImage = require("../daemon/model/MoneroKeyImage");
 const MoneroRpcConnection = require("./MoneroRpcConnection");
 const MoneroTxConfig = require("../wallet/model/MoneroTxConfig");
 const MoneroTxSet = require("../wallet/model/MoneroTxSet");
-const MoneroUtils = require("./MoneroUtils");
+const MoneroUtils = require("../common/MoneroUtils");
 const MoneroWalletListener = require("../wallet/model/MoneroWalletListener");
-const MoneroWalletWasm = require("../wallet/MoneroWalletWasm");
+const MoneroWalletFull = require("../wallet/MoneroWalletFull");
 
 /**
- * Web worker to manage a daemon and wasm wallet off the main thread with messages.
+ * Worker to manage a daemon and wasm wallet off the main thread using messages.
  * 
  * Required message format: e.data[0] = object id, e.data[1] = function name, e.data[2+] = function args
  *
- * This file must be browserified and placed in the web app root.
+ * For browser applications, this file must be browserified and placed in the web app root.
  * 
  * @private
  */
@@ -30,17 +32,17 @@ onmessage = async function(e) {
   // validate params
   let objectId = e.data[0];
   let fnName = e.data[1];
-  assert(objectId, "Must provide object id to apply function to");
-  assert(fnName.length >= 2, "Must provide a function name with length >= 2");
+  let callbackId = e.data[2];
+  assert(fnName, "Must provide function name to worker");
+  assert(callbackId, "Must provide callback id to worker");
   if (!self[fnName]) throw new Error("Method '" + fnName + "' is not registered with worker");
-  e.data.splice(1, 1); // remove function name
+  e.data.splice(1, 2); // remove function name and callback id to apply function with arguments
   
   // execute worker function and post result to callback
-  let callbackFn = "on" + fnName.charAt(0).toUpperCase() + fnName.substring(1);
   try {
-    postMessage([objectId, callbackFn, {result: await self[fnName].apply(null, e.data)}]);
+    postMessage([objectId, callbackId, {result: await self[fnName].apply(null, e.data)}]);
   } catch (e) {
-    postMessage([objectId, callbackFn, {error: e.message}]);
+    postMessage([objectId, callbackId, {error: e.message}]);
   }
 }
 
@@ -48,16 +50,70 @@ self.initOneTime = async function() {
   if (!self.isInitialized) {
     self.WORKER_OBJECTS = {};
     self.isInitialized = true;
+    MoneroUtils.PROXY_TO_WORKER = false;
   }
 }
 
 // --------------------------- STATIC UTILITIES -------------------------------
 
-self.getWasmMemoryUsed = async function(objectId) {	// TODO: object id not needed for static utilites, using throwaway uuid
+// TODO: object id not needed for static utilites, using throwaway uuid
+
+self.httpRequest = async function(objectId, opts) {
+  try {
+    return await HttpClient.request(Object.assign(opts, {proxyToWorker: false}));  
+  } catch (err) {
+    throw err.statusCode ? new Error(JSON.stringify({statusCode: err.statusCode, statusMessage: err.message})) : err;
+  }
+}
+
+self.setLogLevel = async function(objectId, level) {
+  return LibraryUtils.setLogLevel(level);
+}
+
+self.getWasmMemoryUsed = async function(objectId) {
   return LibraryUtils.getWasmModule() && LibraryUtils.getWasmModule().HEAP8 ? LibraryUtils.getWasmModule().HEAP8.length : undefined;
 }
 
+// ----------------------------- MONERO UTILS ---------------------------------
+
+self.moneroUtilsGetIntegratedAddress = async function(objectId, networkType, standardAddress, paymentId) {
+  return (await MoneroUtils.getIntegratedAddress(networkType, standardAddress, paymentId)).toJson();
+}
+
+self.moneroUtilsValidateAddress = async function(objectId, address, networkType) {
+  return MoneroUtils.validateAddress(address, networkType);
+}
+
+self.moneroUtilsJsonToBinary = async function(objectId, json) {
+  return MoneroUtils.jsonToBinary(json);
+}
+
+self.moneroUtilsBinaryToJson = async function(objectId, uint8arr) {
+  return MoneroUtils.binaryToJson(uint8arr);
+}
+
+self.moneroUtilsBinaryBlocksToJson = async function(objectId, uint8arr) {
+  return MoneroUtils.binaryBlocksToJson(uint8arr);
+}
+
 // ---------------------------- DAEMON METHODS --------------------------------
+
+self.daemonAddListener = async function(daemonId, listenerId) {
+  let listener = new class extends MoneroDaemonListener {
+    async onBlockHeader(blockHeader) {
+      self.postMessage([daemonId, "onBlockHeader_" + listenerId, blockHeader.toJson()]);
+    }
+  }
+  if (!self.daemonListeners) self.daemonListeners = {};
+  self.daemonListeners[listenerId] = listener;
+  await self.WORKER_OBJECTS[daemonId].addListener(listener);
+}
+
+self.daemonRemoveListener = async function(daemonId, listenerId) {
+  if (!self.daemonListeners[listenerId]) throw new MoneroError("No daemon worker listener registered with id: " + listenerId);
+  await self.WORKER_OBJECTS[daemonId].removeListener(self.daemonListeners[listenerId]);
+  delete self.daemonListeners[listenerId];
+}
 
 self.connectDaemonRpc = async function(daemonId, config) {
   self.WORKER_OBJECTS[daemonId] = new MoneroDaemonRpc(config);
@@ -284,16 +340,16 @@ self.daemonResetUploadLimit = async function(daemonId) {
   return self.WORKER_OBJECTS[daemonId].resetUploadLimit();
 }
 
+self.daemonGetPeers = async function(daemonId) {
+  let peersJson = [];
+  for (let peer of await self.WORKER_OBJECTS[daemonId].getPeers()) peersJson.push(peer.toJson());
+  return peersJson;
+}
+
 self.daemonGetKnownPeers = async function(daemonId) {
   let peersJson = [];
   for (let peer of await self.WORKER_OBJECTS[daemonId].getKnownPeers()) peersJson.push(peer.toJson());
   return peersJson;
-}
-
-self.daemonGetConnections = async function(daemonId) {
-  let connectionsJson = [];
-  for (let connection of await self.WORKER_OBJECTS[daemonId].getConnections()) connectionsJson.push(connection.toJson());
-  return connectionsJson;
 }
 
 self.daemonSetOutgoingPeerLimit = async function(daemonId, limit) {
@@ -345,48 +401,33 @@ self.daemonStop = async function(daemonId) {
   return self.WORKER_OBJECTS[daemonId].stop();
 }
 
-self.daemonGetNextBlockHeader = async function(daemonId) {
-  return (await self.WORKER_OBJECTS[daemonId].getNextBlockHeader()).toJson();
-}
-
-self.daemonAddBlockListener = async function(daemonId, listenerId) {
-  let listener = function(blockHeader) {
-    self.postMessage([daemonId, "onNewBlockHeader_" + listenerId, blockHeader.toJson()]);
-  }
-  if (!self.daemonListeners) self.daemonListeners = {};
-  self.daemonListeners[listenerId] = listener;
-  await self.WORKER_OBJECTS[daemonId].addBlockListener(listener);
-}
-
-self.daemonRemoveBlockListener = async function(daemonId, listenerId) {
-  if (!self.daemonListeners[listenerId]) throw new MoneroError("No daemon worker listener registered with id: " + listenerId);
-  await self.WORKER_OBJECTS[daemonId].removeBlockListener(self.daemonListeners[listenerId]);
-  delete self.daemonListeners[listenerId];
+self.daemonWaitForNextBlockHeader = async function(daemonId) {
+  return (await self.WORKER_OBJECTS[daemonId].waitForNextBlockHeader()).toJson();
 }
 
 //------------------------------ WALLET METHODS -------------------------------
 
 self.openWalletData = async function(walletId, path, password, networkType, keysData, cacheData, daemonUriOrConfig) {
   let daemonConnection = daemonUriOrConfig ? new MoneroRpcConnection(daemonUriOrConfig) : undefined;
-  self.WORKER_OBJECTS[walletId] = await MoneroWalletWasm.openWallet({path: "", password: password, networkType: networkType, keysData: keysData, cacheData: cacheData, server: daemonConnection, proxyToWorker: false});
+  self.WORKER_OBJECTS[walletId] = await MoneroWalletFull.openWallet({path: "", password: password, networkType: networkType, keysData: keysData, cacheData: cacheData, server: daemonConnection, proxyToWorker: false});
   self.WORKER_OBJECTS[walletId]._setBrowserMainPath(path);
 }
 
 self._createWalletRandom = async function(walletId, path, password, networkType, daemonUriOrConfig, language) {
   let daemonConnection = daemonUriOrConfig ? new MoneroRpcConnection(daemonUriOrConfig) : undefined;
-  self.WORKER_OBJECTS[walletId] = await MoneroWalletWasm._createWalletRandom("", password, networkType, daemonConnection, language, false);
+  self.WORKER_OBJECTS[walletId] = await MoneroWalletFull._createWalletRandom("", password, networkType, daemonConnection, language, false);
   self.WORKER_OBJECTS[walletId]._setBrowserMainPath(path);
 }
 
 self._createWalletFromMnemonic = async function(walletId, path, password, networkType, mnemonic, daemonUriOrConfig, restoreHeight, seedOffset) {
   let daemonConnection = daemonUriOrConfig ? new MoneroRpcConnection(daemonUriOrConfig) : undefined;
-  self.WORKER_OBJECTS[walletId] = await MoneroWalletWasm._createWalletFromMnemonic("", password, networkType, mnemonic, daemonConnection, restoreHeight, seedOffset, false);
+  self.WORKER_OBJECTS[walletId] = await MoneroWalletFull._createWalletFromMnemonic("", password, networkType, mnemonic, daemonConnection, restoreHeight, seedOffset, false);
   self.WORKER_OBJECTS[walletId]._setBrowserMainPath(path);
 }
 
 self._createWalletFromKeys = async function(walletId, path, password, networkType, address, viewKey, spendKey, daemonUriOrConfig, restoreHeight, language) {
   let daemonConnection = daemonUriOrConfig ? new MoneroRpcConnection(daemonUriOrConfig) : undefined;
-  self.WORKER_OBJECTS[walletId] = await MoneroWalletWasm._createWalletFromKeys("", password, networkType, address, viewKey, spendKey, daemonConnection, restoreHeight, language, false);
+  self.WORKER_OBJECTS[walletId] = await MoneroWalletFull._createWalletFromKeys("", password, networkType, address, viewKey, spendKey, daemonConnection, restoreHeight, language, false);
   self.WORKER_OBJECTS[walletId]._setBrowserMainPath(path);
 }
 
@@ -439,8 +480,8 @@ self.getAddressIndex = async function(walletId, address) {
   return (await self.WORKER_OBJECTS[walletId].getAddressIndex(address)).toJson();
 }
 
-self.getIntegratedAddress = async function(walletId, paymentId) {
-  return (await self.WORKER_OBJECTS[walletId].getIntegratedAddress(paymentId)).toJson();
+self.getIntegratedAddress = async function(walletId, standardAddress, paymentId) {
+  return (await self.WORKER_OBJECTS[walletId].getIntegratedAddress(standardAddress, paymentId)).toJson();
 }
 
 self.decodeIntegratedAddress = async function(walletId, integratedAddress) {
@@ -456,8 +497,8 @@ self.getDaemonConnection = async function(walletId) {
   return connection ? connection.getConfig() : undefined;
 }
 
-self.isConnected = async function(walletId) {
-  return self.WORKER_OBJECTS[walletId].isConnected();
+self.isConnectedToDaemon = async function(walletId) {
+  return self.WORKER_OBJECTS[walletId].isConnectedToDaemon();
 }
 
 self.getSyncHeight = async function(walletId) {
@@ -555,12 +596,12 @@ self.isSynced = async function(walletId) {
   return self.WORKER_OBJECTS[walletId].isSynced();
 }
 
-self.sync = async function(walletId, startHeight) {
-  return await self.WORKER_OBJECTS[walletId].sync(startHeight);
+self.sync = async function(walletId, startHeight, allowConcurrentCalls) {
+  return await self.WORKER_OBJECTS[walletId].sync(undefined, startHeight, allowConcurrentCalls);
 }
 
-self.startSyncing = async function(walletId) {
-  return self.WORKER_OBJECTS[walletId].startSyncing();
+self.startSyncing = async function(walletId, syncPeriodInMs) {
+  return self.WORKER_OBJECTS[walletId].startSyncing(syncPeriodInMs);
 }
 
 self.stopSyncing = async function(walletId) {
@@ -624,13 +665,13 @@ self.createSubaddress = async function(walletId, accountIdx, label) {
 }
 
 // TODO: easier or more efficient way than serializing from root blocks?
-self.getTxs = async function(walletId, blockJsonQuery) {
+self.getTxs = async function(walletId, blockJsonQuery, missingTxHashes) {
   
   // deserialize query which is json string rooted at block
   let query = new MoneroBlock(blockJsonQuery, MoneroBlock.DeserializationType.TX_QUERY).getTxs()[0];
   
   // get txs
-  let txs = await self.WORKER_OBJECTS[walletId].getTxs(query);
+  let txs = await self.WORKER_OBJECTS[walletId].getTxs(query, missingTxHashes);
   
   // collect unique blocks to preserve model relationships as trees (based on monero_wasm_bridge.cpp::get_txs)
   let seenBlocks = new Set();
@@ -650,7 +691,7 @@ self.getTxs = async function(walletId, blockJsonQuery) {
   
   // serialize blocks to json
   for (let i = 0; i < blocks.length; i++) blocks[i] = blocks[i].toJson();
-  return blocks;
+  return {blocks: blocks, missingTxHashes: missingTxHashes};
 }
 
 self.getTransfers = async function(walletId, blockJsonQuery) {
@@ -713,17 +754,17 @@ self.getOutputs = async function(walletId, blockJsonQuery) {
   return blocks;
 }
 
-self.getOutputsHex = async function(walletId) {
-  return self.WORKER_OBJECTS[walletId].getOutputsHex();
+self.exportOutputs = async function(walletId, all) {
+  return self.WORKER_OBJECTS[walletId].exportOutputs(all);
 }
 
-self.importOutputsHex = async function(walletId, outputsHex) {
-  return self.WORKER_OBJECTS[walletId].importOutputsHex(outputsHex);
+self.importOutputs = async function(walletId, outputsHex) {
+  return self.WORKER_OBJECTS[walletId].importOutputs(outputsHex);
 }
 
-self.getKeyImages = async function(walletId) {
+self.getKeyImages = async function(walletId, all) {
   let keyImagesJson = [];
-  for (let keyImage of await self.WORKER_OBJECTS[walletId].getKeyImages()) keyImagesJson.push(keyImage.toJson());
+  for (let keyImage of await self.WORKER_OBJECTS[walletId].exportKeyImages(all)) keyImagesJson.push(keyImage.toJson());
   return keyImagesJson;
 }
 
@@ -736,6 +777,18 @@ self.importKeyImages = async function(walletId, keyImagesJson) {
 //async getNewKeyImagesFromLastImport() {
 //  throw new MoneroError("Not implemented");
 //}
+
+self.freezeOutput = async function(walletId, keyImage) {
+  return self.WORKER_OBJECTS[walletId].freezeOutput(keyImage);
+}
+
+self.thawOutput = async function(walletId, keyImage) {
+  return self.WORKER_OBJECTS[walletId].thawOutput(keyImage);
+}
+
+self.isOutputFrozen = async function(walletId, keyImage) {
+  return self.WORKER_OBJECTS[walletId].isOutputFrozen(keyImage);
+}
 
 self.createTxs = async function(walletId, config) {
   if (typeof config === "object") config = new MoneroTxConfig(config);
@@ -761,15 +814,15 @@ self.sweepUnlocked = async function(walletId, config) {
 
 self.sweepDust = async function(walletId, relay) {
   let txs = await self.WORKER_OBJECTS[walletId].sweepDust(relay);
-  return txs[0].getTxSet().toJson();
+  return txs.length === 0 ? {} : txs[0].getTxSet().toJson();
 }
 
 self.relayTxs = async function(walletId, txMetadatas) {
   return self.WORKER_OBJECTS[walletId].relayTxs(txMetadatas);
 }
 
-self.parseTxSet = async function(walletId, txSetJson) {
-  return (await self.WORKER_OBJECTS[walletId].parseTxSet(new MoneroTxSet(txSetJson))).toJson();
+self.describeTxSet = async function(walletId, txSetJson) {
+  return (await self.WORKER_OBJECTS[walletId].describeTxSet(new MoneroTxSet(txSetJson))).toJson();
 }
 
 self.signTxs = async function(walletId, unsignedTxHex) {
@@ -780,12 +833,12 @@ self.submitTxs = async function(walletId, signedTxHex) {
   return self.WORKER_OBJECTS[walletId].submitTxs(signedTxHex);
 }
 
-self.signMessage = async function(walletId, message) {
-  return self.WORKER_OBJECTS[walletId].signMessage(message);
+self.signMessage = async function(walletId, message, signatureType, accountIdx, subaddressIdx) {
+  return self.WORKER_OBJECTS[walletId].signMessage(message, signatureType, accountIdx, subaddressIdx);
 }
 
 self.verifyMessage = async function(walletId, message, address, signature) {
-  return self.WORKER_OBJECTS[walletId].verifyMessage(message, address, signature);
+  return (await self.WORKER_OBJECTS[walletId].verifyMessage(message, address, signature)).toJson();
 }
 
 self.getTxKey = async function(walletId, txHash) {
@@ -801,7 +854,7 @@ self.getTxProof = async function(walletId, txHash, address, message) {
 }
 
 self.checkTxProof = async function(walletId, txHash, address, message, signature) {
-  return (self.WORKER_OBJECTS[walletId].checkTxProof(txHash, address, message, signature)).toJson();
+  return (await self.WORKER_OBJECTS[walletId].checkTxProof(txHash, address, message, signature)).toJson();
 }
 
 self.getSpendProof = async function(walletId, txHash, message) {
@@ -816,8 +869,8 @@ self.getReserveProofWallet = async function(walletId, message) {
   return self.WORKER_OBJECTS[walletId].getReserveProofWallet(message);
 }
 
-self.getReserveProofAccount = async function(walletId, accountIdx, amount, message) {
-  return self.WORKER_OBJECTS[walletId].getReserveProofAccount(accountIdx, amount, message);
+self.getReserveProofAccount = async function(walletId, accountIdx, amountStr, message) {
+  return self.WORKER_OBJECTS[walletId].getReserveProofAccount(accountIdx, amountStr, message);
 }
 
 self.checkReserveProof = async function(walletId, address, message, signature) {
@@ -866,8 +919,8 @@ self.setAccountTagLabel = async function(walletId, tag, label) {
   throw new Error("Not implemented");
 }
 
-self.createPaymentUri = async function(walletId, configJson) {
-  return self.WORKER_OBJECTS[walletId].createPaymentUri(new MoneroTxConfig(configJson));
+self.getPaymentUri = async function(walletId, configJson) {
+  return self.WORKER_OBJECTS[walletId].getPaymentUri(new MoneroTxConfig(configJson));
 }
 
 self.parsePaymentUri = async function(walletId, uri) {
@@ -907,15 +960,15 @@ self.prepareMultisig = async function(walletId) {
 }
 
 self.makeMultisig = async function(walletId, multisigHexes, threshold, password) {
-  return (await self.WORKER_OBJECTS[walletId].makeMultisig(multisigHexes, threshold, password)).toJson();
+  return await self.WORKER_OBJECTS[walletId].makeMultisig(multisigHexes, threshold, password);
 }
 
 self.exchangeMultisigKeys = async function(walletId, multisigHexes, password) {
   return (await self.WORKER_OBJECTS[walletId].exchangeMultisigKeys(multisigHexes, password)).toJson();
 }
 
-self.getMultisigHex = async function(walletId) {
-  return self.WORKER_OBJECTS[walletId].getMultisigHex();
+self.exportMultisigHex = async function(walletId) {
+  return self.WORKER_OBJECTS[walletId].exportMultisigHex();
 }
 
 self.importMultisigHex = async function(walletId, multisigHexes) {
@@ -932,6 +985,10 @@ self.submitMultisigTxHex = async function(walletId, signedMultisigTxHex) {
 
 self.getData = async function(walletId) {
   return self.WORKER_OBJECTS[walletId].getData();
+}
+
+self.changePassword = async function(walletId, oldPassword, newPassword) {
+  return self.WORKER_OBJECTS[walletId].changePassword(oldPassword, newPassword);
 }
 
 self.isClosed = async function(walletId) {

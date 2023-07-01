@@ -6,11 +6,9 @@ describe("Scratchpad", function() {
   
   it("Can be scripted easily", async function() {
     
-    // get test wasm wallet
 //    let daemon = await TestUtils.getDaemonRpc();
 //    let walletRpc = await TestUtils.getWalletRpc();
-//    let walletWasm = await TestUtils.getWalletWasm();
-    
+//    let walletFull = await TestUtils.getWalletFull();
     
     // initialize daemon rpc client
     let daemon = monerojs.connectToDaemonRpc({
@@ -23,32 +21,30 @@ describe("Scratchpad", function() {
     console.log("Daemon height: " + await daemon.getHeight());
     
     // initialize wallet rpc client
-    let walletRpc = monerojs.connectToWalletRpc({
-      uri: "http://localhost:38083",
+    let walletRpc = await monerojs.connectToWalletRpc({
+      uri: "http://localhost:28084",
       username: "rpc_user",
       password: "abc123",
       rejectUnauthorized: false
     });
-    //await walletRpc.openWallet("test_wallet_1", "supersecretpassword123");
+    await walletRpc.openWallet("test_wallet_1", "supersecretpassword123");
     console.log("RPC wallet mnemonic: " + await walletRpc.getMnemonic());
     
     // create in-memory wallet with mnemonic
-    let walletWasm = await monerojs.createWalletWasm({
+    let walletFull = await monerojs.createWalletFull({
       //path: "./test_wallets/" + GenUtils.getUUID(), // in-memory wallet if not given
       password: "abctesting123",
-      networkType: "stagenet",
-      serverUri: "http://localhost:38081",
-      serverUsername: "superuser",
-      serverPassword: "abctesting123",
-      mnemonic: "hijack lucky rally sober hockey robot gumball amaze gave fifteen organs gecko skater wizard demonstrate upright system vegan tobacco tsunami lurk withdrawn tomorrow uphill organs",
+      networkType: "testnet",
+      serverUri: "http://localhost:28081",
+      mnemonic: "silk mocked cucumber lettuce hope adrenalin aching lush roles fuel revamp baptism wrist long tender teardrop midst pastry pigment equip frying inbound pinched ravine frying",
       restoreHeight: 0,
       proxyToWorker: TestUtils.PROXY_TO_WORKER,
       rejectUnauthorized: false
     });
-    await walletWasm.sync(new WalletSyncPrinter());
-    console.log("WASM wallet daemon height: " + await walletWasm.getDaemonHeight());
-    console.log("WASM wallet mnemonic: " + await walletWasm.getMnemonic());
+    await walletFull.sync(new WalletSyncPrinter());
+    console.log("Full wallet daemon height: " + await walletFull.getDaemonHeight());
+    console.log("Full wallet mnemonic: " + await walletFull.getMnemonic());
     
-    await walletWasm.close();
+    await walletFull.close();
   });
 });

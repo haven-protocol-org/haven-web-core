@@ -28,7 +28,7 @@
 
 <header>
     
-        <h2><span class="attribs"><span class="type-signature"></span></span>MoneroWalletRpc<span class="signature">(uriOrConfigOrConnection, username, password, rejectUnauthorized)</span><span class="type-signature"></span></h2>
+        <h2><span class="attribs"><span class="type-signature"></span></span>MoneroWalletRpc</h2>
         
             <div class="class-description">Implements a MoneroWallet as a client of monero-wallet-rpc.</div>
         
@@ -40,283 +40,14 @@
     
         
 
-    
-    <h2>Constructor</h2>
-    
 
-    
-    <h4 class="name" id="MoneroWalletRpc"><span class="type-signature"></span>new MoneroWalletRpc<span class="signature">(uriOrConfigOrConnection, username, password, rejectUnauthorized)</span><span class="type-signature"></span></h4>
-    
 
-    
 
 
 
-<div class="description">
-    <p>Construct a wallet RPC client.</p>
 
-<p>Examples:</p>
 
-<code>
-let walletRpc = new MoneroWalletRpc("http://localhost:38081", "superuser", "abctesting123");<br><br>
 
-let walletRpc = new MoneroWalletRpc({<br>
-&nbsp;&nbsp; uri: "http://localhost:38081",<br>
-&nbsp;&nbsp; username: "superuser",<br>
-&nbsp;&nbsp; password: "abctesting123",<br>
-&nbsp;&nbsp; rejectUnauthorized: false // e.g. local development<br>
-});
-</code>
-</div>
-
-
-
-
-
-
-
-
-
-    <h5>Parameters:</h5>
-    
-
-<table class="params">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>uriOrConfigOrConnection</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">string</span>
-|
-
-<span class="param-type">object</span>
-|
-
-<span class="param-type"><a href="MoneroRpcConnection.html">MoneroRpcConnection</a></span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last">uri of monero-wallet-rpc or JS config object or MoneroRpcConnection
-                <h6>Properties</h6>
-                
-
-<table class="params">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>uri</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">string</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last">uri of monero-wallet-rpc</td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>username</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">string</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last">username to authenticate with monero-wallet-rpc (optional)</td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>password</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">string</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last">password to authenticate with monero-wallet-rpc (optional)</td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>rejectUnauthorized</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">boolean</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last">rejects self-signed certificates if true (default true)</td>
-        </tr>
-
-    
-    </tbody>
-</table>
-
-            </td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>username</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">string</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last">username to authenticate with monero-wallet-rpc (optional)</td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>password</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">string</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last">password to authenticate with monero-wallet-rpc (optional)</td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>rejectUnauthorized</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">boolean</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last">rejects self-signed certificates if true (default true)</td>
-        </tr>
-
-    
-    </tbody>
-</table>
 
 
 
@@ -359,7 +90,7 @@ let walletRpc = new MoneroWalletRpc({<br>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="src_main_js_wallet_MoneroWalletRpc.js.html">src/main/js/wallet/MoneroWalletRpc.js</a>, <a href="src_main_js_wallet_MoneroWalletRpc.js.html#line93">line 93</a>
+        <a href="src_main_js_wallet_MoneroWalletRpc.js.html">src/main/js/wallet/MoneroWalletRpc.js</a>, <a href="src_main_js_wallet_MoneroWalletRpc.js.html#line72">line 72</a>
     </li></ul></dd>
     
 
@@ -546,7 +277,7 @@ let walletRpc = new MoneroWalletRpc({<br>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="src_main_js_wallet_MoneroWalletRpc.js.html">src/main/js/wallet/MoneroWalletRpc.js</a>, <a href="src_main_js_wallet_MoneroWalletRpc.js.html#line1142">line 1142</a>
+        <a href="src_main_js_wallet_MoneroWalletRpc.js.html">src/main/js/wallet/MoneroWalletRpc.js</a>, <a href="src_main_js_wallet_MoneroWalletRpc.js.html#line1366">line 1366</a>
     </li></ul></dd>
     
 
@@ -593,6 +324,317 @@ let walletRpc = new MoneroWalletRpc({<br>
 </dl>
 
     
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="addListener"><span class="type-signature">(async) </span>addListener<span class="signature">(listener)</span><span class="type-signature"></span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    Register a listener to receive wallet notifications.
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>listener</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="MoneroWalletListener.html">MoneroWalletListener</a></span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">listener to receive wallet notifications</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="implements">Implements:</dt>
+    <dd class="implements"><ul>
+        
+            <li><a href="MoneroWallet.html#addListener">MoneroWallet#addListener</a></li>
+        
+    </ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="src_main_js_wallet_MoneroWalletRpc.js.html">src/main/js/wallet/MoneroWalletRpc.js</a>, <a href="src_main_js_wallet_MoneroWalletRpc.js.html#line466">line 466</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="changePassword"><span class="type-signature">(async) </span>changePassword<span class="signature">(oldPassword, newPassword)</span><span class="type-signature"></span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    Change the wallet password.
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>oldPassword</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">the wallet's old password</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>newPassword</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">the wallet's new password</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="implements">Implements:</dt>
+    <dd class="implements"><ul>
+        
+            <li><a href="MoneroWallet.html#changePassword">MoneroWallet#changePassword</a></li>
+        
+    </ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="src_main_js_wallet_MoneroWalletRpc.js.html">src/main/js/wallet/MoneroWalletRpc.js</a>, <a href="src_main_js_wallet_MoneroWalletRpc.js.html#line1526">line 1526</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -758,7 +800,7 @@ let walletRpc = new MoneroWalletRpc({<br>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="src_main_js_wallet_MoneroWalletRpc.js.html">src/main/js/wallet/MoneroWalletRpc.js</a>, <a href="src_main_js_wallet_MoneroWalletRpc.js.html#line1104">line 1104</a>
+        <a href="src_main_js_wallet_MoneroWalletRpc.js.html">src/main/js/wallet/MoneroWalletRpc.js</a>, <a href="src_main_js_wallet_MoneroWalletRpc.js.html#line1328">line 1328</a>
     </li></ul></dd>
     
 
@@ -970,7 +1012,7 @@ let walletRpc = new MoneroWalletRpc({<br>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="src_main_js_wallet_MoneroWalletRpc.js.html">src/main/js/wallet/MoneroWalletRpc.js</a>, <a href="src_main_js_wallet_MoneroWalletRpc.js.html#line1073">line 1073</a>
+        <a href="src_main_js_wallet_MoneroWalletRpc.js.html">src/main/js/wallet/MoneroWalletRpc.js</a>, <a href="src_main_js_wallet_MoneroWalletRpc.js.html#line1297">line 1297</a>
     </li></ul></dd>
     
 
@@ -1182,7 +1224,7 @@ let walletRpc = new MoneroWalletRpc({<br>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="src_main_js_wallet_MoneroWalletRpc.js.html">src/main/js/wallet/MoneroWalletRpc.js</a>, <a href="src_main_js_wallet_MoneroWalletRpc.js.html#line1007">line 1007</a>
+        <a href="src_main_js_wallet_MoneroWalletRpc.js.html">src/main/js/wallet/MoneroWalletRpc.js</a>, <a href="src_main_js_wallet_MoneroWalletRpc.js.html#line1230">line 1230</a>
     </li></ul></dd>
     
 
@@ -1417,7 +1459,7 @@ let walletRpc = new MoneroWalletRpc({<br>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="src_main_js_wallet_MoneroWalletRpc.js.html">src/main/js/wallet/MoneroWalletRpc.js</a>, <a href="src_main_js_wallet_MoneroWalletRpc.js.html#line1036">line 1036</a>
+        <a href="src_main_js_wallet_MoneroWalletRpc.js.html">src/main/js/wallet/MoneroWalletRpc.js</a>, <a href="src_main_js_wallet_MoneroWalletRpc.js.html#line1259">line 1259</a>
     </li></ul></dd>
     
 
@@ -1583,7 +1625,7 @@ let walletRpc = new MoneroWalletRpc({<br>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="src_main_js_wallet_MoneroWalletRpc.js.html">src/main/js/wallet/MoneroWalletRpc.js</a>, <a href="src_main_js_wallet_MoneroWalletRpc.js.html#line1311">line 1311</a>
+        <a href="src_main_js_wallet_MoneroWalletRpc.js.html">src/main/js/wallet/MoneroWalletRpc.js</a>, <a href="src_main_js_wallet_MoneroWalletRpc.js.html#line1534">line 1534</a>
     </li></ul></dd>
     
 
@@ -1727,7 +1769,7 @@ let walletRpc = new MoneroWalletRpc({<br>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="src_main_js_wallet_MoneroWalletRpc.js.html">src/main/js/wallet/MoneroWalletRpc.js</a>, <a href="src_main_js_wallet_MoneroWalletRpc.js.html#line544">line 544</a>
+        <a href="src_main_js_wallet_MoneroWalletRpc.js.html">src/main/js/wallet/MoneroWalletRpc.js</a>, <a href="src_main_js_wallet_MoneroWalletRpc.js.html#line714">line 714</a>
     </li></ul></dd>
     
 
@@ -1768,172 +1810,6 @@ let walletRpc = new MoneroWalletRpc({<br>
     <dd>
         
 <span class="param-type"><a href="MoneroAccount.html">MoneroAccount</a></span>
-
-
-    </dd>
-</dl>
-
-    
-
-
-
-
-
-        
-            
-
-    
-
-    
-    <h4 class="name" id="createPaymentUri"><span class="type-signature">(async) </span>createPaymentUri<span class="signature">(config)</span><span class="type-signature"> &rarr; {string}</span></h4>
-    
-
-    
-
-
-
-<div class="description">
-    Creates a payment URI from a send configuration.
-</div>
-
-
-
-
-
-
-
-
-
-    <h5>Parameters:</h5>
-    
-
-<table class="params">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>config</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type"><a href="MoneroTxConfig.html">MoneroTxConfig</a></span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last">specifies configuration for a potential tx</td>
-        </tr>
-
-    
-    </tbody>
-</table>
-
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="implements">Implements:</dt>
-    <dd class="implements"><ul>
-        
-            <li><a href="MoneroWallet.html#createPaymentUri">MoneroWallet#createPaymentUri</a></li>
-        
-    </ul></dd>
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="src_main_js_wallet_MoneroWalletRpc.js.html">src/main/js/wallet/MoneroWalletRpc.js</a>, <a href="src_main_js_wallet_MoneroWalletRpc.js.html#line1184">line 1184</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<h5>Returns:</h5>
-
-        
-<div class="param-desc">
-    the payment uri
-</div>
-
-
-
-<dl>
-    <dt>
-        Type
-    </dt>
-    <dd>
-        
-<span class="param-type">string</span>
 
 
     </dd>
@@ -2082,7 +1958,7 @@ let walletRpc = new MoneroWalletRpc({<br>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="src_main_js_wallet_MoneroWalletRpc.js.html">src/main/js/wallet/MoneroWalletRpc.js</a>, <a href="src_main_js_wallet_MoneroWalletRpc.js.html#line615">line 615</a>
+        <a href="src_main_js_wallet_MoneroWalletRpc.js.html">src/main/js/wallet/MoneroWalletRpc.js</a>, <a href="src_main_js_wallet_MoneroWalletRpc.js.html#line785">line 785</a>
     </li></ul></dd>
     
 
@@ -2510,7 +2386,7 @@ let walletRpc = new MoneroWalletRpc({<br>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="src_main_js_wallet_MoneroWalletRpc.js.html">src/main/js/wallet/MoneroWalletRpc.js</a>, <a href="src_main_js_wallet_MoneroWalletRpc.js.html#line1339">line 1339</a>
+        <a href="src_main_js_wallet_MoneroWalletRpc.js.html">src/main/js/wallet/MoneroWalletRpc.js</a>, <a href="src_main_js_wallet_MoneroWalletRpc.js.html#line1563">line 1563</a>
     </li></ul></dd>
     
 
@@ -2961,7 +2837,7 @@ let walletRpc = new MoneroWalletRpc({<br>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="src_main_js_wallet_MoneroWalletRpc.js.html">src/main/js/wallet/MoneroWalletRpc.js</a>, <a href="src_main_js_wallet_MoneroWalletRpc.js.html#line808">line 808</a>
+        <a href="src_main_js_wallet_MoneroWalletRpc.js.html">src/main/js/wallet/MoneroWalletRpc.js</a>, <a href="src_main_js_wallet_MoneroWalletRpc.js.html#line989">line 989</a>
     </li></ul></dd>
     
 
@@ -3019,7 +2895,7 @@ let walletRpc = new MoneroWalletRpc({<br>
     
 
     
-    <h4 class="name" id="createWallet"><span class="type-signature">(async) </span>createWallet<span class="signature">(config)</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="createWallet"><span class="type-signature">(async) </span>createWallet<span class="signature">(config)</span><span class="type-signature"> &rarr; {<a href="MoneroWalletRpc.html">MoneroWalletRpc</a>}</span></h4>
     
 
     
@@ -3033,7 +2909,7 @@ let walletRpc = new MoneroWalletRpc({<br>
 
 <code>
 &sol;&sol; construct client to monero-wallet-rpc<br>
-let walletRpc = new MoneroWalletRpc("http://localhost:38083", "rpc_user", "abc123");<br><br>
+let walletRpc = new MoneroWalletRpc("http://localhost:38084", "rpc_user", "abc123");<br><br>
 
 &sol;&sol; create and open wallet on monero-wallet-rpc<br>
 await walletRpc.createWallet({<br>
@@ -3512,7 +3388,7 @@ await walletRpc.createWallet({<br>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="src_main_js_wallet_MoneroWalletRpc.js.html">src/main/js/wallet/MoneroWalletRpc.js</a>, <a href="src_main_js_wallet_MoneroWalletRpc.js.html#line187">line 187</a>
+        <a href="src_main_js_wallet_MoneroWalletRpc.js.html">src/main/js/wallet/MoneroWalletRpc.js</a>, <a href="src_main_js_wallet_MoneroWalletRpc.js.html#line301">line 301</a>
     </li></ul></dd>
     
 
@@ -3537,6 +3413,28 @@ await walletRpc.createWallet({<br>
 
 
 
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    this wallet client
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type"><a href="MoneroWalletRpc.html">MoneroWalletRpc</a></span>
+
+
+    </dd>
+</dl>
+
+    
 
 
 
@@ -3656,7 +3554,7 @@ await walletRpc.createWallet({<br>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="src_main_js_wallet_MoneroWalletRpc.js.html">src/main/js/wallet/MoneroWalletRpc.js</a>, <a href="src_main_js_wallet_MoneroWalletRpc.js.html#line440">line 440</a>
+        <a href="src_main_js_wallet_MoneroWalletRpc.js.html">src/main/js/wallet/MoneroWalletRpc.js</a>, <a href="src_main_js_wallet_MoneroWalletRpc.js.html#line585">line 585</a>
     </li></ul></dd>
     
 
@@ -3822,7 +3720,7 @@ await walletRpc.createWallet({<br>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="src_main_js_wallet_MoneroWalletRpc.js.html">src/main/js/wallet/MoneroWalletRpc.js</a>, <a href="src_main_js_wallet_MoneroWalletRpc.js.html#line1157">line 1157</a>
+        <a href="src_main_js_wallet_MoneroWalletRpc.js.html">src/main/js/wallet/MoneroWalletRpc.js</a>, <a href="src_main_js_wallet_MoneroWalletRpc.js.html#line1381">line 1381</a>
     </li></ul></dd>
     
 
@@ -3847,6 +3745,172 @@ await walletRpc.createWallet({<br>
 
 
 
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="describeTxSet"><span class="type-signature">(async) </span>describeTxSet<span class="signature">(txSet)</span><span class="type-signature"> &rarr; {<a href="MoneroTxSet.html">MoneroTxSet</a>}</span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    Describe a tx set containing unsigned or multisig tx hex to a new tx set containing structured transactions.
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>txSet</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="MoneroTxSet.html">MoneroTxSet</a></span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">a tx set containing unsigned or multisig tx hex</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="implements">Implements:</dt>
+    <dd class="implements"><ul>
+        
+            <li><a href="MoneroWallet.html#describeTxSet">MoneroWallet#describeTxSet</a></li>
+        
+    </ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="src_main_js_wallet_MoneroWalletRpc.js.html">src/main/js/wallet/MoneroWalletRpc.js</a>, <a href="src_main_js_wallet_MoneroWalletRpc.js.html#line1171">line 1171</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    the tx set containing structured transactions
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type"><a href="MoneroTxSet.html">MoneroTxSet</a></span>
+
+
+    </dd>
+</dl>
+
+    
 
 
 
@@ -4058,7 +4122,7 @@ await walletRpc.createWallet({<br>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="src_main_js_wallet_MoneroWalletRpc.js.html">src/main/js/wallet/MoneroWalletRpc.js</a>, <a href="src_main_js_wallet_MoneroWalletRpc.js.html#line1147">line 1147</a>
+        <a href="src_main_js_wallet_MoneroWalletRpc.js.html">src/main/js/wallet/MoneroWalletRpc.js</a>, <a href="src_main_js_wallet_MoneroWalletRpc.js.html#line1371">line 1371</a>
     </li></ul></dd>
     
 
@@ -4179,7 +4243,7 @@ This process must be repeated with participants exactly N-M times.
 
             
 
-            <td class="description last">wallet's password // TODO monero core: redundant? wallet is created with password</td>
+            <td class="description last">wallet's password // TODO monero-project: redundant? wallet is created with password</td>
         </tr>
 
     
@@ -4227,7 +4291,7 @@ This process must be repeated with participants exactly N-M times.
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="src_main_js_wallet_MoneroWalletRpc.js.html">src/main/js/wallet/MoneroWalletRpc.js</a>, <a href="src_main_js_wallet_MoneroWalletRpc.js.html#line1273">line 1273</a>
+        <a href="src_main_js_wallet_MoneroWalletRpc.js.html">src/main/js/wallet/MoneroWalletRpc.js</a>, <a href="src_main_js_wallet_MoneroWalletRpc.js.html#line1491">line 1491</a>
     </li></ul></dd>
     
 
@@ -4274,6 +4338,599 @@ This process must be repeated with participants exactly N-M times.
 </dl>
 
     
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="exportKeyImages"><span class="type-signature">(async) </span>exportKeyImages<span class="signature">(all)</span><span class="type-signature"> &rarr; {<a href="Array.html">Array</a>.&lt;<a href="MoneroKeyImage.html">MoneroKeyImage</a>>}</span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    Export signed key images.
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>all</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">boolean</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">export all key images if true, else export the key images since the last export</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="implements">Implements:</dt>
+    <dd class="implements"><ul>
+        
+            <li><a href="MoneroWallet.html#exportKeyImages">MoneroWallet#exportKeyImages</a></li>
+        
+    </ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="src_main_js_wallet_MoneroWalletRpc.js.html">src/main/js/wallet/MoneroWalletRpc.js</a>, <a href="src_main_js_wallet_MoneroWalletRpc.js.html#line952">line 952</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    the wallet's signed key images
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type"><a href="Array.html">Array</a>.&lt;<a href="MoneroKeyImage.html">MoneroKeyImage</a>></span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="exportMultisigHex"><span class="type-signature">(async) </span>exportMultisigHex<span class="signature">()</span><span class="type-signature"> &rarr; {string}</span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    Export this wallet's multisig info as hex for other participants.
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="implements">Implements:</dt>
+    <dd class="implements"><ul>
+        
+            <li><a href="MoneroWallet.html#exportMultisigHex">MoneroWallet#exportMultisigHex</a></li>
+        
+    </ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="src_main_js_wallet_MoneroWalletRpc.js.html">src/main/js/wallet/MoneroWalletRpc.js</a>, <a href="src_main_js_wallet_MoneroWalletRpc.js.html#line1501">line 1501</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    this wallet's multisig info as hex for other participants
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">string</span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="exportOutputs"><span class="type-signature">(async) </span>exportOutputs<span class="signature">(all)</span><span class="type-signature"> &rarr; {string}</span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    Export outputs in hex format.
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>all</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">boolean</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">export all outputs if true, else export the outputs since the last export</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="implements">Implements:</dt>
+    <dd class="implements"><ul>
+        
+            <li><a href="MoneroWallet.html#exportOutputs">MoneroWallet#exportOutputs</a></li>
+        
+    </ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="src_main_js_wallet_MoneroWalletRpc.js.html">src/main/js/wallet/MoneroWalletRpc.js</a>, <a href="src_main_js_wallet_MoneroWalletRpc.js.html#line943">line 943</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    outputs in hex format
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">string</span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="freezeOutput"><span class="type-signature">(async) </span>freezeOutput<span class="signature">(keyImage)</span><span class="type-signature"></span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    Freeze an output.
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>keyImage</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">key image of the output to freeze</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="implements">Implements:</dt>
+    <dd class="implements"><ul>
+        
+            <li><a href="MoneroWallet.html#freezeOutput">MoneroWallet#freezeOutput</a></li>
+        
+    </ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="src_main_js_wallet_MoneroWalletRpc.js.html">src/main/js/wallet/MoneroWalletRpc.js</a>, <a href="src_main_js_wallet_MoneroWalletRpc.js.html#line976">line 976</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -4416,7 +5073,7 @@ This process must be repeated with participants exactly N-M times.
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="src_main_js_wallet_MoneroWalletRpc.js.html">src/main/js/wallet/MoneroWalletRpc.js</a>, <a href="src_main_js_wallet_MoneroWalletRpc.js.html#line533">line 533</a>
+        <a href="src_main_js_wallet_MoneroWalletRpc.js.html">src/main/js/wallet/MoneroWalletRpc.js</a>, <a href="src_main_js_wallet_MoneroWalletRpc.js.html#line703">line 703</a>
     </li></ul></dd>
     
 
@@ -4605,7 +5262,7 @@ This process must be repeated with participants exactly N-M times.
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="src_main_js_wallet_MoneroWalletRpc.js.html">src/main/js/wallet/MoneroWalletRpc.js</a>, <a href="src_main_js_wallet_MoneroWalletRpc.js.html#line483">line 483</a>
+        <a href="src_main_js_wallet_MoneroWalletRpc.js.html">src/main/js/wallet/MoneroWalletRpc.js</a>, <a href="src_main_js_wallet_MoneroWalletRpc.js.html#line653">line 653</a>
     </li></ul></dd>
     
 
@@ -4722,7 +5379,7 @@ This process must be repeated with participants exactly N-M times.
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="src_main_js_wallet_MoneroWalletRpc.js.html">src/main/js/wallet/MoneroWalletRpc.js</a>, <a href="src_main_js_wallet_MoneroWalletRpc.js.html#line1169">line 1169</a>
+        <a href="src_main_js_wallet_MoneroWalletRpc.js.html">src/main/js/wallet/MoneroWalletRpc.js</a>, <a href="src_main_js_wallet_MoneroWalletRpc.js.html#line1393">line 1393</a>
     </li></ul></dd>
     
 
@@ -4911,7 +5568,7 @@ This process must be repeated with participants exactly N-M times.
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="src_main_js_wallet_MoneroWalletRpc.js.html">src/main/js/wallet/MoneroWalletRpc.js</a>, <a href="src_main_js_wallet_MoneroWalletRpc.js.html#line397">line 397</a>
+        <a href="src_main_js_wallet_MoneroWalletRpc.js.html">src/main/js/wallet/MoneroWalletRpc.js</a>, <a href="src_main_js_wallet_MoneroWalletRpc.js.html#line542">line 542</a>
     </li></ul></dd>
     
 
@@ -5077,7 +5734,7 @@ This process must be repeated with participants exactly N-M times.
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="src_main_js_wallet_MoneroWalletRpc.js.html">src/main/js/wallet/MoneroWalletRpc.js</a>, <a href="src_main_js_wallet_MoneroWalletRpc.js.html#line1132">line 1132</a>
+        <a href="src_main_js_wallet_MoneroWalletRpc.js.html">src/main/js/wallet/MoneroWalletRpc.js</a>, <a href="src_main_js_wallet_MoneroWalletRpc.js.html#line1356">line 1356</a>
     </li></ul></dd>
     
 
@@ -5243,7 +5900,7 @@ This process must be repeated with participants exactly N-M times.
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="src_main_js_wallet_MoneroWalletRpc.js.html">src/main/js/wallet/MoneroWalletRpc.js</a>, <a href="src_main_js_wallet_MoneroWalletRpc.js.html#line412">line 412</a>
+        <a href="src_main_js_wallet_MoneroWalletRpc.js.html">src/main/js/wallet/MoneroWalletRpc.js</a>, <a href="src_main_js_wallet_MoneroWalletRpc.js.html#line557">line 557</a>
     </li></ul></dd>
     
 
@@ -5409,7 +6066,7 @@ This process must be repeated with participants exactly N-M times.
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="src_main_js_wallet_MoneroWalletRpc.js.html">src/main/js/wallet/MoneroWalletRpc.js</a>, <a href="src_main_js_wallet_MoneroWalletRpc.js.html#line1210">line 1210</a>
+        <a href="src_main_js_wallet_MoneroWalletRpc.js.html">src/main/js/wallet/MoneroWalletRpc.js</a>, <a href="src_main_js_wallet_MoneroWalletRpc.js.html#line1434">line 1434</a>
     </li></ul></dd>
     
 
@@ -5527,7 +6184,7 @@ This process must be repeated with participants exactly N-M times.
 
             
 
-            <td class="description last">index of the account to get the balance of (optional)</td>
+            <td class="description last">index of the account to get the balance of (default all accounts)</td>
         </tr>
 
     
@@ -5550,7 +6207,7 @@ This process must be repeated with participants exactly N-M times.
 
             
 
-            <td class="description last">index of the subaddress to get the balance of (optional)</td>
+            <td class="description last">index of the subaddress to get the balance of (default all subaddresses)</td>
         </tr>
 
     
@@ -5598,7 +6255,7 @@ This process must be repeated with participants exactly N-M times.
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="src_main_js_wallet_MoneroWalletRpc.js.html">src/main/js/wallet/MoneroWalletRpc.js</a>, <a href="src_main_js_wallet_MoneroWalletRpc.js.html#line475">line 475</a>
+        <a href="src_main_js_wallet_MoneroWalletRpc.js.html">src/main/js/wallet/MoneroWalletRpc.js</a>, <a href="src_main_js_wallet_MoneroWalletRpc.js.html#line645">line 645</a>
     </li></ul></dd>
     
 
@@ -5715,7 +6372,7 @@ This process must be repeated with participants exactly N-M times.
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="src_main_js_wallet_MoneroWalletRpc.js.html">src/main/js/wallet/MoneroWalletRpc.js</a>, <a href="src_main_js_wallet_MoneroWalletRpc.js.html#line334">line 334</a>
+        <a href="src_main_js_wallet_MoneroWalletRpc.js.html">src/main/js/wallet/MoneroWalletRpc.js</a>, <a href="src_main_js_wallet_MoneroWalletRpc.js.html#line460">line 460</a>
     </li></ul></dd>
     
 
@@ -5832,7 +6489,7 @@ This process must be repeated with participants exactly N-M times.
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="src_main_js_wallet_MoneroWalletRpc.js.html">src/main/js/wallet/MoneroWalletRpc.js</a>, <a href="src_main_js_wallet_MoneroWalletRpc.js.html#line449">line 449</a>
+        <a href="src_main_js_wallet_MoneroWalletRpc.js.html">src/main/js/wallet/MoneroWalletRpc.js</a>, <a href="src_main_js_wallet_MoneroWalletRpc.js.html#line594">line 594</a>
     </li></ul></dd>
     
 
@@ -5898,7 +6555,7 @@ This process must be repeated with participants exactly N-M times.
 
 
 <div class="description">
-    Get the height of the last block processed by the wallet (its index + 1).
+    Get the block height that the wallet is synced to.
 </div>
 
 
@@ -5949,7 +6606,7 @@ This process must be repeated with participants exactly N-M times.
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="src_main_js_wallet_MoneroWalletRpc.js.html">src/main/js/wallet/MoneroWalletRpc.js</a>, <a href="src_main_js_wallet_MoneroWalletRpc.js.html#line445">line 445</a>
+        <a href="src_main_js_wallet_MoneroWalletRpc.js.html">src/main/js/wallet/MoneroWalletRpc.js</a>, <a href="src_main_js_wallet_MoneroWalletRpc.js.html#line590">line 590</a>
     </li></ul></dd>
     
 
@@ -5978,7 +6635,7 @@ This process must be repeated with participants exactly N-M times.
 
         
 <div class="param-desc">
-    the height of the last block processed by the wallet
+    the block height that the wallet is synced to
 </div>
 
 
@@ -6161,7 +6818,7 @@ This process must be repeated with participants exactly N-M times.
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="src_main_js_wallet_MoneroWalletRpc.js.html">src/main/js/wallet/MoneroWalletRpc.js</a>, <a href="src_main_js_wallet_MoneroWalletRpc.js.html#line453">line 453</a>
+        <a href="src_main_js_wallet_MoneroWalletRpc.js.html">src/main/js/wallet/MoneroWalletRpc.js</a>, <a href="src_main_js_wallet_MoneroWalletRpc.js.html#line598">line 598</a>
     </li></ul></dd>
     
 
@@ -6215,7 +6872,7 @@ This process must be repeated with participants exactly N-M times.
 
 
 <div class="description">
-    Get all of the wallet's incoming transfers.
+    Get incoming transfers.
 </div>
 
 
@@ -6256,13 +6913,185 @@ This process must be repeated with participants exactly N-M times.
 
             <td class="type">
             
+                
+<span class="param-type"><a href="MoneroTransferQuery.html">MoneroTransferQuery</a></span>
+|
+
+<span class="param-type">object</span>
+
+
+            
             </td>
 
             
 
             
 
-            <td class="description last">passed to getTransfers() with isIncoming=true</td>
+            <td class="description last">configures the query (optional)
+                <h6>Properties</h6>
+                
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>address</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">get incoming transfers to a specific address in the wallet (optional)</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>accountIndex</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">int</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">get incoming transfers to a specific account index (optional)</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>subaddressIndex</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">int</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">get incoming transfers to a specific subaddress index (optional)</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>subaddressIndices</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="Array.html">Array</a>.&lt;int></span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">get transfers destined for specific subaddress indices (optional)</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>amount</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">BigInteger</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">amount being transferred (optional)</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>txQuery</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="MoneroTxQuery.html">MoneroTxQuery</a></span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">get transfers whose transaction meets this query (optional)</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+            </td>
         </tr>
 
     
@@ -6310,7 +7139,7 @@ This process must be repeated with participants exactly N-M times.
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="src_main_js_wallet_MoneroWalletRpc.js.html">src/main/js/wallet/MoneroWalletRpc.js</a>, <a href="src_main_js_wallet_MoneroWalletRpc.js.html#line1337">line 1337</a>
+        <a href="src_main_js_wallet_MoneroWalletRpc.js.html">src/main/js/wallet/MoneroWalletRpc.js</a>, <a href="src_main_js_wallet_MoneroWalletRpc.js.html#line1561">line 1561</a>
     </li></ul></dd>
     
 
@@ -6339,7 +7168,7 @@ This process must be repeated with participants exactly N-M times.
 
         
 <div class="param-desc">
-    the wallet's incoming transfers
+    incoming transfers that meet the query
 </div>
 
 
@@ -6368,7 +7197,7 @@ This process must be repeated with participants exactly N-M times.
     
 
     
-    <h4 class="name" id="getIntegratedAddress"><span class="type-signature">(async) </span>getIntegratedAddress<span class="signature">(paymentId)</span><span class="type-signature"> &rarr; {<a href="MoneroIntegratedAddress.html">MoneroIntegratedAddress</a>}</span></h4>
+    <h4 class="name" id="getIntegratedAddress"><span class="type-signature">(async) </span>getIntegratedAddress<span class="signature">(standardAddress, paymentId)</span><span class="type-signature"> &rarr; {<a href="MoneroIntegratedAddress.html">MoneroIntegratedAddress</a>}</span></h4>
     
 
     
@@ -6376,8 +7205,9 @@ This process must be repeated with participants exactly N-M times.
 
 
 <div class="description">
-    Get an integrated address based on this wallet's primary address and the
-given payment ID.  Generates a random payment ID if none is given.
+    Get an integrated address based on the given standard address and payment
+ID. Uses the wallet's primary address if an address is not given.
+Generates a random payment ID if a payment ID is not given.
 </div>
 
 
@@ -6413,6 +7243,29 @@ given payment ID.  Generates a random payment ID if none is given.
 
         <tr>
             
+                <td class="name"><code>standardAddress</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">is the standard address to generate the integrated address from (wallet's primary address if undefined)</td>
+        </tr>
+
+    
+
+        <tr>
+            
                 <td class="name"><code>paymentId</code></td>
             
 
@@ -6429,7 +7282,7 @@ given payment ID.  Generates a random payment ID if none is given.
 
             
 
-            <td class="description last">payment ID to generate an integrated address from (randomly generated if undefined)</td>
+            <td class="description last">is the payment ID to generate an integrated address from (randomly generated if undefined)</td>
         </tr>
 
     
@@ -6477,7 +7330,7 @@ given payment ID.  Generates a random payment ID if none is given.
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="src_main_js_wallet_MoneroWalletRpc.js.html">src/main/js/wallet/MoneroWalletRpc.js</a>, <a href="src_main_js_wallet_MoneroWalletRpc.js.html#line430">line 430</a>
+        <a href="src_main_js_wallet_MoneroWalletRpc.js.html">src/main/js/wallet/MoneroWalletRpc.js</a>, <a href="src_main_js_wallet_MoneroWalletRpc.js.html#line575">line 575</a>
     </li></ul></dd>
     
 
@@ -6535,7 +7388,7 @@ given payment ID.  Generates a random payment ID if none is given.
     
 
     
-    <h4 class="name" id="getKeyImages"><span class="type-signature">(async) </span>getKeyImages<span class="signature">()</span><span class="type-signature"> &rarr; {<a href="Array.html">Array</a>.&lt;<a href="MoneroKeyImage.html">MoneroKeyImage</a>>}</span></h4>
+    <h4 class="name" id="getListeners"><span class="type-signature"></span>getListeners<span class="signature">()</span><span class="type-signature"> &rarr; {<a href="Array.html">Array</a>.&lt;<a href="MoneroWalletListener.html">MoneroWalletListener</a>>}</span></h4>
     
 
     
@@ -6543,7 +7396,7 @@ given payment ID.  Generates a random payment ID if none is given.
 
 
 <div class="description">
-    Get all signed key images.
+    Get the listeners registered with the wallet.
 </div>
 
 
@@ -6574,7 +7427,7 @@ given payment ID.  Generates a random payment ID if none is given.
     <dt class="implements">Implements:</dt>
     <dd class="implements"><ul>
         
-            <li><a href="MoneroWallet.html#getKeyImages">MoneroWallet#getKeyImages</a></li>
+            <li><a href="MoneroWallet.html#getListeners">MoneroWallet#getListeners</a></li>
         
     </ul></dd>
     
@@ -6594,7 +7447,7 @@ given payment ID.  Generates a random payment ID if none is given.
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="src_main_js_wallet_MoneroWalletRpc.js.html">src/main/js/wallet/MoneroWalletRpc.js</a>, <a href="src_main_js_wallet_MoneroWalletRpc.js.html#line773">line 773</a>
+        <a href="src_main_js_wallet_MoneroWalletRpc.js.html">src/main/js/wallet/MoneroWalletRpc.js</a>, <a href="src_main_js_wallet_MoneroWalletRpc.js.html#line479">line 479</a>
     </li></ul></dd>
     
 
@@ -6623,7 +7476,7 @@ given payment ID.  Generates a random payment ID if none is given.
 
         
 <div class="param-desc">
-    the wallet's signed key images
+    the registered listeners
 </div>
 
 
@@ -6634,7 +7487,7 @@ given payment ID.  Generates a random payment ID if none is given.
     </dt>
     <dd>
         
-<span class="param-type"><a href="Array.html">Array</a>.&lt;<a href="MoneroKeyImage.html">MoneroKeyImage</a>></span>
+<span class="param-type"><a href="Array.html">Array</a>.&lt;<a href="MoneroWalletListener.html">MoneroWalletListener</a>></span>
 
 
     </dd>
@@ -6711,7 +7564,7 @@ given payment ID.  Generates a random payment ID if none is given.
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="src_main_js_wallet_MoneroWalletRpc.js.html">src/main/js/wallet/MoneroWalletRpc.js</a>, <a href="src_main_js_wallet_MoneroWalletRpc.js.html#line356">line 356</a>
+        <a href="src_main_js_wallet_MoneroWalletRpc.js.html">src/main/js/wallet/MoneroWalletRpc.js</a>, <a href="src_main_js_wallet_MoneroWalletRpc.js.html#line501">line 501</a>
     </li></ul></dd>
     
 
@@ -6828,7 +7681,7 @@ given payment ID.  Generates a random payment ID if none is given.
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="src_main_js_wallet_MoneroWalletRpc.js.html">src/main/js/wallet/MoneroWalletRpc.js</a>, <a href="src_main_js_wallet_MoneroWalletRpc.js.html#line366">line 366</a>
+        <a href="src_main_js_wallet_MoneroWalletRpc.js.html">src/main/js/wallet/MoneroWalletRpc.js</a>, <a href="src_main_js_wallet_MoneroWalletRpc.js.html#line511">line 511</a>
     </li></ul></dd>
     
 
@@ -6938,7 +7791,7 @@ given payment ID.  Generates a random payment ID if none is given.
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="src_main_js_wallet_MoneroWalletRpc.js.html">src/main/js/wallet/MoneroWalletRpc.js</a>, <a href="src_main_js_wallet_MoneroWalletRpc.js.html#line376">line 376</a>
+        <a href="src_main_js_wallet_MoneroWalletRpc.js.html">src/main/js/wallet/MoneroWalletRpc.js</a>, <a href="src_main_js_wallet_MoneroWalletRpc.js.html#line521">line 521</a>
     </li></ul></dd>
     
 
@@ -6979,123 +7832,6 @@ given payment ID.  Generates a random payment ID if none is given.
     <dd>
         
 <span class="param-type"><a href="Array.html">Array</a>.&lt;string></span>
-
-
-    </dd>
-</dl>
-
-    
-
-
-
-
-
-        
-            
-
-    
-
-    
-    <h4 class="name" id="getMultisigHex"><span class="type-signature">(async) </span>getMultisigHex<span class="signature">()</span><span class="type-signature"> &rarr; {string}</span></h4>
-    
-
-    
-
-
-
-<div class="description">
-    Export this wallet's multisig info as hex for other participants.
-</div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="implements">Implements:</dt>
-    <dd class="implements"><ul>
-        
-            <li><a href="MoneroWallet.html#getMultisigHex">MoneroWallet#getMultisigHex</a></li>
-        
-    </ul></dd>
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="src_main_js_wallet_MoneroWalletRpc.js.html">src/main/js/wallet/MoneroWalletRpc.js</a>, <a href="src_main_js_wallet_MoneroWalletRpc.js.html#line1283">line 1283</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<h5>Returns:</h5>
-
-        
-<div class="param-desc">
-    this wallet's multisig info as hex for other participants
-</div>
-
-
-
-<dl>
-    <dt>
-        Type
-    </dt>
-    <dd>
-        
-<span class="param-type">string</span>
 
 
     </dd>
@@ -7172,7 +7908,7 @@ given payment ID.  Generates a random payment ID if none is given.
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="src_main_js_wallet_MoneroWalletRpc.js.html">src/main/js/wallet/MoneroWalletRpc.js</a>, <a href="src_main_js_wallet_MoneroWalletRpc.js.html#line1241">line 1241</a>
+        <a href="src_main_js_wallet_MoneroWalletRpc.js.html">src/main/js/wallet/MoneroWalletRpc.js</a>, <a href="src_main_js_wallet_MoneroWalletRpc.js.html#line1465">line 1465</a>
     </li></ul></dd>
     
 
@@ -7289,7 +8025,7 @@ given payment ID.  Generates a random payment ID if none is given.
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="src_main_js_wallet_MoneroWalletRpc.js.html">src/main/js/wallet/MoneroWalletRpc.js</a>, <a href="src_main_js_wallet_MoneroWalletRpc.js.html#line793">line 793</a>
+        <a href="src_main_js_wallet_MoneroWalletRpc.js.html">src/main/js/wallet/MoneroWalletRpc.js</a>, <a href="src_main_js_wallet_MoneroWalletRpc.js.html#line972">line 972</a>
     </li></ul></dd>
     
 
@@ -7347,6 +8083,123 @@ given payment ID.  Generates a random payment ID if none is given.
     
 
     
+    <h4 class="name" id="getNumBlocksToUnlock"><span class="type-signature">(async) </span>getNumBlocksToUnlock<span class="signature">()</span><span class="type-signature"> &rarr; {<a href="Array.html">Array</a>.&lt;int>}</span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    Get the number of blocks until the next and last funds unlock.
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="implements">Implements:</dt>
+    <dd class="implements"><ul>
+        
+            <li><a href="MoneroWallet.html#getNumBlocksToUnlock">MoneroWallet#getNumBlocksToUnlock</a></li>
+        
+    </ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="src_main_js_wallet_MoneroWalletRpc.js.html">src/main/js/wallet/MoneroWalletRpc.js</a>, <a href="src_main_js_wallet_MoneroWalletRpc.js.html#line1559">line 1559</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    the number of blocks until the next and last funds unlock in elements 0 and 1, respectively, or undefined if no balance
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type"><a href="Array.html">Array</a>.&lt;int></span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+
+
+        
+            
+
+    
+
+    
     <h4 class="name" id="getOutgoingTransfers"><span class="type-signature">(async) </span>getOutgoingTransfers<span class="signature">(query)</span><span class="type-signature"> &rarr; {<a href="Array.html">Array</a>.&lt;<a href="MoneroOutgoingTransfer.html">MoneroOutgoingTransfer</a>>}</span></h4>
     
 
@@ -7355,7 +8208,7 @@ given payment ID.  Generates a random payment ID if none is given.
 
 
 <div class="description">
-    Get all of the wallet's outgoing transfers.
+    Get outgoing transfers.
 </div>
 
 
@@ -7396,13 +8249,231 @@ given payment ID.  Generates a random payment ID if none is given.
 
             <td class="type">
             
+                
+<span class="param-type"><a href="MoneroTransferQuery.html">MoneroTransferQuery</a></span>
+|
+
+<span class="param-type">object</span>
+
+
+            
             </td>
 
             
 
             
 
-            <td class="description last">passed to getTransfers() with isOutgoing=true</td>
+            <td class="description last">configures the query (optional)
+                <h6>Properties</h6>
+                
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>address</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">get outgoing transfers from a specific address in the wallet (optional)</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>accountIndex</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">int</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">get outgoing transfers from a specific account index (optional)</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>subaddressIndex</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">int</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">get outgoing transfers from a specific subaddress index (optional)</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>subaddressIndices</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="Array.html">Array</a>.&lt;int></span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">get outgoing transfers from specific subaddress indices (optional)</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>amount</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">BigInteger</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">amount being transferred (optional)</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>destinations</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="Array.html">Array</a>.&lt;<a href="MoneroDestination.html">MoneroDestination</a>></span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">individual destinations of an outgoing transfer, which is local wallet data and NOT recoverable from the blockchain (optional)</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>hasDestinations</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">boolean</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">get transfers that have destinations or not (optional)</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>txQuery</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="MoneroTxQuery.html">MoneroTxQuery</a></span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">get transfers whose transaction meets this query (optional)</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+            </td>
         </tr>
 
     
@@ -7450,7 +8521,7 @@ given payment ID.  Generates a random payment ID if none is given.
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="src_main_js_wallet_MoneroWalletRpc.js.html">src/main/js/wallet/MoneroWalletRpc.js</a>, <a href="src_main_js_wallet_MoneroWalletRpc.js.html#line1338">line 1338</a>
+        <a href="src_main_js_wallet_MoneroWalletRpc.js.html">src/main/js/wallet/MoneroWalletRpc.js</a>, <a href="src_main_js_wallet_MoneroWalletRpc.js.html#line1562">line 1562</a>
     </li></ul></dd>
     
 
@@ -7479,7 +8550,7 @@ given payment ID.  Generates a random payment ID if none is given.
 
         
 <div class="param-desc">
-    the wallet's outgoing transfers
+    outgoing transfers that meet the query
 </div>
 
 
@@ -7861,7 +8932,7 @@ filtering is optional and no filtering is applied when not defined.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="src_main_js_wallet_MoneroWalletRpc.js.html">src/main/js/wallet/MoneroWalletRpc.js</a>, <a href="src_main_js_wallet_MoneroWalletRpc.js.html#line745">line 745</a>
+        <a href="src_main_js_wallet_MoneroWalletRpc.js.html">src/main/js/wallet/MoneroWalletRpc.js</a>, <a href="src_main_js_wallet_MoneroWalletRpc.js.html#line924">line 924</a>
     </li></ul></dd>
     
 
@@ -7890,7 +8961,7 @@ filtering is optional and no filtering is applied when not defined.</p>
 
         
 <div class="param-desc">
-    are queried outputs
+    the queried outputs
 </div>
 
 
@@ -7902,123 +8973,6 @@ filtering is optional and no filtering is applied when not defined.</p>
     <dd>
         
 <span class="param-type"><a href="Array.html">Array</a>.&lt;<a href="MoneroOutputWallet.html">MoneroOutputWallet</a>></span>
-
-
-    </dd>
-</dl>
-
-    
-
-
-
-
-
-        
-            
-
-    
-
-    
-    <h4 class="name" id="getOutputsHex"><span class="type-signature">(async) </span>getOutputsHex<span class="signature">()</span><span class="type-signature"> &rarr; {string}</span></h4>
-    
-
-    
-
-
-
-<div class="description">
-    Export all outputs in hex format.
-</div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="implements">Implements:</dt>
-    <dd class="implements"><ul>
-        
-            <li><a href="MoneroWallet.html#getOutputsHex">MoneroWallet#getOutputsHex</a></li>
-        
-    </ul></dd>
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="src_main_js_wallet_MoneroWalletRpc.js.html">src/main/js/wallet/MoneroWalletRpc.js</a>, <a href="src_main_js_wallet_MoneroWalletRpc.js.html#line764">line 764</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<h5>Returns:</h5>
-
-        
-<div class="param-desc">
-    all outputs in hex format, undefined if no outputs
-</div>
-
-
-
-<dl>
-    <dt>
-        Type
-    </dt>
-    <dd>
-        
-<span class="param-type">string</span>
 
 
     </dd>
@@ -8095,7 +9049,7 @@ filtering is optional and no filtering is applied when not defined.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="src_main_js_wallet_MoneroWalletRpc.js.html">src/main/js/wallet/MoneroWalletRpc.js</a>, <a href="src_main_js_wallet_MoneroWalletRpc.js.html#line352">line 352</a>
+        <a href="src_main_js_wallet_MoneroWalletRpc.js.html">src/main/js/wallet/MoneroWalletRpc.js</a>, <a href="src_main_js_wallet_MoneroWalletRpc.js.html#line497">line 497</a>
     </li></ul></dd>
     
 
@@ -8125,6 +9079,172 @@ filtering is optional and no filtering is applied when not defined.</p>
         
 <div class="param-desc">
     the path the wallet can be opened with
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">string</span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="getPaymentUri"><span class="type-signature">(async) </span>getPaymentUri<span class="signature">(config)</span><span class="type-signature"> &rarr; {string}</span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    Creates a payment URI from a send configuration.
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>config</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="MoneroTxConfig.html">MoneroTxConfig</a></span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">specifies configuration for a potential tx</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="implements">Implements:</dt>
+    <dd class="implements"><ul>
+        
+            <li><a href="MoneroWallet.html#getPaymentUri">MoneroWallet#getPaymentUri</a></li>
+        
+    </ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="src_main_js_wallet_MoneroWalletRpc.js.html">src/main/js/wallet/MoneroWalletRpc.js</a>, <a href="src_main_js_wallet_MoneroWalletRpc.js.html#line1408">line 1408</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    the payment uri
 </div>
 
 
@@ -8212,7 +9332,7 @@ filtering is optional and no filtering is applied when not defined.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="src_main_js_wallet_MoneroWalletRpc.js.html">src/main/js/wallet/MoneroWalletRpc.js</a>, <a href="src_main_js_wallet_MoneroWalletRpc.js.html#line385">line 385</a>
+        <a href="src_main_js_wallet_MoneroWalletRpc.js.html">src/main/js/wallet/MoneroWalletRpc.js</a>, <a href="src_main_js_wallet_MoneroWalletRpc.js.html#line530">line 530</a>
     </li></ul></dd>
     
 
@@ -8329,7 +9449,7 @@ filtering is optional and no filtering is applied when not defined.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="src_main_js_wallet_MoneroWalletRpc.js.html">src/main/js/wallet/MoneroWalletRpc.js</a>, <a href="src_main_js_wallet_MoneroWalletRpc.js.html#line380">line 380</a>
+        <a href="src_main_js_wallet_MoneroWalletRpc.js.html">src/main/js/wallet/MoneroWalletRpc.js</a>, <a href="src_main_js_wallet_MoneroWalletRpc.js.html#line525">line 525</a>
     </li></ul></dd>
     
 
@@ -8374,6 +9494,104 @@ filtering is optional and no filtering is applied when not defined.</p>
 
     </dd>
 </dl>
+
+    
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="getProcess"><span class="type-signature"></span>getProcess<span class="signature">()</span><span class="type-signature"></span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    Get the internal process running monero-wallet-rpc.
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="src_main_js_wallet_MoneroWalletRpc.js.html">src/main/js/wallet/MoneroWalletRpc.js</a>, <a href="src_main_js_wallet_MoneroWalletRpc.js.html#line197">line 197</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    the process running monero-wallet-rpc, undefined if not created from new process
+</div>
+
+
 
     
 
@@ -8541,7 +9759,7 @@ filtering is optional and no filtering is applied when not defined.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="src_main_js_wallet_MoneroWalletRpc.js.html">src/main/js/wallet/MoneroWalletRpc.js</a>, <a href="src_main_js_wallet_MoneroWalletRpc.js.html#line1095">line 1095</a>
+        <a href="src_main_js_wallet_MoneroWalletRpc.js.html">src/main/js/wallet/MoneroWalletRpc.js</a>, <a href="src_main_js_wallet_MoneroWalletRpc.js.html#line1319">line 1319</a>
     </li></ul></dd>
     
 
@@ -8702,7 +9920,7 @@ filtering is optional and no filtering is applied when not defined.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="src_main_js_wallet_MoneroWalletRpc.js.html">src/main/js/wallet/MoneroWalletRpc.js</a>, <a href="src_main_js_wallet_MoneroWalletRpc.js.html#line1087">line 1087</a>
+        <a href="src_main_js_wallet_MoneroWalletRpc.js.html">src/main/js/wallet/MoneroWalletRpc.js</a>, <a href="src_main_js_wallet_MoneroWalletRpc.js.html#line1311">line 1311</a>
     </li></ul></dd>
     
 
@@ -8748,7 +9966,7 @@ filtering is optional and no filtering is applied when not defined.</p>
     
 
     
-    <h4 class="name" id="getRpcConnection"><span class="type-signature">(async) </span>getRpcConnection<span class="signature">()</span><span class="type-signature"> &rarr; {<a href="MoneroWalletRpc.html">MoneroWalletRpc</a>}</span></h4>
+    <h4 class="name" id="getRpcConnection"><span class="type-signature"></span>getRpcConnection<span class="signature">()</span><span class="type-signature"> &rarr; {<a href="MoneroWalletRpc.html">MoneroWalletRpc</a>}</span></h4>
     
 
     
@@ -8800,7 +10018,7 @@ filtering is optional and no filtering is applied when not defined.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="src_main_js_wallet_MoneroWalletRpc.js.html">src/main/js/wallet/MoneroWalletRpc.js</a>, <a href="src_main_js_wallet_MoneroWalletRpc.js.html#line105">line 105</a>
+        <a href="src_main_js_wallet_MoneroWalletRpc.js.html">src/main/js/wallet/MoneroWalletRpc.js</a>, <a href="src_main_js_wallet_MoneroWalletRpc.js.html#line216">line 216</a>
     </li></ul></dd>
     
 
@@ -8989,7 +10207,7 @@ filtering is optional and no filtering is applied when not defined.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="src_main_js_wallet_MoneroWalletRpc.js.html">src/main/js/wallet/MoneroWalletRpc.js</a>, <a href="src_main_js_wallet_MoneroWalletRpc.js.html#line1063">line 1063</a>
+        <a href="src_main_js_wallet_MoneroWalletRpc.js.html">src/main/js/wallet/MoneroWalletRpc.js</a>, <a href="src_main_js_wallet_MoneroWalletRpc.js.html#line1287">line 1287</a>
     </li></ul></dd>
     
 
@@ -9178,7 +10396,7 @@ filtering is optional and no filtering is applied when not defined.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="src_main_js_wallet_MoneroWalletRpc.js.html">src/main/js/wallet/MoneroWalletRpc.js</a>, <a href="src_main_js_wallet_MoneroWalletRpc.js.html#line609">line 609</a>
+        <a href="src_main_js_wallet_MoneroWalletRpc.js.html">src/main/js/wallet/MoneroWalletRpc.js</a>, <a href="src_main_js_wallet_MoneroWalletRpc.js.html#line779">line 779</a>
     </li></ul></dd>
     
 
@@ -9367,7 +10585,7 @@ filtering is optional and no filtering is applied when not defined.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="src_main_js_wallet_MoneroWalletRpc.js.html">src/main/js/wallet/MoneroWalletRpc.js</a>, <a href="src_main_js_wallet_MoneroWalletRpc.js.html#line550">line 550</a>
+        <a href="src_main_js_wallet_MoneroWalletRpc.js.html">src/main/js/wallet/MoneroWalletRpc.js</a>, <a href="src_main_js_wallet_MoneroWalletRpc.js.html#line720">line 720</a>
     </li></ul></dd>
     
 
@@ -9801,7 +11019,7 @@ criteria are optional and no filtering is applied when not defined.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="src_main_js_wallet_MoneroWalletRpc.js.html">src/main/js/wallet/MoneroWalletRpc.js</a>, <a href="src_main_js_wallet_MoneroWalletRpc.js.html#line726">line 726</a>
+        <a href="src_main_js_wallet_MoneroWalletRpc.js.html">src/main/js/wallet/MoneroWalletRpc.js</a>, <a href="src_main_js_wallet_MoneroWalletRpc.js.html#line905">line 905</a>
     </li></ul></dd>
     
 
@@ -9830,7 +11048,7 @@ criteria are optional and no filtering is applied when not defined.</p>
 
         
 <div class="param-desc">
-    are wallet transfers per the configuration
+    wallet transfers that meet the query
 </div>
 
 
@@ -9967,7 +11185,7 @@ criteria are optional and no filtering is applied when not defined.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="src_main_js_wallet_MoneroWalletRpc.js.html">src/main/js/wallet/MoneroWalletRpc.js</a>, <a href="src_main_js_wallet_MoneroWalletRpc.js.html#line1336">line 1336</a>
+        <a href="src_main_js_wallet_MoneroWalletRpc.js.html">src/main/js/wallet/MoneroWalletRpc.js</a>, <a href="src_main_js_wallet_MoneroWalletRpc.js.html#line1560">line 1560</a>
     </li></ul></dd>
     
 
@@ -10133,7 +11351,7 @@ criteria are optional and no filtering is applied when not defined.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="src_main_js_wallet_MoneroWalletRpc.js.html">src/main/js/wallet/MoneroWalletRpc.js</a>, <a href="src_main_js_wallet_MoneroWalletRpc.js.html#line998">line 998</a>
+        <a href="src_main_js_wallet_MoneroWalletRpc.js.html">src/main/js/wallet/MoneroWalletRpc.js</a>, <a href="src_main_js_wallet_MoneroWalletRpc.js.html#line1221">line 1221</a>
     </li></ul></dd>
     
 
@@ -10299,7 +11517,7 @@ criteria are optional and no filtering is applied when not defined.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="src_main_js_wallet_MoneroWalletRpc.js.html">src/main/js/wallet/MoneroWalletRpc.js</a>, <a href="src_main_js_wallet_MoneroWalletRpc.js.html#line1341">line 1341</a>
+        <a href="src_main_js_wallet_MoneroWalletRpc.js.html">src/main/js/wallet/MoneroWalletRpc.js</a>, <a href="src_main_js_wallet_MoneroWalletRpc.js.html#line1565">line 1565</a>
     </li></ul></dd>
     
 
@@ -10465,7 +11683,7 @@ criteria are optional and no filtering is applied when not defined.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="src_main_js_wallet_MoneroWalletRpc.js.html">src/main/js/wallet/MoneroWalletRpc.js</a>, <a href="src_main_js_wallet_MoneroWalletRpc.js.html#line1124">line 1124</a>
+        <a href="src_main_js_wallet_MoneroWalletRpc.js.html">src/main/js/wallet/MoneroWalletRpc.js</a>, <a href="src_main_js_wallet_MoneroWalletRpc.js.html#line1348">line 1348</a>
     </li></ul></dd>
     
 
@@ -10677,7 +11895,7 @@ criteria are optional and no filtering is applied when not defined.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="src_main_js_wallet_MoneroWalletRpc.js.html">src/main/js/wallet/MoneroWalletRpc.js</a>, <a href="src_main_js_wallet_MoneroWalletRpc.js.html#line1026">line 1026</a>
+        <a href="src_main_js_wallet_MoneroWalletRpc.js.html">src/main/js/wallet/MoneroWalletRpc.js</a>, <a href="src_main_js_wallet_MoneroWalletRpc.js.html#line1249">line 1249</a>
     </li></ul></dd>
     
 
@@ -11271,7 +12489,7 @@ criteria are optional and no filtering is applied when not defined.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="src_main_js_wallet_MoneroWalletRpc.js.html">src/main/js/wallet/MoneroWalletRpc.js</a>, <a href="src_main_js_wallet_MoneroWalletRpc.js.html#line634">line 634</a>
+        <a href="src_main_js_wallet_MoneroWalletRpc.js.html">src/main/js/wallet/MoneroWalletRpc.js</a>, <a href="src_main_js_wallet_MoneroWalletRpc.js.html#line804">line 804</a>
     </li></ul></dd>
     
 
@@ -11460,7 +12678,7 @@ criteria are optional and no filtering is applied when not defined.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="src_main_js_wallet_MoneroWalletRpc.js.html">src/main/js/wallet/MoneroWalletRpc.js</a>, <a href="src_main_js_wallet_MoneroWalletRpc.js.html#line479">line 479</a>
+        <a href="src_main_js_wallet_MoneroWalletRpc.js.html">src/main/js/wallet/MoneroWalletRpc.js</a>, <a href="src_main_js_wallet_MoneroWalletRpc.js.html#line649">line 649</a>
     </li></ul></dd>
     
 
@@ -11577,7 +12795,7 @@ criteria are optional and no filtering is applied when not defined.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="src_main_js_wallet_MoneroWalletRpc.js.html">src/main/js/wallet/MoneroWalletRpc.js</a>, <a href="src_main_js_wallet_MoneroWalletRpc.js.html#line347">line 347</a>
+        <a href="src_main_js_wallet_MoneroWalletRpc.js.html">src/main/js/wallet/MoneroWalletRpc.js</a>, <a href="src_main_js_wallet_MoneroWalletRpc.js.html#line492">line 492</a>
     </li></ul></dd>
     
 
@@ -11743,7 +12961,7 @@ criteria are optional and no filtering is applied when not defined.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="src_main_js_wallet_MoneroWalletRpc.js.html">src/main/js/wallet/MoneroWalletRpc.js</a>, <a href="src_main_js_wallet_MoneroWalletRpc.js.html#line777">line 777</a>
+        <a href="src_main_js_wallet_MoneroWalletRpc.js.html">src/main/js/wallet/MoneroWalletRpc.js</a>, <a href="src_main_js_wallet_MoneroWalletRpc.js.html#line956">line 956</a>
     </li></ul></dd>
     
 
@@ -11909,7 +13127,7 @@ criteria are optional and no filtering is applied when not defined.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="src_main_js_wallet_MoneroWalletRpc.js.html">src/main/js/wallet/MoneroWalletRpc.js</a>, <a href="src_main_js_wallet_MoneroWalletRpc.js.html#line1288">line 1288</a>
+        <a href="src_main_js_wallet_MoneroWalletRpc.js.html">src/main/js/wallet/MoneroWalletRpc.js</a>, <a href="src_main_js_wallet_MoneroWalletRpc.js.html#line1506">line 1506</a>
     </li></ul></dd>
     
 
@@ -11967,7 +13185,7 @@ criteria are optional and no filtering is applied when not defined.</p>
     
 
     
-    <h4 class="name" id="importOutputsHex"><span class="type-signature">(async) </span>importOutputsHex<span class="signature">(outputsHex)</span><span class="type-signature"> &rarr; {int}</span></h4>
+    <h4 class="name" id="importOutputs"><span class="type-signature">(async) </span>importOutputs<span class="signature">(outputsHex)</span><span class="type-signature"> &rarr; {int}</span></h4>
     
 
     
@@ -12055,7 +13273,7 @@ criteria are optional and no filtering is applied when not defined.</p>
     <dt class="implements">Implements:</dt>
     <dd class="implements"><ul>
         
-            <li><a href="MoneroWallet.html#importOutputsHex">MoneroWallet#importOutputsHex</a></li>
+            <li><a href="MoneroWallet.html#importOutputs">MoneroWallet#importOutputs</a></li>
         
     </ul></dd>
     
@@ -12075,7 +13293,7 @@ criteria are optional and no filtering is applied when not defined.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="src_main_js_wallet_MoneroWalletRpc.js.html">src/main/js/wallet/MoneroWalletRpc.js</a>, <a href="src_main_js_wallet_MoneroWalletRpc.js.html#line768">line 768</a>
+        <a href="src_main_js_wallet_MoneroWalletRpc.js.html">src/main/js/wallet/MoneroWalletRpc.js</a>, <a href="src_main_js_wallet_MoneroWalletRpc.js.html#line947">line 947</a>
     </li></ul></dd>
     
 
@@ -12192,7 +13410,7 @@ criteria are optional and no filtering is applied when not defined.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="src_main_js_wallet_MoneroWalletRpc.js.html">src/main/js/wallet/MoneroWalletRpc.js</a>, <a href="src_main_js_wallet_MoneroWalletRpc.js.html#line1317">line 1317</a>
+        <a href="src_main_js_wallet_MoneroWalletRpc.js.html">src/main/js/wallet/MoneroWalletRpc.js</a>, <a href="src_main_js_wallet_MoneroWalletRpc.js.html#line1540">line 1540</a>
     </li></ul></dd>
     
 
@@ -12250,7 +13468,7 @@ criteria are optional and no filtering is applied when not defined.</p>
     
 
     
-    <h4 class="name" id="isConnected"><span class="type-signature">(async) </span>isConnected<span class="signature">()</span><span class="type-signature"> &rarr; {boolean}</span></h4>
+    <h4 class="name" id="isConnectedToDaemon"><span class="type-signature">(async) </span>isConnectedToDaemon<span class="signature">()</span><span class="type-signature"> &rarr; {boolean}</span></h4>
     
 
     
@@ -12289,7 +13507,7 @@ criteria are optional and no filtering is applied when not defined.</p>
     <dt class="implements">Implements:</dt>
     <dd class="implements"><ul>
         
-            <li><a href="MoneroWallet.html#isConnected">MoneroWallet#isConnected</a></li>
+            <li><a href="MoneroWallet.html#isConnectedToDaemon">MoneroWallet#isConnectedToDaemon</a></li>
         
     </ul></dd>
     
@@ -12309,7 +13527,7 @@ criteria are optional and no filtering is applied when not defined.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="src_main_js_wallet_MoneroWalletRpc.js.html">src/main/js/wallet/MoneroWalletRpc.js</a>, <a href="src_main_js_wallet_MoneroWalletRpc.js.html#line338">line 338</a>
+        <a href="src_main_js_wallet_MoneroWalletRpc.js.html">src/main/js/wallet/MoneroWalletRpc.js</a>, <a href="src_main_js_wallet_MoneroWalletRpc.js.html#line483">line 483</a>
     </li></ul></dd>
     
 
@@ -12426,7 +13644,7 @@ criteria are optional and no filtering is applied when not defined.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="src_main_js_wallet_MoneroWalletRpc.js.html">src/main/js/wallet/MoneroWalletRpc.js</a>, <a href="src_main_js_wallet_MoneroWalletRpc.js.html#line1236">line 1236</a>
+        <a href="src_main_js_wallet_MoneroWalletRpc.js.html">src/main/js/wallet/MoneroWalletRpc.js</a>, <a href="src_main_js_wallet_MoneroWalletRpc.js.html#line1460">line 1460</a>
     </li></ul></dd>
     
 
@@ -12484,6 +13702,172 @@ criteria are optional and no filtering is applied when not defined.</p>
     
 
     
+    <h4 class="name" id="isOutputFrozen"><span class="type-signature">(async) </span>isOutputFrozen<span class="signature">(keyImage)</span><span class="type-signature"> &rarr; {boolean}</span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    Check if an output is frozen.
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>keyImage</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">key image of the output to check if frozen</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="implements">Implements:</dt>
+    <dd class="implements"><ul>
+        
+            <li><a href="MoneroWallet.html#isOutputFrozen">MoneroWallet#isOutputFrozen</a></li>
+        
+    </ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="src_main_js_wallet_MoneroWalletRpc.js.html">src/main/js/wallet/MoneroWalletRpc.js</a>, <a href="src_main_js_wallet_MoneroWalletRpc.js.html#line984">line 984</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    true if the output is frozen, false otherwise
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">boolean</span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+
+
+        
+            
+
+    
+
+    
     <h4 class="name" id="isViewOnly"><span class="type-signature">(async) </span>isViewOnly<span class="signature">()</span><span class="type-signature"> &rarr; {bool}</span></h4>
     
 
@@ -12492,7 +13876,7 @@ criteria are optional and no filtering is applied when not defined.</p>
 
 
 <div class="description">
-    Indicates if the wallet is view-only, meaning it does have the private
+    Indicates if the wallet is view-only, meaning it does not have the private
 spend key and can therefore only observe incoming outputs.
 </div>
 
@@ -12544,7 +13928,7 @@ spend key and can therefore only observe incoming outputs.
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="src_main_js_wallet_MoneroWalletRpc.js.html">src/main/js/wallet/MoneroWalletRpc.js</a>, <a href="src_main_js_wallet_MoneroWalletRpc.js.html#line300">line 300</a>
+        <a href="src_main_js_wallet_MoneroWalletRpc.js.html">src/main/js/wallet/MoneroWalletRpc.js</a>, <a href="src_main_js_wallet_MoneroWalletRpc.js.html#line424">line 424</a>
     </li></ul></dd>
     
 
@@ -12602,7 +13986,7 @@ spend key and can therefore only observe incoming outputs.
     
 
     
-    <h4 class="name" id="makeMultisig"><span class="type-signature">(async) </span>makeMultisig<span class="signature">(multisigHexes, threshold, password)</span><span class="type-signature"> &rarr; {<a href="MoneroMultisigInitResult.html">MoneroMultisigInitResult</a>}</span></h4>
+    <h4 class="name" id="makeMultisig"><span class="type-signature">(async) </span>makeMultisig<span class="signature">(multisigHexes, threshold, password)</span><span class="type-signature"> &rarr; {string}</span></h4>
     
 
     
@@ -12756,7 +14140,7 @@ spend key and can therefore only observe incoming outputs.
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="src_main_js_wallet_MoneroWalletRpc.js.html">src/main/js/wallet/MoneroWalletRpc.js</a>, <a href="src_main_js_wallet_MoneroWalletRpc.js.html#line1258">line 1258</a>
+        <a href="src_main_js_wallet_MoneroWalletRpc.js.html">src/main/js/wallet/MoneroWalletRpc.js</a>, <a href="src_main_js_wallet_MoneroWalletRpc.js.html#line1482">line 1482</a>
     </li></ul></dd>
     
 
@@ -12785,7 +14169,7 @@ spend key and can therefore only observe incoming outputs.
 
         
 <div class="param-desc">
-    the result which has the multisig's address xor this wallet's multisig hex to share with participants iff not N/N
+    this wallet's multisig hex to share with participants
 </div>
 
 
@@ -12796,7 +14180,7 @@ spend key and can therefore only observe incoming outputs.
     </dt>
     <dd>
         
-<span class="param-type"><a href="MoneroMultisigInitResult.html">MoneroMultisigInitResult</a></span>
+<span class="param-type">string</span>
 
 
     </dd>
@@ -12814,7 +14198,7 @@ spend key and can therefore only observe incoming outputs.
     
 
     
-    <h4 class="name" id="openWallet"><span class="type-signature">(async) </span>openWallet<span class="signature">(pathOrConfig, password)</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="openWallet"><span class="type-signature">(async) </span>openWallet<span class="signature">(pathOrConfig, password)</span><span class="type-signature"> &rarr; {<a href="MoneroWalletRpc.html">MoneroWalletRpc</a>}</span></h4>
     
 
     
@@ -12827,7 +14211,7 @@ spend key and can therefore only observe incoming outputs.
 <p>Example:<p>
 
 <code>
-let wallet = new MoneroWalletRpc("http://localhost:38083", "rpc_user", "abc123");<br>
+let wallet = new MoneroWalletRpc("http://localhost:38084", "rpc_user", "abc123");<br>
 await wallet.openWallet("mywallet1", "supersecretpassword");<br>
 await wallet.openWallet({<br>
 &nbsp;&nbsp; path: "mywallet2",<br>
@@ -13147,7 +14531,7 @@ await wallet.openWallet({<br>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="src_main_js_wallet_MoneroWalletRpc.js.html">src/main/js/wallet/MoneroWalletRpc.js</a>, <a href="src_main_js_wallet_MoneroWalletRpc.js.html#line135">line 135</a>
+        <a href="src_main_js_wallet_MoneroWalletRpc.js.html">src/main/js/wallet/MoneroWalletRpc.js</a>, <a href="src_main_js_wallet_MoneroWalletRpc.js.html#line247">line 247</a>
     </li></ul></dd>
     
 
@@ -13172,6 +14556,28 @@ await wallet.openWallet({<br>
 
 
 
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    this wallet client
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type"><a href="MoneroWalletRpc.html">MoneroWalletRpc</a></span>
+
+
+    </dd>
+</dl>
+
+    
 
 
 
@@ -13291,7 +14697,7 @@ await wallet.openWallet({<br>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="src_main_js_wallet_MoneroWalletRpc.js.html">src/main/js/wallet/MoneroWalletRpc.js</a>, <a href="src_main_js_wallet_MoneroWalletRpc.js.html#line1196">line 1196</a>
+        <a href="src_main_js_wallet_MoneroWalletRpc.js.html">src/main/js/wallet/MoneroWalletRpc.js</a>, <a href="src_main_js_wallet_MoneroWalletRpc.js.html#line1420">line 1420</a>
     </li></ul></dd>
     
 
@@ -13332,172 +14738,6 @@ await wallet.openWallet({<br>
     <dd>
         
 <span class="param-type"><a href="MoneroTxConfig.html">MoneroTxConfig</a></span>
-
-
-    </dd>
-</dl>
-
-    
-
-
-
-
-
-        
-            
-
-    
-
-    
-    <h4 class="name" id="parseTxSet"><span class="type-signature">(async) </span>parseTxSet<span class="signature">(txSet)</span><span class="type-signature"> &rarr; {<a href="MoneroTxSet.html">MoneroTxSet</a>}</span></h4>
-    
-
-    
-
-
-
-<div class="description">
-    Parse a tx set containing unsigned or multisig tx hex to a new tx set containing structured transactions.
-</div>
-
-
-
-
-
-
-
-
-
-    <h5>Parameters:</h5>
-    
-
-<table class="params">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>txSet</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type"><a href="MoneroTxSet.html">MoneroTxSet</a></span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last">a tx set containing unsigned or multisig tx hex</td>
-        </tr>
-
-    
-    </tbody>
-</table>
-
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="implements">Implements:</dt>
-    <dd class="implements"><ul>
-        
-            <li><a href="MoneroWallet.html#parseTxSet">MoneroWallet#parseTxSet</a></li>
-        
-    </ul></dd>
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="src_main_js_wallet_MoneroWalletRpc.js.html">src/main/js/wallet/MoneroWalletRpc.js</a>, <a href="src_main_js_wallet_MoneroWalletRpc.js.html#line965">line 965</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<h5>Returns:</h5>
-
-        
-<div class="param-desc">
-    the parsed tx set containing structured transactions
-</div>
-
-
-
-<dl>
-    <dt>
-        Type
-    </dt>
-    <dd>
-        
-<span class="param-type"><a href="MoneroTxSet.html">MoneroTxSet</a></span>
 
 
     </dd>
@@ -13575,7 +14815,7 @@ multisig wallet.
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="src_main_js_wallet_MoneroWalletRpc.js.html">src/main/js/wallet/MoneroWalletRpc.js</a>, <a href="src_main_js_wallet_MoneroWalletRpc.js.html#line1252">line 1252</a>
+        <a href="src_main_js_wallet_MoneroWalletRpc.js.html">src/main/js/wallet/MoneroWalletRpc.js</a>, <a href="src_main_js_wallet_MoneroWalletRpc.js.html#line1476">line 1476</a>
     </li></ul></dd>
     
 
@@ -13744,7 +14984,7 @@ multisig wallet.
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="src_main_js_wallet_MoneroWalletRpc.js.html">src/main/js/wallet/MoneroWalletRpc.js</a>, <a href="src_main_js_wallet_MoneroWalletRpc.js.html#line1340">line 1340</a>
+        <a href="src_main_js_wallet_MoneroWalletRpc.js.html">src/main/js/wallet/MoneroWalletRpc.js</a>, <a href="src_main_js_wallet_MoneroWalletRpc.js.html#line1564">line 1564</a>
     </li></ul></dd>
     
 
@@ -13913,7 +15153,7 @@ multisig wallet.
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="src_main_js_wallet_MoneroWalletRpc.js.html">src/main/js/wallet/MoneroWalletRpc.js</a>, <a href="src_main_js_wallet_MoneroWalletRpc.js.html#line797">line 797</a>
+        <a href="src_main_js_wallet_MoneroWalletRpc.js.html">src/main/js/wallet/MoneroWalletRpc.js</a>, <a href="src_main_js_wallet_MoneroWalletRpc.js.html#line1159">line 1159</a>
     </li></ul></dd>
     
 
@@ -13960,6 +15200,150 @@ multisig wallet.
 </dl>
 
     
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="removeListener"><span class="type-signature">(async) </span>removeListener<span class="signature">(listener)</span><span class="type-signature"></span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    Unregister a listener to receive wallet notifications.
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>listener</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="MoneroWalletListener.html">MoneroWalletListener</a></span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">listener to unregister</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="implements">Implements:</dt>
+    <dd class="implements"><ul>
+        
+            <li><a href="MoneroWallet.html#removeListener">MoneroWallet#removeListener</a></li>
+        
+    </ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="src_main_js_wallet_MoneroWalletRpc.js.html">src/main/js/wallet/MoneroWalletRpc.js</a>, <a href="src_main_js_wallet_MoneroWalletRpc.js.html#line472">line 472</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -14034,7 +15418,7 @@ tx notes, etc.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="src_main_js_wallet_MoneroWalletRpc.js.html">src/main/js/wallet/MoneroWalletRpc.js</a>, <a href="src_main_js_wallet_MoneroWalletRpc.js.html#line471">line 471</a>
+        <a href="src_main_js_wallet_MoneroWalletRpc.js.html">src/main/js/wallet/MoneroWalletRpc.js</a>, <a href="src_main_js_wallet_MoneroWalletRpc.js.html#line641">line 641</a>
     </li></ul></dd>
     
 
@@ -14135,7 +15519,7 @@ daemon.  This method should be manually invoked to rescan outputs.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="src_main_js_wallet_MoneroWalletRpc.js.html">src/main/js/wallet/MoneroWalletRpc.js</a>, <a href="src_main_js_wallet_MoneroWalletRpc.js.html#line467">line 467</a>
+        <a href="src_main_js_wallet_MoneroWalletRpc.js.html">src/main/js/wallet/MoneroWalletRpc.js</a>, <a href="src_main_js_wallet_MoneroWalletRpc.js.html#line637">line 637</a>
     </li></ul></dd>
     
 
@@ -14230,7 +15614,7 @@ daemon.  This method should be manually invoked to rescan outputs.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="src_main_js_wallet_MoneroWalletRpc.js.html">src/main/js/wallet/MoneroWalletRpc.js</a>, <a href="src_main_js_wallet_MoneroWalletRpc.js.html#line1307">line 1307</a>
+        <a href="src_main_js_wallet_MoneroWalletRpc.js.html">src/main/js/wallet/MoneroWalletRpc.js</a>, <a href="src_main_js_wallet_MoneroWalletRpc.js.html#line1530">line 1530</a>
     </li></ul></dd>
     
 
@@ -14397,7 +15781,7 @@ daemon.  This method should be manually invoked to rescan outputs.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="src_main_js_wallet_MoneroWalletRpc.js.html">src/main/js/wallet/MoneroWalletRpc.js</a>, <a href="src_main_js_wallet_MoneroWalletRpc.js.html#line1180">line 1180</a>
+        <a href="src_main_js_wallet_MoneroWalletRpc.js.html">src/main/js/wallet/MoneroWalletRpc.js</a>, <a href="src_main_js_wallet_MoneroWalletRpc.js.html#line1404">line 1404</a>
     </li></ul></dd>
     
 
@@ -14564,7 +15948,7 @@ daemon.  This method should be manually invoked to rescan outputs.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="src_main_js_wallet_MoneroWalletRpc.js.html">src/main/js/wallet/MoneroWalletRpc.js</a>, <a href="src_main_js_wallet_MoneroWalletRpc.js.html#line1220">line 1220</a>
+        <a href="src_main_js_wallet_MoneroWalletRpc.js.html">src/main/js/wallet/MoneroWalletRpc.js</a>, <a href="src_main_js_wallet_MoneroWalletRpc.js.html#line1444">line 1444</a>
     </li></ul></dd>
     
 
@@ -14757,7 +16141,7 @@ daemon.  This method should be manually invoked to rescan outputs.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="src_main_js_wallet_MoneroWalletRpc.js.html">src/main/js/wallet/MoneroWalletRpc.js</a>, <a href="src_main_js_wallet_MoneroWalletRpc.js.html#line318">line 318</a>
+        <a href="src_main_js_wallet_MoneroWalletRpc.js.html">src/main/js/wallet/MoneroWalletRpc.js</a>, <a href="src_main_js_wallet_MoneroWalletRpc.js.html#line442">line 442</a>
     </li></ul></dd>
     
 
@@ -14924,7 +16308,7 @@ daemon.  This method should be manually invoked to rescan outputs.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="src_main_js_wallet_MoneroWalletRpc.js.html">src/main/js/wallet/MoneroWalletRpc.js</a>, <a href="src_main_js_wallet_MoneroWalletRpc.js.html#line1342">line 1342</a>
+        <a href="src_main_js_wallet_MoneroWalletRpc.js.html">src/main/js/wallet/MoneroWalletRpc.js</a>, <a href="src_main_js_wallet_MoneroWalletRpc.js.html#line1566">line 1566</a>
     </li></ul></dd>
     
 
@@ -15091,7 +16475,7 @@ daemon.  This method should be manually invoked to rescan outputs.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="src_main_js_wallet_MoneroWalletRpc.js.html">src/main/js/wallet/MoneroWalletRpc.js</a>, <a href="src_main_js_wallet_MoneroWalletRpc.js.html#line1128">line 1128</a>
+        <a href="src_main_js_wallet_MoneroWalletRpc.js.html">src/main/js/wallet/MoneroWalletRpc.js</a>, <a href="src_main_js_wallet_MoneroWalletRpc.js.html#line1352">line 1352</a>
     </li></ul></dd>
     
 
@@ -15127,7 +16511,7 @@ daemon.  This method should be manually invoked to rescan outputs.</p>
     
 
     
-    <h4 class="name" id="signMessage"><span class="type-signature">(async) </span>signMessage<span class="signature">(msg)</span><span class="type-signature"> &rarr; {string}</span></h4>
+    <h4 class="name" id="signMessage"><span class="type-signature">(async) </span>signMessage<span class="signature">(message, signatureType, accountIdx, subaddressIdx)</span><span class="type-signature"> &rarr; {string}</span></h4>
     
 
     
@@ -15171,7 +16555,7 @@ daemon.  This method should be manually invoked to rescan outputs.</p>
 
         <tr>
             
-                <td class="name"><code>msg</code></td>
+                <td class="name"><code>message</code></td>
             
 
             <td class="type">
@@ -15187,7 +16571,76 @@ daemon.  This method should be manually invoked to rescan outputs.</p>
 
             
 
-            <td class="description last">message to sign</td>
+            <td class="description last">the message to sign</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>signatureType</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="MoneroMessageSignatureType.html">MoneroMessageSignatureType</a></span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">sign with spend key or view key (default spend key)</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>accountIdx</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">int</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">the account index of the message signature (default 0)</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>subaddressIdx</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">int</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">the subaddress index of the message signature (default 0)</td>
         </tr>
 
     
@@ -15235,7 +16688,7 @@ daemon.  This method should be manually invoked to rescan outputs.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="src_main_js_wallet_MoneroWalletRpc.js.html">src/main/js/wallet/MoneroWalletRpc.js</a>, <a href="src_main_js_wallet_MoneroWalletRpc.js.html#line988">line 988</a>
+        <a href="src_main_js_wallet_MoneroWalletRpc.js.html">src/main/js/wallet/MoneroWalletRpc.js</a>, <a href="src_main_js_wallet_MoneroWalletRpc.js.html#line1196">line 1196</a>
     </li></ul></dd>
     
 
@@ -15401,7 +16854,7 @@ daemon.  This method should be manually invoked to rescan outputs.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="src_main_js_wallet_MoneroWalletRpc.js.html">src/main/js/wallet/MoneroWalletRpc.js</a>, <a href="src_main_js_wallet_MoneroWalletRpc.js.html#line1293">line 1293</a>
+        <a href="src_main_js_wallet_MoneroWalletRpc.js.html">src/main/js/wallet/MoneroWalletRpc.js</a>, <a href="src_main_js_wallet_MoneroWalletRpc.js.html#line1512">line 1512</a>
     </li></ul></dd>
     
 
@@ -15567,7 +17020,7 @@ daemon.  This method should be manually invoked to rescan outputs.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="src_main_js_wallet_MoneroWalletRpc.js.html">src/main/js/wallet/MoneroWalletRpc.js</a>, <a href="src_main_js_wallet_MoneroWalletRpc.js.html#line973">line 973</a>
+        <a href="src_main_js_wallet_MoneroWalletRpc.js.html">src/main/js/wallet/MoneroWalletRpc.js</a>, <a href="src_main_js_wallet_MoneroWalletRpc.js.html#line1179">line 1179</a>
     </li></ul></dd>
     
 
@@ -15779,7 +17232,7 @@ daemon.  This method should be manually invoked to rescan outputs.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="src_main_js_wallet_MoneroWalletRpc.js.html">src/main/js/wallet/MoneroWalletRpc.js</a>, <a href="src_main_js_wallet_MoneroWalletRpc.js.html#line1224">line 1224</a>
+        <a href="src_main_js_wallet_MoneroWalletRpc.js.html">src/main/js/wallet/MoneroWalletRpc.js</a>, <a href="src_main_js_wallet_MoneroWalletRpc.js.html#line1448">line 1448</a>
     </li></ul></dd>
     
 
@@ -15815,7 +17268,7 @@ daemon.  This method should be manually invoked to rescan outputs.</p>
     
 
     
-    <h4 class="name" id="startSyncing"><span class="type-signature">(async) </span>startSyncing<span class="signature">()</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="startSyncing"><span class="type-signature">(async) </span>startSyncing<span class="signature">(syncPeriodInMs)</span><span class="type-signature"></span></h4>
     
 
     
@@ -15823,7 +17276,7 @@ daemon.  This method should be manually invoked to rescan outputs.</p>
 
 
 <div class="description">
-    Start an asynchronous thread to continuously synchronize the wallet with the daemon.
+    Start background synchronizing with a maximum period between syncs.
 </div>
 
 
@@ -15832,6 +17285,55 @@ daemon.  This method should be manually invoked to rescan outputs.</p>
 
 
 
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>syncPeriodInMs</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">int</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">maximum period between syncs in milliseconds (default is wallet-specific)</td>
+        </tr>
+
+    
+    </tbody>
+</table>
 
 
 
@@ -15874,7 +17376,7 @@ daemon.  This method should be manually invoked to rescan outputs.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="src_main_js_wallet_MoneroWalletRpc.js.html">src/main/js/wallet/MoneroWalletRpc.js</a>, <a href="src_main_js_wallet_MoneroWalletRpc.js.html#line463">line 463</a>
+        <a href="src_main_js_wallet_MoneroWalletRpc.js.html">src/main/js/wallet/MoneroWalletRpc.js</a>, <a href="src_main_js_wallet_MoneroWalletRpc.js.html#line614">line 614</a>
     </li></ul></dd>
     
 
@@ -15962,7 +17464,7 @@ daemon.  This method should be manually invoked to rescan outputs.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="src_main_js_wallet_MoneroWalletRpc.js.html">src/main/js/wallet/MoneroWalletRpc.js</a>, <a href="src_main_js_wallet_MoneroWalletRpc.js.html#line1329">line 1329</a>
+        <a href="src_main_js_wallet_MoneroWalletRpc.js.html">src/main/js/wallet/MoneroWalletRpc.js</a>, <a href="src_main_js_wallet_MoneroWalletRpc.js.html#line1552">line 1552</a>
     </li></ul></dd>
     
 
@@ -16057,7 +17559,190 @@ daemon.  This method should be manually invoked to rescan outputs.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="src_main_js_wallet_MoneroWalletRpc.js.html">src/main/js/wallet/MoneroWalletRpc.js</a>, <a href="src_main_js_wallet_MoneroWalletRpc.js.html#line1232">line 1232</a>
+        <a href="src_main_js_wallet_MoneroWalletRpc.js.html">src/main/js/wallet/MoneroWalletRpc.js</a>, <a href="src_main_js_wallet_MoneroWalletRpc.js.html#line1456">line 1456</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="stopProcess"><span class="type-signature">(async) </span>stopProcess<span class="signature">()</span><span class="type-signature"></span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    Stop the internal process running monero-wallet-rpc, if applicable.
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="src_main_js_wallet_MoneroWalletRpc.js.html">src/main/js/wallet/MoneroWalletRpc.js</a>, <a href="src_main_js_wallet_MoneroWalletRpc.js.html#line204">line 204</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="stopSyncing"><span class="type-signature">(async) </span>stopSyncing<span class="signature">()</span><span class="type-signature"></span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    Stop synchronizing the wallet with the daemon.
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="implements">Implements:</dt>
+    <dd class="implements"><ul>
+        
+            <li><a href="MoneroWallet.html#stopSyncing">MoneroWallet#stopSyncing</a></li>
+        
+    </ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="src_main_js_wallet_MoneroWalletRpc.js.html">src/main/js/wallet/MoneroWalletRpc.js</a>, <a href="src_main_js_wallet_MoneroWalletRpc.js.html#line633">line 633</a>
     </li></ul></dd>
     
 
@@ -16201,7 +17886,7 @@ daemon.  This method should be manually invoked to rescan outputs.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="src_main_js_wallet_MoneroWalletRpc.js.html">src/main/js/wallet/MoneroWalletRpc.js</a>, <a href="src_main_js_wallet_MoneroWalletRpc.js.html#line1302">line 1302</a>
+        <a href="src_main_js_wallet_MoneroWalletRpc.js.html">src/main/js/wallet/MoneroWalletRpc.js</a>, <a href="src_main_js_wallet_MoneroWalletRpc.js.html#line1521">line 1521</a>
     </li></ul></dd>
     
 
@@ -16367,7 +18052,7 @@ daemon.  This method should be manually invoked to rescan outputs.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="src_main_js_wallet_MoneroWalletRpc.js.html">src/main/js/wallet/MoneroWalletRpc.js</a>, <a href="src_main_js_wallet_MoneroWalletRpc.js.html#line981">line 981</a>
+        <a href="src_main_js_wallet_MoneroWalletRpc.js.html">src/main/js/wallet/MoneroWalletRpc.js</a>, <a href="src_main_js_wallet_MoneroWalletRpc.js.html#line1188">line 1188</a>
     </li></ul></dd>
     
 
@@ -16535,7 +18220,7 @@ daemon.  This method should be manually invoked to rescan outputs.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="src_main_js_wallet_MoneroWalletRpc.js.html">src/main/js/wallet/MoneroWalletRpc.js</a>, <a href="src_main_js_wallet_MoneroWalletRpc.js.html#line949">line 949</a>
+        <a href="src_main_js_wallet_MoneroWalletRpc.js.html">src/main/js/wallet/MoneroWalletRpc.js</a>, <a href="src_main_js_wallet_MoneroWalletRpc.js.html#line1145">line 1145</a>
     </li></ul></dd>
     
 
@@ -16842,7 +18527,7 @@ daemon.  This method should be manually invoked to rescan outputs.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="src_main_js_wallet_MoneroWalletRpc.js.html">src/main/js/wallet/MoneroWalletRpc.js</a>, <a href="src_main_js_wallet_MoneroWalletRpc.js.html#line861">line 861</a>
+        <a href="src_main_js_wallet_MoneroWalletRpc.js.html">src/main/js/wallet/MoneroWalletRpc.js</a>, <a href="src_main_js_wallet_MoneroWalletRpc.js.html#line1052">line 1052</a>
     </li></ul></dd>
     
 
@@ -17028,7 +18713,7 @@ daemon.  This method should be manually invoked to rescan outputs.</p>
 
             
 
-            <td class="description last">source account index to sweep from from (required)</td>
+            <td class="description last">source account index to sweep from (optional, defaults to all accounts)</td>
         </tr>
 
     
@@ -17051,7 +18736,7 @@ daemon.  This method should be manually invoked to rescan outputs.</p>
 
             
 
-            <td class="description last">source subaddress index to sweep from (optional)</td>
+            <td class="description last">source subaddress index to sweep from (optional, defaults to all subaddresses)</td>
         </tr>
 
     
@@ -17147,6 +18832,29 @@ daemon.  This method should be manually invoked to rescan outputs.</p>
         </tr>
 
     
+
+        <tr>
+            
+                <td class="name"><code>sweepEachSubaddress</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">boolean</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">sweep each subaddress individually if true (default false)</td>
+        </tr>
+
+    
     </tbody>
 </table>
 
@@ -17198,7 +18906,7 @@ daemon.  This method should be manually invoked to rescan outputs.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="src_main_js_wallet_MoneroWalletRpc.js.html">src/main/js/wallet/MoneroWalletRpc.js</a>, <a href="src_main_js_wallet_MoneroWalletRpc.js.html#line892">line 892</a>
+        <a href="src_main_js_wallet_MoneroWalletRpc.js.html">src/main/js/wallet/MoneroWalletRpc.js</a>, <a href="src_main_js_wallet_MoneroWalletRpc.js.html#line1086">line 1086</a>
     </li></ul></dd>
     
 
@@ -17390,7 +19098,7 @@ daemon.  This method should be manually invoked to rescan outputs.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="src_main_js_wallet_MoneroWalletRpc.js.html">src/main/js/wallet/MoneroWalletRpc.js</a>, <a href="src_main_js_wallet_MoneroWalletRpc.js.html#line457">line 457</a>
+        <a href="src_main_js_wallet_MoneroWalletRpc.js.html">src/main/js/wallet/MoneroWalletRpc.js</a>, <a href="src_main_js_wallet_MoneroWalletRpc.js.html#line602">line 602</a>
     </li></ul></dd>
     
 
@@ -17557,7 +19265,151 @@ daemon.  This method should be manually invoked to rescan outputs.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="src_main_js_wallet_MoneroWalletRpc.js.html">src/main/js/wallet/MoneroWalletRpc.js</a>, <a href="src_main_js_wallet_MoneroWalletRpc.js.html#line1161">line 1161</a>
+        <a href="src_main_js_wallet_MoneroWalletRpc.js.html">src/main/js/wallet/MoneroWalletRpc.js</a>, <a href="src_main_js_wallet_MoneroWalletRpc.js.html#line1385">line 1385</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="thawOutput"><span class="type-signature">(async) </span>thawOutput<span class="signature">(keyImage)</span><span class="type-signature"></span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    Thaw a frozen output.
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>keyImage</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">key image of the output to thaw</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="implements">Implements:</dt>
+    <dd class="implements"><ul>
+        
+            <li><a href="MoneroWallet.html#thawOutput">MoneroWallet#thawOutput</a></li>
+        
+    </ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="src_main_js_wallet_MoneroWalletRpc.js.html">src/main/js/wallet/MoneroWalletRpc.js</a>, <a href="src_main_js_wallet_MoneroWalletRpc.js.html#line980">line 980</a>
     </li></ul></dd>
     
 
@@ -17701,7 +19553,7 @@ daemon.  This method should be manually invoked to rescan outputs.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="src_main_js_wallet_MoneroWalletRpc.js.html">src/main/js/wallet/MoneroWalletRpc.js</a>, <a href="src_main_js_wallet_MoneroWalletRpc.js.html#line1165">line 1165</a>
+        <a href="src_main_js_wallet_MoneroWalletRpc.js.html">src/main/js/wallet/MoneroWalletRpc.js</a>, <a href="src_main_js_wallet_MoneroWalletRpc.js.html#line1389">line 1389</a>
     </li></ul></dd>
     
 
@@ -17737,7 +19589,7 @@ daemon.  This method should be manually invoked to rescan outputs.</p>
     
 
     
-    <h4 class="name" id="verifyMessage"><span class="type-signature">(async) </span>verifyMessage<span class="signature">(msg, address, signature)</span><span class="type-signature"> &rarr; {boolean}</span></h4>
+    <h4 class="name" id="verifyMessage"><span class="type-signature">(async) </span>verifyMessage<span class="signature">(message, address, signature)</span><span class="type-signature"> &rarr; {<a href="MoneroMessageSignatureResult.html">MoneroMessageSignatureResult</a>}</span></h4>
     
 
     
@@ -17781,7 +19633,7 @@ daemon.  This method should be manually invoked to rescan outputs.</p>
 
         <tr>
             
-                <td class="name"><code>msg</code></td>
+                <td class="name"><code>message</code></td>
             
 
             <td class="type">
@@ -17891,7 +19743,7 @@ daemon.  This method should be manually invoked to rescan outputs.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="src_main_js_wallet_MoneroWalletRpc.js.html">src/main/js/wallet/MoneroWalletRpc.js</a>, <a href="src_main_js_wallet_MoneroWalletRpc.js.html#line993">line 993</a>
+        <a href="src_main_js_wallet_MoneroWalletRpc.js.html">src/main/js/wallet/MoneroWalletRpc.js</a>, <a href="src_main_js_wallet_MoneroWalletRpc.js.html#line1206">line 1206</a>
     </li></ul></dd>
     
 
@@ -17931,7 +19783,7 @@ daemon.  This method should be manually invoked to rescan outputs.</p>
     </dt>
     <dd>
         
-<span class="param-type">boolean</span>
+<span class="param-type"><a href="MoneroMessageSignatureResult.html">MoneroMessageSignatureResult</a></span>
 
 
     </dd>
@@ -17959,13 +19811,13 @@ daemon.  This method should be manually invoked to rescan outputs.</p>
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="ConnectionType.html">ConnectionType</a></li><li><a href="GenUtils.html">GenUtils</a></li><li><a href="HttpClient.html">HttpClient</a></li><li><a href="LibraryUtils.html">LibraryUtils</a></li><li><a href="MoneroAccount.html">MoneroAccount</a></li><li><a href="MoneroAccountTag.html">MoneroAccountTag</a></li><li><a href="MoneroAddressBookEntry.html">MoneroAddressBookEntry</a></li><li><a href="MoneroAltChain.html">MoneroAltChain</a></li><li><a href="MoneroBan.html">MoneroBan</a></li><li><a href="MoneroBlock.html">MoneroBlock</a></li><li><a href="MoneroBlockHeader.html">MoneroBlockHeader</a></li><li><a href="MoneroBlockTemplate.html">MoneroBlockTemplate</a></li><li><a href="MoneroCheck.html">MoneroCheck</a></li><li><a href="MoneroCheckReserve.html">MoneroCheckReserve</a></li><li><a href="MoneroCheckTx.html">MoneroCheckTx</a></li><li><a href="MoneroDaemonConnection.html">MoneroDaemonConnection</a></li><li><a href="MoneroDaemonConnectionSpan.html">MoneroDaemonConnectionSpan</a></li><li><a href="MoneroDaemonInfo.html">MoneroDaemonInfo</a></li><li><a href="MoneroDaemonPeer.html">MoneroDaemonPeer</a></li><li><a href="MoneroDaemonRpc.html">MoneroDaemonRpc</a></li><li><a href="MoneroDaemonSyncInfo.html">MoneroDaemonSyncInfo</a></li><li><a href="MoneroDaemonUpdateCheckResult.html">MoneroDaemonUpdateCheckResult</a></li><li><a href="MoneroDaemonUpdateDownloadResult.html">MoneroDaemonUpdateDownloadResult</a></li><li><a href="MoneroDestination.html">MoneroDestination</a></li><li><a href="MoneroError.html">MoneroError</a></li><li><a href="MoneroHardForkInfo.html">MoneroHardForkInfo</a></li><li><a href="MoneroIncomingTransfer.html">MoneroIncomingTransfer</a></li><li><a href="MoneroIntegratedAddress.html">MoneroIntegratedAddress</a></li><li><a href="MoneroKeyImage.html">MoneroKeyImage</a></li><li><a href="MoneroKeyImageImportResult.html">MoneroKeyImageImportResult</a></li><li><a href="MoneroKeyImageSpentStatus.html">MoneroKeyImageSpentStatus</a></li><li><a href="MoneroMinerTxSum.html">MoneroMinerTxSum</a></li><li><a href="MoneroMiningStatus.html">MoneroMiningStatus</a></li><li><a href="MoneroMultisigInfo.html">MoneroMultisigInfo</a></li><li><a href="MoneroMultisigInitResult.html">MoneroMultisigInitResult</a></li><li><a href="MoneroMultisigSignResult.html">MoneroMultisigSignResult</a></li><li><a href="MoneroNetworkType.html">MoneroNetworkType</a></li><li><a href="MoneroOutgoingTransfer.html">MoneroOutgoingTransfer</a></li><li><a href="MoneroOutput.html">MoneroOutput</a></li><li><a href="MoneroOutputHistogramEntry.html">MoneroOutputHistogramEntry</a></li><li><a href="MoneroOutputQuery.html">MoneroOutputQuery</a></li><li><a href="MoneroOutputWallet.html">MoneroOutputWallet</a></li><li><a href="MoneroRpcConnection.html">MoneroRpcConnection</a></li><li><a href="MoneroRpcError.html">MoneroRpcError</a></li><li><a href="MoneroSubaddress.html">MoneroSubaddress</a></li><li><a href="MoneroSubmitTxResult.html">MoneroSubmitTxResult</a></li><li><a href="MoneroSyncResult.html">MoneroSyncResult</a></li><li><a href="MoneroTransfer.html">MoneroTransfer</a></li><li><a href="MoneroTransferQuery.html">MoneroTransferQuery</a></li><li><a href="MoneroTx.html">MoneroTx</a></li><li><a href="MoneroTxConfig.html">MoneroTxConfig</a></li><li><a href="MoneroTxPoolStats.html">MoneroTxPoolStats</a></li><li><a href="MoneroTxPriority.html">MoneroTxPriority</a></li><li><a href="MoneroTxQuery.html">MoneroTxQuery</a></li><li><a href="MoneroTxSet.html">MoneroTxSet</a></li><li><a href="MoneroTxWallet.html">MoneroTxWallet</a></li><li><a href="MoneroUtils.html">MoneroUtils</a></li><li><a href="MoneroVersion.html">MoneroVersion</a></li><li><a href="MoneroWalletConfig.html">MoneroWalletConfig</a></li><li><a href="MoneroWalletKeys.html">MoneroWalletKeys</a></li><li><a href="MoneroWalletListener.html">MoneroWalletListener</a></li><li><a href="MoneroWalletRpc.html">MoneroWalletRpc</a></li><li><a href="MoneroWalletWasm.html">MoneroWalletWasm</a></li><li><a href="SslOptions.html">SslOptions</a></li></ul><h3>Interfaces</h3><ul><li><a href="MoneroDaemon.html">MoneroDaemon</a></li><li><a href="MoneroWallet.html">MoneroWallet</a></li></ul><h3>Global</h3><ul><li><a href="global.html#connectToDaemonRpc">connectToDaemonRpc</a></li><li><a href="global.html#connectToWalletRpc">connectToWalletRpc</a></li><li><a href="global.html#createWalletKeys">createWalletKeys</a></li><li><a href="global.html#createWalletWasm">createWalletWasm</a></li><li><a href="global.html#openWalletWasm">openWalletWasm</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="ConnectionType.html">ConnectionType</a></li><li><a href="GenUtils.html">GenUtils</a></li><li><a href="HttpClient.html">HttpClient</a></li><li><a href="LibraryUtils.html">LibraryUtils</a></li><li><a href="MoneroAccount.html">MoneroAccount</a></li><li><a href="MoneroAccountTag.html">MoneroAccountTag</a></li><li><a href="MoneroAddressBookEntry.html">MoneroAddressBookEntry</a></li><li><a href="MoneroAltChain.html">MoneroAltChain</a></li><li><a href="MoneroBan.html">MoneroBan</a></li><li><a href="MoneroBlock.html">MoneroBlock</a></li><li><a href="MoneroBlockHeader.html">MoneroBlockHeader</a></li><li><a href="MoneroBlockTemplate.html">MoneroBlockTemplate</a></li><li><a href="MoneroCheck.html">MoneroCheck</a></li><li><a href="MoneroCheckReserve.html">MoneroCheckReserve</a></li><li><a href="MoneroCheckTx.html">MoneroCheckTx</a></li><li><a href="MoneroConnectionManager.html">MoneroConnectionManager</a></li><li><a href="MoneroConnectionManagerListener.html">MoneroConnectionManagerListener</a></li><li><a href="MoneroConnectionSpan.html">MoneroConnectionSpan</a></li><li><a href="MoneroDaemonInfo.html">MoneroDaemonInfo</a></li><li><a href="MoneroDaemonListener.html">MoneroDaemonListener</a></li><li><a href="MoneroDaemonRpc.html">MoneroDaemonRpc</a></li><li><a href="MoneroDaemonSyncInfo.html">MoneroDaemonSyncInfo</a></li><li><a href="MoneroDaemonUpdateCheckResult.html">MoneroDaemonUpdateCheckResult</a></li><li><a href="MoneroDaemonUpdateDownloadResult.html">MoneroDaemonUpdateDownloadResult</a></li><li><a href="MoneroDestination.html">MoneroDestination</a></li><li><a href="MoneroError.html">MoneroError</a></li><li><a href="MoneroHardForkInfo.html">MoneroHardForkInfo</a></li><li><a href="MoneroIncomingTransfer.html">MoneroIncomingTransfer</a></li><li><a href="MoneroIntegratedAddress.html">MoneroIntegratedAddress</a></li><li><a href="MoneroKeyImage.html">MoneroKeyImage</a></li><li><a href="MoneroKeyImageImportResult.html">MoneroKeyImageImportResult</a></li><li><a href="MoneroKeyImageSpentStatus.html">MoneroKeyImageSpentStatus</a></li><li><a href="MoneroMessageSignatureResult.html">MoneroMessageSignatureResult</a></li><li><a href="MoneroMessageSignatureType.html">MoneroMessageSignatureType</a></li><li><a href="MoneroMinerTxSum.html">MoneroMinerTxSum</a></li><li><a href="MoneroMiningStatus.html">MoneroMiningStatus</a></li><li><a href="MoneroMultisigInfo.html">MoneroMultisigInfo</a></li><li><a href="MoneroMultisigInitResult.html">MoneroMultisigInitResult</a></li><li><a href="MoneroMultisigSignResult.html">MoneroMultisigSignResult</a></li><li><a href="MoneroNetworkType.html">MoneroNetworkType</a></li><li><a href="MoneroOutgoingTransfer.html">MoneroOutgoingTransfer</a></li><li><a href="MoneroOutput.html">MoneroOutput</a></li><li><a href="MoneroOutputHistogramEntry.html">MoneroOutputHistogramEntry</a></li><li><a href="MoneroOutputQuery.html">MoneroOutputQuery</a></li><li><a href="MoneroOutputWallet.html">MoneroOutputWallet</a></li><li><a href="MoneroPeer.html">MoneroPeer</a></li><li><a href="MoneroRpcConnection.html">MoneroRpcConnection</a></li><li><a href="MoneroRpcError.html">MoneroRpcError</a></li><li><a href="MoneroSubaddress.html">MoneroSubaddress</a></li><li><a href="MoneroSubmitTxResult.html">MoneroSubmitTxResult</a></li><li><a href="MoneroSyncResult.html">MoneroSyncResult</a></li><li><a href="MoneroTransfer.html">MoneroTransfer</a></li><li><a href="MoneroTransferQuery.html">MoneroTransferQuery</a></li><li><a href="MoneroTx.html">MoneroTx</a></li><li><a href="MoneroTxConfig.html">MoneroTxConfig</a></li><li><a href="MoneroTxPoolStats.html">MoneroTxPoolStats</a></li><li><a href="MoneroTxPriority.html">MoneroTxPriority</a></li><li><a href="MoneroTxQuery.html">MoneroTxQuery</a></li><li><a href="MoneroTxSet.html">MoneroTxSet</a></li><li><a href="MoneroTxWallet.html">MoneroTxWallet</a></li><li><a href="MoneroUtils.html">MoneroUtils</a></li><li><a href="MoneroVersion.html">MoneroVersion</a></li><li><a href="MoneroWalletConfig.html">MoneroWalletConfig</a></li><li><a href="MoneroWalletFull.html">MoneroWalletFull</a></li><li><a href="MoneroWalletKeys.html">MoneroWalletKeys</a></li><li><a href="MoneroWalletListener.html">MoneroWalletListener</a></li><li><a href="MoneroWalletRpc.html">MoneroWalletRpc</a></li><li><a href="SslOptions.html">SslOptions</a></li><li><a href="TaskLooper.html">TaskLooper</a></li><li><a href="ThreadPool.html">ThreadPool</a></li></ul><h3>Interfaces</h3><ul><li><a href="MoneroDaemon.html">MoneroDaemon</a></li><li><a href="MoneroWallet.html">MoneroWallet</a></li></ul><h3>Global</h3><ul><li><a href="global.html#connectToDaemonRpc">connectToDaemonRpc</a></li><li><a href="global.html#connectToWalletRpc">connectToWalletRpc</a></li><li><a href="global.html#createWalletFull">createWalletFull</a></li><li><a href="global.html#createWalletKeys">createWalletKeys</a></li><li><a href="global.html#getVersion">getVersion</a></li><li><a href="global.html#openWalletFull">openWalletFull</a></li></ul>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.4</a> on Sat Sep 05 2020 14:21:46 GMT-0400 (Eastern Daylight Time)
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.10</a> on Sat Aug 06 2022 17:59:11 GMT-0400 (Eastern Daylight Time)
 </footer>
 
 <script> prettyPrint(); </script>

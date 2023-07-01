@@ -1,11 +1,16 @@
 // import test types
+const monerojs = require("../../index");
+const LibraryUtils = monerojs.LibraryUtils;
 const TestSampleCode = require("./TestSampleCode");
 const TestMoneroUtils = require("./TestMoneroUtils");
 const TestMoneroDaemonRpc = require("./TestMoneroDaemonRpc");
 const TestMoneroWalletKeys = require("./TestMoneroWalletKeys");
-const TestMoneroWalletWasm = require("./TestMoneroWalletWasm");
+const TestMoneroWalletFull = require("./TestMoneroWalletFull");
 const TestMoneroWalletRpc = require("./TestMoneroWalletRpc");
-const TestDeveloperGuide = require("./TestDeveloperGuide");
+const TestMoneroConnectionManager = require("./TestMoneroConnectionManager");
+
+// set log level
+LibraryUtils.setLogLevel(1); // no need for await before worker used
 
 // test sample code for readme
  new TestSampleCode().runTests();
@@ -30,13 +35,13 @@ new TestMoneroWalletKeys({
   testNotifications: false
 }).runTests(); 
 
-// test wasm wallet
-new TestMoneroWalletWasm({
+// test full wallet
+new TestMoneroWalletFull({
   liteMode: false,
   testNonRelays: true,
   testRelays: true,
-  testResets: false,
-  testNotifications: true
+  testNotifications: true,
+  testResets: false
 }).runTests();
 
 // test wallet rpc
@@ -44,7 +49,7 @@ new TestMoneroWalletWasm({
   liteMode: false,
   testNonRelays: true,
   testRelays: true,
-  testNotifications: false,
+  testNotifications: true,
   testResets: false
 }).runTests();
 

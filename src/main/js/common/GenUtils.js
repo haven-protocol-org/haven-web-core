@@ -95,14 +95,11 @@ class GenUtils {
   /**
    * Indicates if the given argument is an array.
    * 
-   * TODO: remove this entirely since just a direct wrapper?
-   * TODO: this method returns true for object
-   * 
    * @param arg is the argument to test as being an array
    * @returns true if the argument is an array, false otherwise
    */
   static isArray(arg) {
-    return Array.isArray(arg);
+    return arg instanceof Array && Array.isArray(arg);
   }
 
   /**
@@ -1238,7 +1235,8 @@ class GenUtils {
   static isBrowser() {
     let isWorker = typeof importScripts === 'function';
     let isBrowserMain = new Function("try {return this===window;}catch(e){return false;}")();
-    return isWorker || isBrowserMain;
+    let isJsDom = isBrowserMain ? new Function("try {return window.navigator.userAgent.includes('jsdom');}catch(e){return false;}")() : false;
+    return isWorker || (isBrowserMain && !isJsDom);
   }
   
   /**
@@ -1255,7 +1253,7 @@ class GenUtils {
    * 
    * Credit: https://stackoverflow.com/questions/19999388/check-if-user-is-using-ie-with-jquery/21712356#21712356
    * 
-   * @returns the IE version number of null if not IE
+   * @returns the IE version number or null if not IE
    */
   static getIEVersion() {
     let ua = window.navigator.userAgent;
@@ -1473,6 +1471,39 @@ class GenUtils {
    */
   static stringifyBIs(str) {
     return str.replace(/("[^"]*"\s*:\s*)(\d{16,})/g, '$1"$2"');
+  }
+  
+  /**
+   * Print the current stack trace. 
+   * 
+   * @param {string} msg - optional message to print with the trace
+   */
+  static printStackTrace(msg) {
+    try { throw new Error(msg); }
+    catch (err) { console.error(err.stack); }
+  }
+  
+  /**
+   * Wait for the duration.
+   * 
+   * @param {number} duration - the duration to wait for in ms
+   */
+  static async waitFor(duration) {
+    return new Promise(function(resolve) { setTimeout(resolve, duration); });
+  }
+  
+  /**
+   * Kill the given nodejs child process.
+   * 
+   * @param {process} process - the nodejs child process to kill
+   * @param {string} signal - the kill signal, e.g. SIGTERM, SIGKILL, SIGINT (default)
+   */
+  static async killProcess(process, signal) {
+    return new Promise(function(resolve, reject) {
+      process.on("exit", function() { resolve(); });
+      process.on("error", function(err) { reject(err); });
+      process.kill(signal ? signal : "SIGINT");
+    });
   }
 }
 

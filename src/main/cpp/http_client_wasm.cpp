@@ -4,6 +4,8 @@
 #include "http_client_wasm.h"
 #include <boost/property_tree/ptree.hpp>
 #include <boost/property_tree/json_parser.hpp>
+#include "string_tools.h"
+#include "misc_log_ex.h"
 
 using namespace std;
 
@@ -73,8 +75,8 @@ EM_JS(const char*, js_send_binary_request, (const char* uri, const char* usernam
   // use asyncify to synchronously return to C++
   return Asyncify.handleSleep(function(wakeUp) {
 
-    // load wasm module then convert from json to binary
-    LibraryUtils.loadCoreModule().then(module => {
+    // load full wasm module then convert from json to binary
+    LibraryUtils.loadFullModule().then(module => {
 
       // read binary data from heap to Uint8Array
       let ptr = body;
@@ -138,10 +140,18 @@ EM_JS(const char*, js_send_binary_request, (const char* uri, const char* usernam
         wakeUp(ptr);
       });
     }).catch(err => {
-      throw new Error("Could not load core wasm module");
+      throw new Error("Could not load full wasm module");
     });
   });
 });
+
+bool http_client_wasm::set_proxy(const std::string& address) {
+  if (!address.empty()) {
+    std::cout << "WARNING: http_client_wasm::set_proxy() not supported, returning false" << std::endl;
+    return false;
+  }
+  return true;
+}
 
 void http_client_wasm::set_server(std::string host, std::string port, boost::optional<login> user, ssl_options_t ssl_options) {
   disconnect();
@@ -198,7 +208,7 @@ void build_http_header_info(const boost::property_tree::ptree& headers_node, htt
   }
 }
 
-bool http_client_wasm::invoke_json(const boost::string_ref path, const boost::string_ref method, const std::string& body, std::chrono::milliseconds timeout, const http_response_info** ppresponse_info, const fields_list& additional_params) {
+bool http_client_wasm::invoke_json(const boost::string_ref path, const boost::string_ref method, const boost::string_ref body, std::chrono::milliseconds timeout, const http_response_info** ppresponse_info, const fields_list& additional_params) {
 
   // make json request through javascript
   string uri = string(m_ssl_enabled ? "https" : "http") + "://" + m_host + ":" + m_port + string(path);
@@ -240,7 +250,7 @@ bool http_client_wasm::invoke_json(const boost::string_ref path, const boost::st
   return m_response_info.m_response_code == 200;
 }
 
-bool http_client_wasm::invoke_binary(const boost::string_ref path, const boost::string_ref method, const std::string& body, std::chrono::milliseconds timeout, const http_response_info** ppresponse_info, const fields_list& additional_params) {
+bool http_client_wasm::invoke_binary(const boost::string_ref path, const boost::string_ref method, const boost::string_ref body, std::chrono::milliseconds timeout, const http_response_info** ppresponse_info, const fields_list& additional_params) {
 
   // make binary request through javascript
   string uri = string(m_ssl_enabled ? "https" : "http") + "://" + m_host + ":" + m_port + string(path);
@@ -287,7 +297,7 @@ bool http_client_wasm::invoke_binary(const boost::string_ref path, const boost::
   return m_response_info.m_response_code == 200;
 }
 
-bool http_client_wasm::invoke(const boost::string_ref path, const boost::string_ref method, const std::string& body, std::chrono::milliseconds timeout, const http_response_info** ppresponse_info, const fields_list& additional_params) {
+bool http_client_wasm::invoke(const boost::string_ref path, const boost::string_ref method, const boost::string_ref body, std::chrono::milliseconds timeout, const http_response_info** ppresponse_info, const fields_list& additional_params) {
   //cout << "invoke(" << path << ", " << method << ", ...)" << endl;
 
   if(!is_connected())

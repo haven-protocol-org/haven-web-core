@@ -21,7 +21,7 @@ The following code demonstrates creating, signing, and submitting transactions u
 const monerojs = require("monero-javascript");
 
 // create and sync view-only wallet without spend key
-let viewOnlyWallet = await monerojs.createWalletWasm({
+let viewOnlyWallet = await monerojs.createWalletFull({
   path: "my_view_only_wallet",
   networkType: "stagenet",
   primaryAddress: "55bcxMRhBWea6xxsot8moF1rdPprjJR2x4mfnNnTGgBJFgXa4gWXmWAYdUBKiRcJxy9AUAGJEg28DejvWdJU2VgUDrUvCHG",
@@ -32,20 +32,20 @@ let viewOnlyWallet = await monerojs.createWalletWasm({
 await viewOnlyWallet.sync();
 
 // create offline wallet
-let offlineWallet = await monerojs.createWalletWasm({
+let offlineWallet = await monerojs.createWalletFull({
   path: "my_offline_wallet",
   networkType: "stagenet",
   mnemonic: "spying swept ashtray going hence jester swagger cease spying unusual..."
 });
   
 // export outputs from view-only wallet
-let outputsHex = await viewOnlyWallet.getOutputsHex();
+let outputsHex = await viewOnlyWallet.exportOutputs();
   
 // import outputs to offline wallet
-await offlineWallet.importOutputsHex(outputsHex);
+await offlineWallet.importOutputs(outputsHex);
   
 // export key images from offline wallet
-let keyImages = await offlineWallet.getKeyImages();
+let keyImages = await offlineWallet.exportKeyImages();
   
 // import key images to view-only wallet
 await viewOnlyWallet.importKeyImages(keyImages);
@@ -57,9 +57,9 @@ let unsignedTx = await viewOnlyWallet.createTx({
   amount: "250000000000" // 0.25 XMR
 });
 
-// parse unsigned tx set to confirm details
-let parsedTxSet = await offlineWallet.parseTxSet(unsignedTx.getTxSet());
-let fee = parsedTxSet.getTxs()[0].getFee();	// "Are you sure you want to send... ?"
+// describe unsigned tx set to confirm details
+let describedTxSet = await offlineWallet.describeTxSet(unsignedTx.getTxSet());
+let fee = describedTxSet.getTxs()[0].getFee();	// "Are you sure you want to send... ?"
   
 // sign tx using offline wallet
 let signedTxHex = await offlineWallet.signTxs(unsignedTx.getTxSet().getUnsignedTxHex());

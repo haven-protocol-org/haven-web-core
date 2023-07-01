@@ -1,4 +1,7 @@
+const GenUtils = require("../common/GenUtils");
+const LibraryUtils = require("./LibraryUtils");
 const MoneroUtils = require("./MoneroUtils");
+const ThreadPool = require("./ThreadPool");
 const PromiseThrottle = require("promise-throttle");
 const Request = require("request-promise");
 
@@ -22,33 +25,61 @@ class HttpClient {
    * @param {string} request.requestApi - one of "fetch" or "xhr" (default "fetch")
    * @param {boolean} request.resolveWithFullResponse - return full response if true, else body only (default false)
    * @param {boolean} request.rejectUnauthorized - whether or not to reject self-signed certificates (default true)
+   * @param {number} request.timeout - maximum time allowed in milliseconds
+   * @param {number} request.proxyToWorker - proxy request to worker thread
    * @returns {object} response - the response object
    * @returns {string|object|Uint8Array} response.body - the response body
    * @returns {number} response.statusCode - the response code
-   * @returns {number} response.statusText - the response message
+   * @returns {String} response.statusText - the response message
    * @returns {object} response.headers - the response headers
    */
   static async request(request) {
     
+    // proxy to worker if configured
+    if (request.proxyToWorker) {
+      try {
+        return await LibraryUtils.invokeWorker(GenUtils.getUUID(), "httpRequest", request);
+      } catch (err) {
+        if (err.message.length > 0 && err.message.charAt(0) === "{") {
+          let parsed = JSON.parse(err.message);
+          err.message = parsed.statusMessage;
+          err.statusCode = parsed.statusCode;
+          throw err;
+        }
+      }
+    }
+    
     // assign defaults
-    request = Object.assign(HttpClient.DEFAULT_REQUEST, request);
+    request = Object.assign(HttpClient._DEFAULT_REQUEST, request);
     
     // validate request
-    try { new URL(request.uri); } catch (e) { throw new Error("Invalid request URL: " + request.uri); }
+    try { request.host = new URL(request.uri).host; } // hostname:port
+    catch (err) { throw new Error("Invalid request URL: " + request.uri); }
     if (request.body && !(typeof request.body === "string" || typeof request.body === "object")) {
       throw new Error("Request body type is not string or object");
     }
     
-    // initialize promise throttle one time
-    if (!HttpClient.PROMISE_THROTTLE) {
-      HttpClient.PROMISE_THROTTLE = new PromiseThrottle({
-        requestsPerSecond: MoneroUtils.MAX_REQUESTS_PER_SECOND,
+    // initialize one task queue per host
+    if (!HttpClient._TASK_QUEUES[request.host]) HttpClient._TASK_QUEUES[request.host] = new ThreadPool(1);
+    
+    // initialize one promise throttle per host
+    if (!HttpClient._PROMISE_THROTTLES[request.host]) {
+      HttpClient._PROMISE_THROTTLES[request.host] = new PromiseThrottle({
+        requestsPerSecond: MoneroUtils.MAX_REQUESTS_PER_SECOND, // TODO: HttpClient should not depend on MoneroUtils for configuration
         promiseImplementation: Promise
       });
     }
     
-    // request using fetch or xhr
-    return request.requestApi === "fetch" ? HttpClient._requestFetch(request) : HttpClient._requestXhr(request);
+    // request using fetch or xhr with timeout
+    let timeout = request.timeout ? request.timeout : HttpClient._DEFAULT_TIMEOUT;
+    let requestPromise = request.requestApi === "fetch" ? HttpClient._requestFetch(request) : HttpClient._requestXhr(request);
+    let timeoutPromise = new Promise((resolve, reject) => {
+      let id = setTimeout(() => {
+        clearTimeout(id);
+        reject('Request timed out in '+ timeout + ' milliseconds')
+      }, timeout);
+    });
+    return Promise.race([requestPromise, timeoutPromise]);
   }
   
   // ----------------------------- PRIVATE HELPERS ----------------------------
@@ -76,8 +107,9 @@ class HttpClient {
     if (req.body instanceof Uint8Array) opts.encoding = null;
     
     // queue and throttle request to execute in serial and rate limited
-    let resp = await HttpClient._queueTask(async function() {
-      return HttpClient.PROMISE_THROTTLE.add(function(opts) { return Request(opts); }.bind(this, opts));
+    let host = req.host;
+    let resp = await HttpClient._TASK_QUEUES[host].submit(async function() {
+      return HttpClient._PROMISE_THROTTLES[host].add(function(opts) { return Request(opts); }.bind(this, opts));
     });
     
     // normalize response
@@ -99,14 +131,15 @@ class HttpClient {
     // collect params from request which change on await
     let method = req.method;
     let uri = req.uri;
+    let host = req.host;
     let username = req.username;
     let password = req.password;
     let body = req.body;
     let isBinary = body instanceof Uint8Array;
     
-    // queue and throttle request to execute in serial and rate limited
-    let resp = await HttpClient._queueTask(async function() {
-      return HttpClient.PROMISE_THROTTLE.add(function() {
+    // queue and throttle requests to execute in serial and rate limited per host
+    let resp = await HttpClient._TASK_QUEUES[host].submit(async function() {
+      return HttpClient._PROMISE_THROTTLES[host].add(function() {
         return new Promise(function(resolve, reject) {
           let digestAuthRequest = new HttpClient.digestAuthRequest(method, uri, username, password);
           digestAuthRequest.request(function(resp) {
@@ -127,31 +160,6 @@ class HttpClient {
     normalizedResponse.body = isBinary ? new Uint8Array(resp.response) : resp.response;
     if (normalizedResponse.body instanceof ArrayBuffer) normalizedResponse.body = new Uint8Array(normalizedResponse.body);  // handle empty binary request
     return normalizedResponse;
-  }
-  
-  /**
-   * Executes given tasks serially (first in, first out).
-   * 
-   * @param {function} asyncFn is an asynchronous function to execute after previously given tasks
-   */
-  static async _queueTask(asyncFn) {
-    
-    // initialize task queue one time
-    if (!HttpClient.TASK_QUEUE) {
-      const async = require("async");
-      HttpClient.TASK_QUEUE = async.queue(function(asyncFn, callback) {
-        if (asyncFn.then) asyncFn.then(resp => { callback(resp); }).catch(err => { callback(undefined, err); });
-        else asyncFn().then(resp => { callback(resp); }).catch(err => { callback(undefined, err); });
-      }, 1);
-    }
-    
-    // return promise which resolves when task is executed
-    return new Promise(function(resolve, reject) {
-      HttpClient.TASK_QUEUE.push(asyncFn, function(resp, err) {
-        if (err !== undefined) reject(err);
-        else resolve(resp);
-      });
-    });
   }
   
   /**
@@ -190,14 +198,6 @@ class HttpClient {
     }
     return headerMap;
   }
-}
-
-// default request config
-HttpClient.DEFAULT_REQUEST = {
-  method: "GET",
-  requestApi: "fetch",
-  resolveWithFullResponse: false,
-  rejectUnauthorized: true
 }
 
 /**
@@ -243,9 +243,9 @@ HttpClient.digestAuthRequest = function(method, url, username, password) {
     if (data) {
       try {
         self.data = data instanceof Uint8Array || typeof data === "string" ? data : JSON.stringify(data);
-      } catch (e) {
-        console.error(e);
-        throw e;
+      } catch (err) {
+        console.error(err);
+        throw err;
       }
     }
     self.successFn = successFn;
@@ -329,7 +329,6 @@ HttpClient.digestAuthRequest = function(method, url, username, password) {
         if (self.firstRequest.status === 200) {
           self.log('Authentication not required for '+url);
           if (data instanceof Uint8Array) {
-            console.log("BINARY RESPONSE 1");
             self.successFn(self.firstRequest);
           } else {
             if (self.firstRequest.responseText !== 'undefined') {
@@ -467,7 +466,7 @@ HttpClient.digestAuthRequest = function(method, url, username, password) {
   this.isJson = function(str) {
     try {
       JSON.parse(str);
-    } catch (e) {
+    } catch (err) {
       return false;
     }
     return true;
@@ -479,5 +478,18 @@ HttpClient.digestAuthRequest = function(method, url, username, password) {
   }
   this.version = function() { return '0.8.0' }
 }
+
+// default request config
+HttpClient._DEFAULT_REQUEST = {
+  method: "GET",
+  requestApi: "fetch",
+  resolveWithFullResponse: false,
+  rejectUnauthorized: true
+}
+
+// rate limit requests per host
+HttpClient._PROMISE_THROTTLES = [];
+HttpClient._TASK_QUEUES = [];
+HttpClient._DEFAULT_TIMEOUT = 30000;
 
 module.exports = HttpClient;

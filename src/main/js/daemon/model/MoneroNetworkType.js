@@ -1,4 +1,4 @@
-const assert = require("assert");
+const MoneroError = require("../../common/MoneroError");
 
 /**
  * Defines the Monero network types (mainnet, testnet, and stagenet).
@@ -8,12 +8,12 @@ const assert = require("assert");
 class MoneroNetworkType {
   
   /**
-   * Asserts that the given network type is valid.
+   * Validates the given network type.
    * 
    * @param {int} networkType - the network type to validate as a numeric
    */
   static validate(networkType) {
-    assert(networkType === 0 || networkType === 1 || networkType === 2, "Network type is invalid: " + networkType);
+    if (networkType !== 0 && networkType !== 1 && networkType !== 2) throw new MoneroError("Network type is invalid: " + networkType);
   }
   
   /**
@@ -40,6 +40,18 @@ class MoneroNetworkType {
       case "stagenet": return MoneroNetworkType.STAGENET;
       default: throw new MoneroError("Invalid network type to parse: '" + networkTypeStr + "'");
     }
+  }
+  
+  /**
+   * Get the network type in human-readable form.
+   *
+   * @return {string} the network type in human-readable form
+   */
+  static toString(networkType) {
+    if (networkType === 0) return "mainnet";
+    if (networkType === 1) return "testnet";
+    if (networkType === 2) return "stagenet";
+    throw new MoneroError("Invalid network type: " + networkType);
   }
 }
 

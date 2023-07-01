@@ -26,20 +26,21 @@ namespace epee
           disconnect();
         }
 
+        bool set_proxy(const std::string& address) override;
         void set_server(std::string host, std::string port, boost::optional<login> user, ssl_options_t ssl_options = ssl_support_t::e_ssl_support_autodetect) override;
         void set_auto_connect(bool auto_connect) override;
         bool connect(std::chrono::milliseconds timeout) override;
         bool disconnect() override;
         bool is_connected(bool *ssl = NULL) override;
-        bool invoke(const boost::string_ref uri, const boost::string_ref method, const string& body, std::chrono::milliseconds timeout, const http_response_info** ppresponse_info = NULL, const fields_list& additional_params = fields_list()) override;
+        bool invoke(const boost::string_ref uri, const boost::string_ref method, const boost::string_ref body, std::chrono::milliseconds timeout, const http_response_info** ppresponse_info = NULL, const fields_list& additional_params = fields_list()) override;
         bool invoke_get(const boost::string_ref uri, std::chrono::milliseconds timeout, const string& body = string(), const http_response_info** ppresponse_info = NULL, const fields_list& additional_params = fields_list()) override;
         bool invoke_post(const boost::string_ref uri, const string& body, std::chrono::milliseconds timeout, const http_response_info** ppresponse_info = NULL, const fields_list& additional_params = fields_list()) override;
         uint64_t get_bytes_sent() const override;
         uint64_t get_bytes_received() const override;
 
       private:
-        string m_host;
-        string m_port;
+        std::string m_host;
+        std::string m_port;
         boost::optional<login> m_user;
         string m_reject_unauthorized_fn_id;
         bool m_ssl_enabled;
@@ -47,8 +48,8 @@ namespace epee
         http_response_info m_response_info;
         bool m_auto_connect;
 
-        bool invoke_json(const boost::string_ref uri, const boost::string_ref method, const std::string& body, std::chrono::milliseconds timeout, const http_response_info** ppresponse_info, const fields_list& additional_params);
-        bool invoke_binary(const boost::string_ref uri, const boost::string_ref method, const std::string& body, std::chrono::milliseconds timeout, const http_response_info** ppresponse_info, const fields_list& additional_params);
+        bool invoke_json(const boost::string_ref uri, const boost::string_ref method, const boost::string_ref body, std::chrono::milliseconds timeout, const http_response_info** ppresponse_info, const fields_list& additional_params);
+        bool invoke_binary(const boost::string_ref uri, const boost::string_ref method, const boost::string_ref body, std::chrono::milliseconds timeout, const http_response_info** ppresponse_info, const fields_list& additional_params);
       };
 
       /**

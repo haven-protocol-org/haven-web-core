@@ -3,15 +3,16 @@ const TestUtils = require("./utils/TestUtils");
 const monerojs = require("../../index");
 const BigInteger = monerojs.BigInteger;
 const ConnectionType = monerojs.ConnectionType;
+const GenUtils = monerojs.GenUtils;
 const MoneroOutput = monerojs.MoneroOutput;
 const MoneroTxConfig = monerojs.MoneroTxConfig;
 const MoneroBan = monerojs.MoneroBan;
 const MoneroKeyImage = monerojs.MoneroKeyImage;
 const MoneroTx = monerojs.MoneroTx;
 const MoneroAltChain = monerojs.MoneroAltChain;
+const MoneroDaemonListener = monerojs.MoneroDaemonListener;
 const MoneroDaemonSyncInfo = monerojs.MoneroDaemonSyncInfo;
-const MoneroDaemonConnection = monerojs.MoneroDaemonConnection;
-const MoneroDaemonPeer = monerojs.MoneroDaemonPeer;
+const MoneroPeer = monerojs.MoneroPeer;
 const MoneroKeyImageSpentStatus = monerojs.MoneroKeyImageSpentStatus;
 
 // context for testing binary blocks
@@ -26,7 +27,7 @@ class TestMoneroDaemonRpc {
   
   constructor(testConfig) {
     this.testConfig = testConfig;
-    TestUtils.TX_POOL_WALLET_TRACKER.reset(); // all wallets need to wait for txs to confirm to reliably sync
+    TestUtils.WALLET_TX_TRACKER.reset(); // all wallets need to wait for txs to confirm to reliably sync
   }
   
   /**
@@ -42,7 +43,7 @@ class TestMoneroDaemonRpc {
         try {
           that.wallet = await TestUtils.getWalletRpc();
           that.daemon = await TestUtils.getDaemonRpc();
-          TestUtils.TX_POOL_WALLET_TRACKER.reset(); // all wallets need to wait for txs to confirm to reliably sync
+          TestUtils.WALLET_TX_TRACKER.reset(); // all wallets need to wait for txs to confirm to reliably sync
         } catch (e) {
           console.error("Error before tests: ");
           console.error(e);
@@ -51,6 +52,38 @@ class TestMoneroDaemonRpc {
       });
       
       // -------------------------- TEST NON RELAYS ---------------------------
+      
+      if (testConfig.testNonRelays && !GenUtils.isBrowser())
+      it("Can start and stop a daemon process", async function() {
+        
+        // create command to start monerod process
+        let cmd = [
+            TestUtils.DAEMON_LOCAL_PATH,
+            "--" + monerojs.MoneroNetworkType.toString(TestUtils.NETWORK_TYPE).toLowerCase(),
+            "--no-igd",
+            "--hide-my-port",
+            "--data-dir", TestUtils.MONERO_BINS_DIR + "/node1",
+            "--p2p-bind-port", "58080",
+            "--rpc-bind-port", "58081",
+            "--rpc-login", "superuser:abctesting123",
+            "--zmq-rpc-bind-port", "58082"
+        ];
+        
+        // start monerod process from command
+        let daemon = await monerojs.connectToDaemonRpc(cmd);
+        
+        // query daemon
+        let connection = await daemon.getRpcConnection();
+        assert.equal("http://127.0.0.1:58081", connection.getUri());
+        assert.equal("superuser", connection.getUsername());
+        assert.equal("abctesting123", connection.getPassword());
+        assert(await daemon.getHeight() > 0);
+        let info = await daemon.getInfo();
+        testInfo(info);
+        
+        // stop daemon
+        await daemon.stopProcess();
+      });
       
       if (testConfig.testNonRelays)
       it("Can get the daemon's version", async function() {
@@ -249,7 +282,7 @@ class TestMoneroDaemonRpc {
       it("Can get blocks by range using chunked requests", async function() {
         
         // get long height range
-        let numBlocks = 1000;
+        let numBlocks = Math.min(await that.daemon.getHeight() - 2, 1440); // test up to ~2 days of blocks
         assert(numBlocks > 0);
         let height = await that.daemon.getHeight();
         assert(height - numBlocks - 1 < height);
@@ -319,6 +352,7 @@ class TestMoneroDaemonRpc {
         
         // fetch transaction hashes to test
         let txHashes = await getConfirmedTxHashes(that.daemon);
+        assert(txHashes.length > 0);
         
         // fetch txs by hash without pruning
         let txs = await that.daemon.getTxs(txHashes);
@@ -334,6 +368,14 @@ class TestMoneroDaemonRpc {
           testTx(tx, {isPruned: true, isConfirmed: true, fromGetTxPool: false});
         }
         
+        // fetch missing hash
+        let tx = await that.wallet.createTx({accountIndex: 0, address: await that.wallet.getPrimaryAddress(), amount: TestUtils.MAX_FEE});
+        assert.equal(undefined, await that.daemon.getTx(tx.getHash()));
+        txHashes.push(tx.getHash());
+        let numTxs = txs.length;
+        txs = await that.daemon.getTxs(txHashes);
+        assert.equal(numTxs, txs.length);
+        
         // fetch invalid hash
         txHashes.push("invalid tx hash");
         try {
@@ -346,7 +388,7 @@ class TestMoneroDaemonRpc {
       
       if (testConfig.testNonRelays)
       it("Can get transactions by hashes that are in the transaction pool", async function() {
-        await TestUtils.TX_POOL_WALLET_TRACKER.waitForWalletTxsToClearPool(that.wallet); // wait for wallet's txs in the pool to clear to ensure reliable sync
+        await TestUtils.WALLET_TX_TRACKER.waitForWalletTxsToClearPool(that.wallet); // wait for wallet's txs in the pool to clear to ensure reliable sync
         
         // submit txs to the pool but don't relay
         let txHashes = [];
@@ -449,7 +491,7 @@ class TestMoneroDaemonRpc {
       
       if (testConfig.testNonRelays)
       it("Can get all transactions in the transaction pool", async function() {
-        await TestUtils.TX_POOL_WALLET_TRACKER.waitForWalletTxsToClearPool(that.wallet);
+        await TestUtils.WALLET_TX_TRACKER.waitForWalletTxsToClearPool(that.wallet);
         
         // submit tx to pool but don't relay
         let tx = await getUnrelayedTx(that.wallet, 0);
@@ -486,7 +528,7 @@ class TestMoneroDaemonRpc {
       
       if (testConfig.testNonRelays)
       it("Can get transaction pool statistics (binary)", async function() {
-        await TestUtils.TX_POOL_WALLET_TRACKER.waitForWalletTxsToClearPool(that.wallet);
+        await TestUtils.WALLET_TX_TRACKER.waitForWalletTxsToClearPool(that.wallet);
         
         // submit txs to the pool but don't relay (multiple txs result in binary `histo` field)
         for (let i = 0; i < 2; i++) {
@@ -510,7 +552,7 @@ class TestMoneroDaemonRpc {
       
       if (testConfig.testNonRelays)
       it("Can flush all transactions from the pool", async function() {
-        await TestUtils.TX_POOL_WALLET_TRACKER.waitForWalletTxsToClearPool(that.wallet);
+        await TestUtils.WALLET_TX_TRACKER.waitForWalletTxsToClearPool(that.wallet);
         
         // preserve original transactions in the pool
         let txPoolBefore = await that.daemon.getTxPool();
@@ -542,7 +584,7 @@ class TestMoneroDaemonRpc {
       
       if (testConfig.testNonRelays)
       it("Can flush a transaction from the pool by hash", async function() {
-        await TestUtils.TX_POOL_WALLET_TRACKER.waitForWalletTxsToClearPool(that.wallet);
+        await TestUtils.WALLET_TX_TRACKER.waitForWalletTxsToClearPool(that.wallet);
         
         // preserve original transactions in the pool
         let txPoolBefore = await that.daemon.getTxPool();
@@ -576,7 +618,7 @@ class TestMoneroDaemonRpc {
       
       if (testConfig.testNonRelays)
       it("Can flush transactions from the pool by hashes", async function() {
-        await TestUtils.TX_POOL_WALLET_TRACKER.waitForWalletTxsToClearPool(that.wallet);
+        await TestUtils.WALLET_TX_TRACKER.waitForWalletTxsToClearPool(that.wallet);
         
         // preserve original transactions in the pool
         let txPoolBefore = await that.daemon.getTxPool();
@@ -601,7 +643,7 @@ class TestMoneroDaemonRpc {
       
       if (testConfig.testNonRelays)
       it("Can get the spent status of key images", async function() {
-        await TestUtils.TX_POOL_WALLET_TRACKER.waitForWalletTxsToClearPool(that.wallet);
+        await TestUtils.WALLET_TX_TRACKER.waitForWalletTxsToClearPool(that.wallet);
         
         // submit txs to the pool to collect key images then flush them
         let txs = [];
@@ -794,21 +836,21 @@ class TestMoneroDaemonRpc {
       });
 
       if (testConfig.testNonRelays)
+      it("Can get peers with active incoming or outgoing peers", async function() {
+        let peers = await that.daemon.getPeers();
+        assert(Array.isArray(peers));
+        assert(peers.length > 0, "Daemon has no incoming or outgoing peers to test");
+        for (let peer of peers) {
+          testPeer(peer);
+        }
+      });
+      
+      if (testConfig.testNonRelays)
       it("Can get known peers which may be online or offline", async function() {
         let peers = await that.daemon.getKnownPeers();
         assert(peers.length > 0, "Daemon has no known peers to test");
         for (let peer of peers) {
           testKnownPeer(peer);
-        }
-      });
-      
-      if (testConfig.testNonRelays)
-      it("Can get incoming and outgoing peer connections", async function() {
-        let connections = await that.daemon.getConnections();
-        assert(Array.isArray(connections));
-        assert(connections.length > 0, "Daemon has no incoming or outgoing connections to test");
-        for (let connection of connections) {
-          testDaemonConnection(connection);
         }
       });
       
@@ -996,12 +1038,12 @@ class TestMoneroDaemonRpc {
         return; // test is disabled to not interfere with other tests
         
         // give the that.daemon time to shut down
-        await new Promise(function(resolve) { setTimeout(resolve, MoneroUtils.WALLET_REFRESH_RATE); });
+        await new Promise(function(resolve) { setTimeout(resolve, TestUtils.SYNC_PERIOD_IN_MS); });
         
         // stop the that.daemon
         await that.daemon.stop();
         
-        // give the that.daemon 10 seconds to shut down
+        // give the daemon 10 seconds to shut down
         await new Promise(function(resolve) { setTimeout(resolve, 10000); }); 
         
         // try to interact with the that.daemon
@@ -1020,7 +1062,7 @@ class TestMoneroDaemonRpc {
       it("Can submit a tx in hex format to the pool and relay in one call", async function() {
         
         // wait one time for wallet txs in the pool to clear
-        await TestUtils.TX_POOL_WALLET_TRACKER.waitForWalletTxsToClearPool(that.wallet);
+        await TestUtils.WALLET_TX_TRACKER.waitForWalletTxsToClearPool(that.wallet);
         
         // create 2 txs, the second will double spend outputs of first
         let tx1 = await getUnrelayedTx(that.wallet, 2);  // TODO: this test requires tx to be from/to different accounts else the occlusion issue (#4500) causes the tx to not be recognized by the wallet at all
@@ -1064,22 +1106,22 @@ class TestMoneroDaemonRpc {
         assert(!found, "Tx2 should not be in the pool because it double spends tx1 which is in the pool");
         
         // all wallets will need to wait for tx to confirm in order to properly sync
-        TestUtils.TX_POOL_WALLET_TRACKER.reset();
+        TestUtils.WALLET_TX_TRACKER.reset();
       });
       
       if (testConfig.testRelays && !testConfig.liteMode)
       it("Can submit a tx in hex format to the pool then relay", async function() {
-        await TestUtils.TX_POOL_WALLET_TRACKER.waitForWalletTxsToClearPool(that.wallet);
+        await TestUtils.WALLET_TX_TRACKER.waitForWalletTxsToClearPool(that.wallet);
         let tx = await getUnrelayedTx(that.wallet, 1);
         await testSubmitThenRelay([tx]);
       });
       
       if (testConfig.testRelays && !testConfig.liteMode)
       it("Can submit txs in hex format to the pool then relay", async function() {
-        await TestUtils.TX_POOL_WALLET_TRACKER.waitForWalletTxsToClearPool(that.wallet);
+        await TestUtils.WALLET_TX_TRACKER.waitForWalletTxsToClearPool(that.wallet);
         let txs = [];
-        txs.push(await getUnrelayedTx(that.wallet, 2));
-        txs.push(await getUnrelayedTx(that.wallet, 3));  // TODO: accounts cannot be re-used across send tests else isRelayed is true; wallet needs to update?
+        txs.push(await getUnrelayedTx(that.wallet, 1));
+        txs.push(await getUnrelayedTx(that.wallet, 2)); // TODO: accounts cannot be re-used across send tests else isRelayed is true; wallet needs to update?
         await testSubmitThenRelay(txs);
       });
       
@@ -1119,8 +1161,8 @@ class TestMoneroDaemonRpc {
         }
         
         // ensure txs are relayed
+        let poolTxs = await that.daemon.getTxPool();
         for (let tx of txs) {
-          let poolTxs = await that.daemon.getTxPool();
           let found = false;
           for (let aTx of poolTxs) {
             if (aTx.getHash() === tx.getHash()) {
@@ -1133,7 +1175,7 @@ class TestMoneroDaemonRpc {
         }
         
         // wallets will need to wait for tx to confirm in order to properly sync
-        TestUtils.TX_POOL_WALLET_TRACKER.reset();
+        TestUtils.WALLET_TX_TRACKER.reset();
       }
       
       // ------------------------ TEST NOTIFICATIONS --------------------------
@@ -1150,14 +1192,16 @@ class TestMoneroDaemonRpc {
           
           // register a listener
           let listenerHeader;
-          let listener = async function(header) {
-            listenerHeader = header;
-            await that.daemon.removeBlockListener(listener); // otherwise daemon will keep polling
+          let listener = new class extends MoneroDaemonListener {
+            async onBlockHeader(header) {
+              listenerHeader = header;
+              await that.daemon.removeListener(listener); // otherwise daemon will keep polling
+            }
           }
-          await that.daemon.addBlockListener(listener);
+          await that.daemon.addListener(listener);
           
           // wait for next block notification
-          let header = await that.daemon.getNextBlockHeader();
+          let header = await that.daemon.waitForNextBlockHeader();
           testBlockHeader(header, true);
           
           // test that listener was called with equivalent header
@@ -1179,11 +1223,14 @@ function testBlockHeader(header, isFull) {
   assert(typeof isFull === "boolean");
   assert(header);
   assert(header.getHeight() >= 0);
-  assert(header.getMajorVersion() >= 0);
+  assert(header.getMajorVersion() > 0);
   assert(header.getMinorVersion() >= 0);
-  assert(header.getTimestamp() >= 0);
+  if (header.getHeight() === 0) assert(header.getTimestamp() === 0);
+  else assert(header.getTimestamp() > 0);
   assert(header.getPrevHash());
-  assert(header.getNonce());
+  assert(header.getNonce() !== undefined);
+  if (header.getNonce() === 0) console.log("WARNING: header nonce is 0 at height " + header.getHeight()); // TODO (monero-project): why is header nonce 0?
+  else assert(header.getNonce() > 0);
   assert.equal(typeof header.getNonce(), "number");
   assert(header.getPowHash() === undefined);  // never seen defined
   assert(!isFull ? undefined === header.getSize() : header.getSize());
@@ -1209,7 +1256,7 @@ function testBlock(block, ctx) {
   
   // test required fields
   assert(block);
-  assert(Array.isArray(block.getTxHashes())); // TODO: tx hashes probably part of tx
+  assert(Array.isArray(block.getTxHashes()));
   assert(block.getTxHashes().length >= 0);
   testMinerTx(block.getMinerTx());   // TODO: miner tx doesn't have as much stuff, can't call testTx?
   testBlockHeader(block, ctx.headerIsFull);
@@ -1302,7 +1349,8 @@ function testTx(tx, ctx) {
     assert.equal(tx.inTxPool(), false);
     assert.equal(tx.getRelay(), true);
     assert.equal(tx.isDoubleSpendSeen(), false);
-    assert.equal(tx.getNumConfirmations(), undefined); // client must compute
+    if (ctx.fromBinaryBlock) assert.equal(tx.getNumConfirmations(), undefined);
+    else assert(tx.getNumConfirmations() > 0);
   } else {
     assert.equal(tx.getBlock(), undefined);
     assert.equal(tx.getNumConfirmations(), 0);
@@ -1441,10 +1489,11 @@ function testInfo(info) {
   assert(info.getHeightWithoutBootstrap());
   assert(info.getNumIncomingConnections() >= 0);
   assert(info.getNetworkType());
-  assert(typeof info.isOffline() === "boolean");
+  assert.equal("boolean", typeof info.isOffline());
   assert(info.getNumOutgoingConnections() >= 0);
   assert(info.getNumRpcConnections() >= 0);
   assert(info.getStartTimestamp());
+  assert(info.getAdjustedTimestamp());
   assert(info.getTarget());
   assert(info.getTargetHeight() >= 0);
   assert(info.getNumTxs() >= 0);
@@ -1457,21 +1506,23 @@ function testInfo(info) {
   TestUtils.testUnsignedBigInteger(info.getCredits(), false);
   assert.equal(typeof info.getTopBlockHash(), "string");
   assert(info.getTopBlockHash());
+  assert.equal("boolean", typeof info.isBusySyncing());
+  assert.equal("boolean", typeof info.isSynchronized());
 }
 
 function testSyncInfo(syncInfo) { // TODO: consistent naming, daemon in name?
   assert(syncInfo instanceof MoneroDaemonSyncInfo);
   assert(syncInfo.getHeight() >= 0);
-  if (syncInfo.getConnections() !== undefined) {
-    assert(syncInfo.getConnections().length > 0);
-    for (let connection of syncInfo.getConnections()) {
-      testDaemonConnection(connection);
+  if (syncInfo.getPeers() !== undefined) {
+    assert(syncInfo.getPeers().length > 0);
+    for (let peer of syncInfo.getPeers()) {
+      testPeer(peer);
     }
   }
   if (syncInfo.getSpans() !== undefined) {  // TODO: test that this is being hit, so far not used
     assert(syncInfo.getSpans().length > 0);
     for (let span of syncInfo.getSpans()) {
-      testDaemonConnectionSpan(span);
+      testConnectionSpan(span);
     }
   }
   assert(syncInfo.getNextNeededPruningSeed() >= 0);
@@ -1480,7 +1531,7 @@ function testSyncInfo(syncInfo) { // TODO: consistent naming, daemon in name?
   assert.equal(syncInfo.getTopBlockHash(), undefined);
 }
 
-function testDaemonConnectionSpan(span) {
+function testConnectionSpan(span) {
   assert.notEqual(span, undefined);
   assert.notEqual(span.getConnectionId(), undefined);
   assert(span.getConnectionId().length > 0);
@@ -1674,30 +1725,29 @@ function testAltChain(altChain) {
   assert(altChain.getMainChainParentBlockHash().length === 64);
 }
 
-function testDaemonConnection(connection) {
-  assert(connection instanceof MoneroDaemonConnection);
-  assert(connection.getPeer());
-  testKnownPeer(connection.getPeer(), true);
-  assert(connection.getId());
-  assert(connection.getAvgDownload() >= 0);
-  assert(connection.getAvgUpload() >= 0);
-  assert(connection.getCurrentDownload() >= 0);
-  assert(connection.getCurrentUpload() >= 0);
-  assert(connection.getHeight() >= 0);
-  assert(connection.getLiveTime() >= 0);
-  assert.equal(typeof connection.isLocalIp(), "boolean");
-  assert.equal(typeof connection.isLocalHost(), "boolean");
-  assert(connection.getNumReceives() >= 0);
-  assert(connection.getReceiveIdleTime() >= 0);
-  assert(connection.getNumSends() >= 0);
-  assert(connection.getSendIdleTime() >= 0);
-  assert(connection.getState());
-  assert(connection.getNumSupportFlags() >= 0);
-  ConnectionType.validate(connection.getType());
+function testPeer(peer) {
+  assert(peer instanceof MoneroPeer);
+  testKnownPeer(peer, true);
+  assert(peer.getId());
+  assert(peer.getAvgDownload() >= 0);
+  assert(peer.getAvgUpload() >= 0);
+  assert(peer.getCurrentDownload() >= 0);
+  assert(peer.getCurrentUpload() >= 0);
+  assert(peer.getHeight() >= 0);
+  assert(peer.getLiveTime() >= 0);
+  assert.equal(typeof peer.isLocalIp(), "boolean");
+  assert.equal(typeof peer.isLocalHost(), "boolean");
+  assert(peer.getNumReceives() >= 0);
+  assert(peer.getReceiveIdleTime() >= 0);
+  assert(peer.getNumSends() >= 0);
+  assert(peer.getSendIdleTime() >= 0);
+  assert(peer.getState());
+  assert(peer.getNumSupportFlags() >= 0);
+  ConnectionType.validate(peer.getType());
 }
 
 function testKnownPeer(peer, fromConnection) {
-  assert(peer instanceof MoneroDaemonPeer);
+  assert(peer instanceof MoneroPeer);
   assert.equal(typeof peer.getId(), "string");
   assert.equal(typeof peer.getHost(), "string");
   assert(typeof peer.getPort() === "number");
@@ -1744,7 +1794,7 @@ async function getConfirmedTxHashes(daemon) {
   let numTxs = 5;
   let txHashes = [];
   let height = await daemon.getHeight();
-  while (txHashes.length < numTxs) {
+  while (txHashes.length < numTxs && height > 0) {
     let block = await daemon.getBlockByHeight(--height);
     for (let txHash of block.getTxHashes()) txHashes.push(txHash);
   }

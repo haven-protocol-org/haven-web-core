@@ -32,10 +32,10 @@ class WalletEqualityUtils {
    * @param w2 a wallet to compare
    */
   static async testWalletEqualityOnChain(w1, w2) {
-    TestUtils.TX_POOL_WALLET_TRACKER.reset(); // all wallets need to wait for txs to confirm to reliably sync
+    TestUtils.WALLET_TX_TRACKER.reset(); // all wallets need to wait for txs to confirm to reliably sync
     
     // wait for relayed txs associated with wallets to clear pool
-    await TestUtils.TX_POOL_WALLET_TRACKER.waitForWalletTxsToClearPool(w1, w2);
+    await TestUtils.WALLET_TX_TRACKER.waitForWalletTxsToClearPool(w1, w2);
     
     // sync the wallets until same height
     while (await w1.getHeight() !== await w2.getHeight()) {
@@ -54,7 +54,7 @@ class WalletEqualityUtils {
     txQuery.setIncludeOutputs(true);
     await WalletEqualityUtils._testTxWalletsEqualOnChain(await w1.getTxs(txQuery), await w2.getTxs(txQuery));  // fetch and compare outputs
     await WalletEqualityUtils._testAccountsEqualOnChain(await w1.getAccounts(true), await w2.getAccounts(true));
-    assert.equal((await w2.getBalance()).toString(), (await await w1.getBalance()).toString());
+    assert.equal((await w2.getBalance()).toString(), (await w1.getBalance()).toString());
     assert.equal((await w2.getUnlockedBalance()).toString(), (await w1.getUnlockedBalance()).toString());
     let transferQuery = new MoneroTransferQuery().setTxQuery(new MoneroTxQuery().setIsConfirmed(true));
     await WalletEqualityUtils._testTransfersEqualOnChain(await w1.getTransfers(transferQuery), await w2.getTransfers(transferQuery));
@@ -145,11 +145,11 @@ class WalletEqualityUtils {
       for (let tx2 of txs2) {
         if (tx1.getHash() === tx2.getHash()) {
           
-          // transfer destination info if known for comparison
+          // transfer cached info if known for comparison
           if (tx1.getOutgoingTransfer() !== undefined && tx1.getOutgoingTransfer().getDestinations() !== undefined) {
-            if (tx2.getOutgoingTransfer() === undefined || tx2.getOutgoingTransfer().getDestinations() === undefined) WalletEqualityUtils._transferDestinationInfo(tx1, tx2);
+            if (tx2.getOutgoingTransfer() === undefined || tx2.getOutgoingTransfer().getDestinations() === undefined) WalletEqualityUtils._transferCachedInfo(tx1, tx2);
           } else if (tx2.getOutgoingTransfer() !== undefined && tx2.getOutgoingTransfer().getDestinations() !== undefined) {
-            WalletEqualityUtils._transferDestinationInfo(tx2, tx1);
+            WalletEqualityUtils._transferCachedInfo(tx2, tx1);
           }
           
           // test tx equality by merging
@@ -170,7 +170,7 @@ class WalletEqualityUtils {
     }
   }
   
-  static async _transferDestinationInfo(src, tgt) {
+  static async _transferCachedInfo(src, tgt) {
     
     // fill in missing incoming transfers when sending from/to the same account
     if (src.getIncomingTransfers() !== undefined) {
@@ -189,6 +189,9 @@ class WalletEqualityUtils {
       tgt.getOutgoingTransfer().setDestinations(src.getOutgoingTransfer().getDestinations());
       tgt.getOutgoingTransfer().setAmount(src.getOutgoingTransfer().getAmount());
     }
+    
+    // transfer payment id if outgoing // TODO: monero-wallet-rpc does not provide payment id for outgoing transfer when cache missing https://github.com/monero-project/monero/issues/8378
+    if (tgt.getOutgoingTransfer() !== undefined) tgt.setPaymentId(src.getPaymentId());
   }
   
   static async _testTransfersEqualOnChain(transfers1, transfers2) {
@@ -256,9 +259,9 @@ class WalletEqualityUtils {
     
           // transfer destination info if known for comparison
           if (ot1.getDestinations() !== undefined) {
-            if (ot2.getDestinations() === undefined) await WalletEqualityUtils._transferDestinationInfo(ot1.getTx(), ot2.getTx());
+            if (ot2.getDestinations() === undefined) await WalletEqualityUtils._transferCachedInfo(ot1.getTx(), ot2.getTx());
           } else if (ot2.getDestinations() !== undefined) {
-            await WalletEqualityUtils._transferDestinationInfo(ot2.getTx(), ot1.getTx());
+            await WalletEqualityUtils._transferCachedInfo(ot2.getTx(), ot1.getTx());
           }
           
           // nullify other local wallet data

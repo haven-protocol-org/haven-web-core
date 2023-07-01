@@ -1,10 +1,12 @@
 const assert = require("assert");
 const MoneroBlock = require("../daemon/model/MoneroBlock");
+const BigInteger = require("../common/biginteger").BigInteger;
 const MoneroError = require("../common/MoneroError");
 const MoneroOutputQuery = require("./model/MoneroOutputQuery");
 const MoneroTransferQuery = require("./model/MoneroTransferQuery");
 const MoneroTxConfig = require("./model/MoneroTxConfig");
 const MoneroTxQuery = require("./model/MoneroTxQuery");
+const MoneroTxSet = require("./model/MoneroTxSet");
 
 /**
  * Copyright (c) woodser
@@ -36,7 +38,34 @@ const MoneroTxQuery = require("./model/MoneroTxQuery");
 class MoneroWallet {
   
   /**
-   * Indicates if the wallet is view-only, meaning it does have the private
+   * Register a listener to receive wallet notifications.
+   * 
+   * @param {MoneroWalletListener} listener - listener to receive wallet notifications
+   */
+  async addListener(listener) {
+    throw new Error("Not supported");
+  }
+  
+  /**
+   * Unregister a listener to receive wallet notifications.
+   * 
+   * @param {MoneroWalletListener} listener - listener to unregister
+   */
+  async removeListener(listener) {
+    throw new Error("Not supported");
+  }
+  
+  /**
+   * Get the listeners registered with the wallet.
+   * 
+   * @return {MoneroWalletListener[]} the registered listeners
+   */
+  getListeners() {
+    throw new Error("Not supported");
+  }
+  
+  /**
+   * Indicates if the wallet is view-only, meaning it does not have the private
    * spend key and can therefore only observe incoming outputs.
    * 
    * @return {bool} true if the wallet is view-only, false otherwise
@@ -70,7 +99,7 @@ class MoneroWallet {
    * 
    * @return {boolean} true if the wallet is connected to a daemon, false otherwise
    */
-  async isConnected() {
+  async isConnectedToDaemon() {
     throw new MoneroError("Not supported");
   }
   
@@ -177,13 +206,15 @@ class MoneroWallet {
   }
   
   /**
-   * Get an integrated address based on this wallet's primary address and the
-   * given payment ID.  Generates a random payment ID if none is given.
+   * Get an integrated address based on the given standard address and payment
+   * ID. Uses the wallet's primary address if an address is not given.
+   * Generates a random payment ID if a payment ID is not given.
    * 
-   * @param {string} paymentId - payment ID to generate an integrated address from (randomly generated if undefined)
+   * @param {string} standardAddress is the standard address to generate the integrated address from (wallet's primary address if undefined)
+   * @param {string} paymentId is the payment ID to generate an integrated address from (randomly generated if undefined)
    * @return {MoneroIntegratedAddress} the integrated address
    */
-  async getIntegratedAddress(paymentId) {
+  async getIntegratedAddress(standardAddress, paymentId) {
     throw new MoneroError("Not supported");
   }
   
@@ -198,9 +229,9 @@ class MoneroWallet {
   }
   
   /**
-   * Get the height of the last block processed by the wallet (its index + 1).
+   * Get the block height that the wallet is synced to.
    * 
-   * @return {int} the height of the last block processed by the wallet
+   * @return {int} the block height that the wallet is synced to
    */
   async getHeight() {
     throw new MoneroError("Not supported");
@@ -238,9 +269,11 @@ class MoneroWallet {
   }
   
   /**
-   * Start an asynchronous thread to continuously synchronize the wallet with the daemon.
+   * Start background synchronizing with a maximum period between syncs.
+   * 
+   * @param {int} syncPeriodInMs - maximum period between syncs in milliseconds (default is wallet-specific)
    */
-  async startSyncing() {
+  async startSyncing(syncPeriodInMs) {
     throw new MoneroError("Not supported");
   }
   
@@ -341,6 +374,50 @@ class MoneroWallet {
   }
   
   /**
+   * Get the number of blocks until the next and last funds unlock.
+   * 
+   * @return {int[]} the number of blocks until the next and last funds unlock in elements 0 and 1, respectively, or undefined if no balance
+   */
+  async getNumBlocksToUnlock() {
+    
+    // get balances
+    let balance = await this.getBalance();
+    if (balance.compare(new BigInteger(0)) === 0) return [undefined, undefined]; // skip if no balance
+    let unlockedBalance = await this.getUnlockedBalance();
+    
+    // compute number of blocks until next funds available
+    let txs;
+    let height;
+    let numBlocksToNextUnlock = undefined;
+    if (unlockedBalance.compare(new BigInteger(0)) > 0) numBlocksToNextUnlock = 0;
+    else {
+      txs = await this.getTxs({isLocked: true}); // get locked txs
+      height = await this.getHeight(); // get most recent height
+      for (let tx of txs) {
+        let numBlocksToUnlock = Math.max((tx.isConfirmed() ? tx.getHeight() : height) + 10, tx.getUnlockHeight()) - height;
+        numBlocksToNextUnlock = numBlocksToNextUnlock === undefined ? numBlocksToUnlock : Math.min(numBlocksToNextUnlock, numBlocksToUnlock);
+      }
+    }
+    
+    // compute number of blocks until all funds available
+    let numBlocksToLastUnlock = undefined;
+    if (balance.compare(unlockedBalance) === 0) {
+      if (unlockedBalance.compare(new BigInteger(0)) > 0) numBlocksToLastUnlock = 0;
+    } else {
+      if (!txs) {
+        txs = await this.getTxs({isLocked: true}); // get locked txs
+        height = await this.getHeight(); // get most recent height
+      }
+      for (let tx of txs) {
+        let numBlocksToUnlock = Math.max((tx.isConfirmed() ? tx.getHeight() : height) + 10, tx.getUnlockHeight()) - height;
+        numBlocksToLastUnlock = numBlocksToLastUnlock === undefined ? numBlocksToUnlock : Math.max(numBlocksToLastUnlock, numBlocksToUnlock);
+      }
+    }
+    
+    return [numBlocksToNextUnlock, numBlocksToLastUnlock];
+  }
+  
+  /**
    * Get accounts with a given tag.
    * 
    * @param {boolean} includeSubaddresses - include subaddresses if true
@@ -414,7 +491,8 @@ class MoneroWallet {
    * @return {MoneroTxWallet} the identified transactions
    */
   async getTx(txHash) {
-    return (await this.getTxs([txHash]))[0];
+    let txs = await this.getTxs([txHash]);
+    return txs.length === 0 ? undefined : txs[0]; 
   }
   
   /**
@@ -472,60 +550,50 @@ class MoneroWallet {
    * @param {MoneroDestination[]} query.destinations - individual destinations of an outgoing transfer, which is local wallet data and NOT recoverable from the blockchain (optional)
    * @param {boolean} query.hasDestinations - get transfers that have destinations or not (optional)
    * @param {MoneroTxQuery} query.txQuery - get transfers whose transaction meets this query (optional)
-   * @return {MoneroTransfer[]} are wallet transfers per the configuration
+   * @return {MoneroTransfer[]} wallet transfers that meet the query
    */
   async getTransfers(query) {
     throw new MoneroError("Not supported");
   }
   
   /**
-   * Get all of the wallet's incoming transfers.
+   * Get incoming transfers.
    * 
-   * @param query - passed to getTransfers() with isIncoming=true
-   * @return {MoneroIncomingTransfer[]} the wallet's incoming transfers
+   * @param {(MoneroTransferQuery|object)} query - configures the query (optional)
+   * @param {string} query.address - get incoming transfers to a specific address in the wallet (optional)
+   * @param {int} query.accountIndex - get incoming transfers to a specific account index (optional)
+   * @param {int} query.subaddressIndex - get incoming transfers to a specific subaddress index (optional)
+   * @param {int[]} query.subaddressIndices - get transfers destined for specific subaddress indices (optional)
+   * @param {BigInteger} query.amount - amount being transferred (optional)
+   * @param {MoneroTxQuery} query.txQuery - get transfers whose transaction meets this query (optional)
+   * @return {MoneroIncomingTransfer[]} incoming transfers that meet the query
    */
   async getIncomingTransfers(query) {
-    
-    // copy query and set direction
-    let _query;
-    if (query === undefined) _query = new MoneroTransferQuery();
-    else {
-      if (query.isIncoming() === false) throw new MoneroError("Transfer query contradicts getting incoming transfers");
-      _query = query.copy();
-    }
-    _query.setIsIncoming(true);
-    
-    // fetch and cast transfers
-    let inTransfers = [];
-    for (let transfer of await this.getTransfers(_query)) {
-      inTransfers.push(transfer);
-    }
-    return inTransfers;
+    query = MoneroWallet._normalizeTransferQuery(query);
+    if (query.isIncoming() === false) throw new MoneroError("Transfer query contradicts getting incoming transfers");
+    query.setIsIncoming(true);
+    return this.getTransfers(query);
   }
   
   /**
-   * Get all of the wallet's outgoing transfers.
+   * Get outgoing transfers.
    * 
-   * @param query - passed to getTransfers() with isOutgoing=true
-   * @return {MoneroOutgoingTransfer[]} the wallet's outgoing transfers
+   * @param {(MoneroTransferQuery|object)} query - configures the query (optional)
+   * @param {string} query.address - get outgoing transfers from a specific address in the wallet (optional)
+   * @param {int} query.accountIndex - get outgoing transfers from a specific account index (optional)
+   * @param {int} query.subaddressIndex - get outgoing transfers from a specific subaddress index (optional)
+   * @param {int[]} query.subaddressIndices - get outgoing transfers from specific subaddress indices (optional)
+   * @param {BigInteger} query.amount - amount being transferred (optional)
+   * @param {MoneroDestination[]} query.destinations - individual destinations of an outgoing transfer, which is local wallet data and NOT recoverable from the blockchain (optional)
+   * @param {boolean} query.hasDestinations - get transfers that have destinations or not (optional)
+   * @param {MoneroTxQuery} query.txQuery - get transfers whose transaction meets this query (optional)
+   * @return {MoneroOutgoingTransfer[]} outgoing transfers that meet the query
    */
   async getOutgoingTransfers(query) {
-    
-    // copy query and set direction
-    let _query;
-    if (query === undefined) _query = new MoneroTransferQuery();
-    else {
-      if (query.isOutgoing() === false) throw new MoneroError("Transfer query contradicts getting outgoing transfers");
-      _query = query.copy();
-    }
-    _query.setIsOutgoing(true);
-    
-    // fetch and cast transfers
-    let outTransfers = [];
-    for (let transfer of await this.getTransfers(_query)) {
-      outTransfers.push(transfer);
-    }
-    return outTransfers;
+    query = MoneroWallet._normalizeTransferQuery(query);
+    if (query.isOutgoing() === false) throw new MoneroError("Transfer query contradicts getting outgoing transfers");
+    query.setIsOutgoing(true);
+    return this.getTransfers(query);
   }
   
   /**
@@ -547,18 +615,19 @@ class MoneroWallet {
    * @param {boolean} query.isSpent - get outputs that are spent or not (optional)
    * @param {string|MoneroKeyImage} query.keyImage - get output with a key image or which matches fields defined in a MoneroKeyImage (optional)
    * @param {MoneroTxQuery} query.txQuery - get outputs whose transaction meets this filter (optional)
-   * @return {MoneroOutputWallet[]} are queried outputs
+   * @return {MoneroOutputWallet[]} the queried outputs
    */
   async getOutputs(query) {
     throw new MoneroError("Not supported");
   }
   
   /**
-   * Export all outputs in hex format.
-   * 
-   * @return {string} all outputs in hex format, undefined if no outputs
+   * Export outputs in hex format.
+   *
+   * @param {boolean} all - export all outputs if true, else export the outputs since the last export
+   * @return {string} outputs in hex format
    */
-  async getOutputsHex() {
+  async exportOutputs(all) {
     throw new MoneroError("Not supported");
   }
   
@@ -568,23 +637,24 @@ class MoneroWallet {
    * @param {string} outputsHex - outputs in hex format
    * @return {int} the number of outputs imported
    */
-  async importOutputsHex(outputsHex) {
+  async importOutputs(outputsHex) {
     throw new MoneroError("Not supported");
   }
   
   /**
-   * Get all signed key images.
+   * Export signed key images.
    * 
+   * @param {boolean} all - export all key images if true, else export the key images since the last export
    * @return {MoneroKeyImage[]} the wallet's signed key images
    */
-  async getKeyImages() {
+  async exportKeyImages(all) {
     throw new MoneroError("Not supported");
   }
   
   /**
    * Import signed key images and verify their spent status.
    * 
-   * @param {MoneroKeyImage[]} keyImages -  images to import and verify (requires hex and signature)
+   * @param {MoneroKeyImage[]} keyImages - images to import and verify (requires hex and signature)
    * @return {MoneroKeyImageImportResult} results of the import
    */
   async importKeyImages(keyImages) {
@@ -597,6 +667,34 @@ class MoneroWallet {
    * @return {MoneroKeyImage[]} the key images from the last imported outputs
    */
   async getNewKeyImagesFromLastImport() {
+    throw new MoneroError("Not supported");
+  }
+  
+  /**
+   * Freeze an output.
+   * 
+   * @param {string} keyImage - key image of the output to freeze
+   */
+  async freezeOutput(keyImage) {
+    throw new MoneroError("Not supported");
+  }
+  
+  /**
+   * Thaw a frozen output.
+   * 
+   * @param {string} keyImage - key image of the output to thaw
+   */
+  async thawOutput(keyImage) {
+    throw new MoneroError("Not supported");
+  }
+  
+  /**
+   * Check if an output is frozen.
+   * 
+   * @param {string} keyImage - key image of the output to check if frozen
+   * @return {boolean} true if the output is frozen, false otherwise
+   */
+  async isOutputFrozen(keyImage) {
     throw new MoneroError("Not supported");
   }
   
@@ -664,12 +762,13 @@ class MoneroWallet {
    * 
    * @param {MoneroTxConfig|object} config - configures the transactions to create (required)
    * @param {string} config.address - single destination address (required)
-   * @param {int} config.accountIndex - source account index to sweep from from (required)
-   * @param {int} config.subaddressIndex - source subaddress index to sweep from (optional)
+   * @param {int} config.accountIndex - source account index to sweep from (optional, defaults to all accounts)
+   * @param {int} config.subaddressIndex - source subaddress index to sweep from (optional, defaults to all subaddresses)
    * @param {int[]} config.subaddressIndices - source subaddress indices to sweep from (optional)
    * @param {boolean} config.relay - relay the transactions to peers to commit to the blockchain (default false)
    * @param {MoneroTxPriority} config.priority - transaction priority (default MoneroTxPriority.NORMAL)
    * @param {int} config.unlockHeight - minimum height for the transactions to unlock (default 0)
+   * @param {boolean} config.sweepEachSubaddress - sweep each subaddress individually if true (default false)
    * @return {MoneroTxWallet[]} the created transactions
    */
   async sweepUnlocked(config) {
@@ -709,12 +808,32 @@ class MoneroWallet {
   }
   
   /**
-   * Parse a tx set containing unsigned or multisig tx hex to a new tx set containing structured transactions.
+   * Describe a tx set from unsigned tx hex.
+   * 
+   * @param {string} unsignedTxHex - unsigned tx hex
+   * @return {MoneroTxSet} the tx set containing structured transactions
+   */
+  async describeUnsignedTxSet(unsignedTxHex) {
+    return this.describeTxSet(new MoneroTxSet().setUnsignedTxHex(unsignedTxHex));
+  }
+  
+  /**
+   * Describe a tx set from multisig tx hex.
+   * 
+   * @param {string} multisigTxHex - multisig tx hex
+   * @return {MoneroTxSet} the tx set containing structured transactions
+   */
+  async describeMultisigTxSet(multisigTxHex) {
+    return this.describeTxSet(new MoneroTxSet().setMultisigTxHex(multisigTxHex));
+  }
+  
+  /**
+   * Describe a tx set containing unsigned or multisig tx hex to a new tx set containing structured transactions.
    * 
    * @param {MoneroTxSet} txSet - a tx set containing unsigned or multisig tx hex
-   * @return {MoneroTxSet} the parsed tx set containing structured transactions
+   * @return {MoneroTxSet} the tx set containing structured transactions
    */
-  async parseTxSet(txSet) {
+  async describeTxSet(txSet) {
     throw new MoneroError("Not supported");
   }
   
@@ -741,20 +860,23 @@ class MoneroWallet {
   /**
    * Sign a message.
    * 
-   * @param {string} msg - message to sign
+   * @param {string} message - the message to sign
+   * @param {MoneroMessageSignatureType} signatureType - sign with spend key or view key (default spend key)
+   * @param {int} accountIdx - the account index of the message signature (default 0)
+   * @param {int} subaddressIdx - the subaddress index of the message signature (default 0)
    * @return {string} the signature
    */
-  async signMessage(message) {
+  async signMessage(message, signatureType, accountIdx, subaddressIdx) {
     throw new MoneroError("Not supported");
   }
   
   /**
    * Verify a signature on a message.
    * 
-   * @param {string} msg - signed message
+   * @param {string} message - signed message
    * @param {string} address - signing address
    * @param {string} signature - signature
-   * @return {boolean} true if the signature is good, false otherwise
+   * @return {MoneroMessageSignatureResult} true if the signature is good, false otherwise
    */
   async verifyMessage(message, address, signature) {
     throw new MoneroError("Not supported");
@@ -991,7 +1113,7 @@ class MoneroWallet {
    * @param {MoneroTxConfig} config - specifies configuration for a potential tx
    * @return {string} the payment uri
    */
-  async createPaymentUri(config) {
+  async getPaymentUri(config) {
     throw new MoneroError("Not supported");
   }
   
@@ -1086,7 +1208,7 @@ class MoneroWallet {
    * @param {String[]} multisigHexes - multisig hex from each participant
    * @param {int} threshold - number of signatures needed to sign transfers
    * @param {string} password - wallet password
-   * @return {MoneroMultisigInitResult} the result which has the multisig's address xor this wallet's multisig hex to share with participants iff not N/N
+   * @return {string} this wallet's multisig hex to share with participants
    */
   async makeMultisig(multisigHexes, threshold, password) {
     throw new MoneroError("Not supported");
@@ -1098,7 +1220,7 @@ class MoneroWallet {
    * This process must be repeated with participants exactly N-M times.
    * 
    * @param {string[]} multisigHexes are multisig hex from each participant
-   * @param {string} password - wallet's password // TODO monero core: redundant? wallet is created with password
+   * @param {string} password - wallet's password // TODO monero-project: redundant? wallet is created with password
    * @return {MoneroMultisigInitResult} the result which has the multisig's address xor this wallet's multisig hex to share with participants iff not done
    */
   async exchangeMultisigKeys(multisigHexes, password) {
@@ -1110,8 +1232,8 @@ class MoneroWallet {
    * 
    * @return {string} this wallet's multisig info as hex for other participants
    */
-  async getMultisigHex() {
-    throw new MoneroError("Not supported");
+  async exportMultisigHex() {
+    throw new MoneroError("Not supported?");
   }
   
   /**
@@ -1143,7 +1265,17 @@ class MoneroWallet {
   async submitMultisigTxHex(signedMultisigTxHex) {
     throw new MoneroError("Not supported");
   }
-
+  
+  /**
+   * Change the wallet password.
+   * 
+   * @param {string} oldPassword - the wallet's old password
+   * @param {string} newPassword - the wallet's new password
+   */
+  async changePassword(oldPassword, newPassword) {
+    throw new MoneroError("Not supported");
+  }
+  
   /**
    * Save the wallet at its current path.
    */
@@ -1179,6 +1311,8 @@ class MoneroWallet {
       query = new MoneroTxQuery(query);
     }
     if (query.getBlock() === undefined) query.setBlock(new MoneroBlock().setTxs([query]));
+    if (query.getInputQuery()) query.getInputQuery().setTxQuery(query);
+    if (query.getOutputQuery()) query.getOutputQuery().setTxQuery(query);
     return query;
   }
   

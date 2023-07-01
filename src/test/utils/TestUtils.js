@@ -7,6 +7,7 @@ const MoneroRpcError = monerojs.MoneroRpcError;
 const MoneroRpcConnection = monerojs.MoneroRpcConnection;
 const BigInteger = monerojs.BigInteger;
 const MoneroNetworkType = monerojs.MoneroNetworkType;
+const MoneroWalletRpc = monerojs.MoneroWalletRpc;
 
 /**
  * Collection of test utilities and configurations.
@@ -31,16 +32,19 @@ class TestUtils {
    * @return {MoneroDaemonRpc} a daemon RPC instance
    */
   static async getDaemonRpc() {
-    if (TestUtils.daemonRpc === undefined) TestUtils.daemonRpc = monerojs.connectToDaemonRpc(Object.assign({proxyToWorker: TestUtils.PROXY_TO_WORKER}, TestUtils.DAEMON_RPC_CONFIG));
+    if (TestUtils.daemonRpc === undefined) TestUtils.daemonRpc = await monerojs.connectToDaemonRpc(Object.assign({proxyToWorker: TestUtils.PROXY_TO_WORKER}, TestUtils.DAEMON_RPC_CONFIG));
     return TestUtils.daemonRpc;
   }
   
+  /**
+   * Get a singleton instance of a monero-daemon-rpc client.
+   */
   static getDaemonRpcConnection() {
     return new MoneroRpcConnection(TestUtils.DAEMON_RPC_CONFIG);
   }
   
   /**
-   * Get a singleton wallet RPC instance shared among tests.
+   * Get a singleton instance of a monero-wallet-rpc client.
    * 
    * @return {MoneroWalletRpc} a wallet RPC instance
    */
@@ -48,7 +52,7 @@ class TestUtils {
     if (TestUtils.walletRpc === undefined) {
       
       // construct wallet rpc instance with daemon connection
-      TestUtils.walletRpc = monerojs.connectToWalletRpc(TestUtils.WALLET_RPC_CONFIG);
+      TestUtils.walletRpc = await monerojs.connectToWalletRpc(TestUtils.WALLET_RPC_CONFIG);
     }
     
     // attempt to open test wallet
@@ -75,21 +79,89 @@ class TestUtils {
     await TestUtils.walletRpc.sync();
     await TestUtils.walletRpc.save();
     
+    // start background synchronizing with sync rate
+    await TestUtils.walletRpc.startSyncing(TestUtils.SYNC_PERIOD_IN_MS);
+    
     // return cached wallet rpc
     return TestUtils.walletRpc;
   }
   
   /**
-   * Get a singleton wallet WASM instance shared among tests.
-   * 
-   * @return {MoneroWalletWasm} a wasm wallet instance
+   * Create a monero-wallet-rpc process bound to the next available port.
+   *
+   * @return {Promise<MoneroWalletRpc>} - client connected to an internal monero-wallet-rpc instance
    */
-  static async getWalletWasm() {
-    if (!TestUtils.walletWasm || await TestUtils.walletWasm.isClosed()) {
+  static async startWalletRpcProcess() {
+    
+    // get next available offset of ports to bind to
+    let portOffset = 1;
+    while (Object.keys(TestUtils.WALLET_PORT_OFFSETS).includes("" + portOffset)) portOffset++;
+    TestUtils.WALLET_PORT_OFFSETS[portOffset] = undefined; // reserve port
+    
+    // create or connect to monero-wallet-rpc process
+    let wallet;
+    if (GenUtils.isBrowser()) {
+      let uri = TestUtils.WALLET_RPC_CONFIG.uri.substring(0, TestUtils.WALLET_RPC_CONFIG.uri.lastIndexOf(":")) + ":" + (TestUtils.WALLET_RPC_PORT_START + portOffset);
+      wallet = await monerojs.connectToWalletRpc(uri, TestUtils.WALLET_RPC_CONFIG.username, TestUtils.WALLET_RPC_CONFIG.password);
+    } else {
+        
+      // create command to start client with internal monero-wallet-rpc process
+      let cmd = [
+          TestUtils.WALLET_RPC_LOCAL_PATH,
+          "--" + MoneroNetworkType.toString(TestUtils.NETWORK_TYPE),
+          "--daemon-address", TestUtils.DAEMON_RPC_CONFIG.uri,
+          "--rpc-bind-port", "" + (TestUtils.WALLET_RPC_PORT_START + portOffset),
+          "--rpc-login", TestUtils.WALLET_RPC_CONFIG.username + ":" + TestUtils.WALLET_RPC_CONFIG.password,
+          "--wallet-dir", TestUtils.WALLET_RPC_LOCAL_WALLET_DIR,
+          "--rpc-access-control-origins", TestUtils.WALLET_RPC_ACCESS_CONTROL_ORIGINS
+      ];
+      if (TestUtils.DAEMON_RPC_CONFIG.username) cmd.push("--daemon-login", TestUtils.DAEMON_RPC_CONFIG.username + ":" + TestUtils.DAEMON_RPC_CONFIG.password);
+      
+      // TODO: include zmq params when supported and enabled
+      
+      // create and connect to monero-wallet-rpc process
+      wallet = await monerojs.connectToWalletRpc(cmd);
+    }
+    
+    // register wallet with port offset
+    TestUtils.WALLET_PORT_OFFSETS[portOffset] = wallet;
+    return wallet;
+  }
+  
+  /**
+   * Stop a monero-wallet-rpc process and release its port.
+   * 
+   * @param {MoneroWalletRpc} walletRpc - wallet created with internal monero-wallet-rpc process
+   */
+  static async stopWalletRpcProcess(walletRpc) {
+    assert(walletRpc instanceof MoneroWalletRpc, "Must provide instance of MoneroWalletRpc to close");
+    
+    // get corresponding port
+    let portOffset;
+    for (const [key, value] of Object.entries(TestUtils.WALLET_PORT_OFFSETS)) {
+      if (value === walletRpc) {
+        portOffset = key;
+        break;
+      }
+    }
+    if (portOffset === undefined) throw new Error("Wallet not registered");
+    
+    // unregister wallet with port offset
+    delete TestUtils.WALLET_PORT_OFFSETS[portOffset];
+    if (!GenUtils.isBrowser()) await walletRpc.stopProcess();
+  }
+  
+  /**
+   * Get a singleton instance of a wallet supported by WebAssembly bindings to monero-project's wallet2.
+   * 
+   * @return {MoneroWalletFull} a full wallet instance
+   */
+  static async getWalletFull() {
+    if (!TestUtils.walletFull || await TestUtils.walletFull.isClosed()) {
       
       // create wallet from mnemonic phrase if it doesn't exist
       let fs = TestUtils.getDefaultFs();
-      if (!await monerojs.MoneroWalletWasm.walletExists(TestUtils.WALLET_WASM_PATH, fs)) {
+      if (!await monerojs.MoneroWalletFull.walletExists(TestUtils.WALLET_FULL_PATH, fs)) {
         
         // create directory for test wallets if it doesn't exist
         if (!fs.existsSync(TestUtils.TEST_WALLETS_DIR)) {
@@ -98,25 +170,25 @@ class TestUtils {
         }
         
         // create wallet with connection
-        TestUtils.walletWasm = await monerojs.createWalletWasm({path: TestUtils.WALLET_WASM_PATH, password: TestUtils.WALLET_PASSWORD, networkType: TestUtils.NETWORK_TYPE, mnemonic: TestUtils.MNEMONIC, server: TestUtils.getDaemonRpcConnection(), restoreHeight: TestUtils.FIRST_RECEIVE_HEIGHT, proxyToWorker: TestUtils.PROXY_TO_WORKER, fs: fs});
-        assert.equal(await TestUtils.walletWasm.getSyncHeight(), TestUtils.FIRST_RECEIVE_HEIGHT);
-        await TestUtils.walletWasm.sync(new WalletSyncPrinter());
-        await TestUtils.walletWasm.save();
-        await TestUtils.walletWasm.startSyncing();
+        TestUtils.walletFull = await monerojs.createWalletFull({path: TestUtils.WALLET_FULL_PATH, password: TestUtils.WALLET_PASSWORD, networkType: TestUtils.NETWORK_TYPE, mnemonic: TestUtils.MNEMONIC, server: TestUtils.getDaemonRpcConnection(), restoreHeight: TestUtils.FIRST_RECEIVE_HEIGHT, proxyToWorker: TestUtils.PROXY_TO_WORKER, fs: fs});
+        assert.equal(await TestUtils.walletFull.getSyncHeight(), TestUtils.FIRST_RECEIVE_HEIGHT);
+        await TestUtils.walletFull.sync(new WalletSyncPrinter());
+        await TestUtils.walletFull.save();
+        await TestUtils.walletFull.startSyncing(TestUtils.SYNC_PERIOD_IN_MS);
       }
       
       // otherwise open existing wallet
       else {
-        TestUtils.walletWasm = await monerojs.openWalletWasm({path: TestUtils.WALLET_WASM_PATH, password: TestUtils.WALLET_PASSWORD, networkType: TestUtils.NETWORK_TYPE, server: TestUtils.getDaemonRpcConnection(), proxyToWorker: TestUtils.PROXY_TO_WORKER, fs: TestUtils.getDefaultFs()});
-        await TestUtils.walletWasm.sync(new WalletSyncPrinter());
-        await TestUtils.walletWasm.startSyncing();
+        TestUtils.walletFull = await monerojs.openWalletFull({path: TestUtils.WALLET_FULL_PATH, password: TestUtils.WALLET_PASSWORD, networkType: TestUtils.NETWORK_TYPE, server: TestUtils.getDaemonRpcConnection(), proxyToWorker: TestUtils.PROXY_TO_WORKER, fs: TestUtils.getDefaultFs()});
+        await TestUtils.walletFull.sync(new WalletSyncPrinter());
+        await TestUtils.walletFull.startSyncing(TestUtils.SYNC_PERIOD_IN_MS);
       }
     }
     
     // ensure we're testing the right wallet
-    assert.equal(await TestUtils.walletWasm.getMnemonic(), TestUtils.MNEMONIC);
-    assert.equal(await TestUtils.walletWasm.getPrimaryAddress(), TestUtils.ADDRESS);
-    return TestUtils.walletWasm;
+    assert.equal(await TestUtils.walletFull.getMnemonic(), TestUtils.MNEMONIC);
+    assert.equal(await TestUtils.walletFull.getPrimaryAddress(), TestUtils.ADDRESS);
+    return TestUtils.walletFull;
   }
   
   /**
@@ -144,7 +216,7 @@ class TestUtils {
   
   static async getExternalWalletAddress() {
     let wallet = await monerojs.createWalletKeys({networkType: TestUtils.NETWORK_TYPE});
-    return await wallet.getPrimaryAddress();
+    return await wallet.getAddress(0, 1); // subaddress
   }
   
   static txsMergeable(tx1, tx2) {
@@ -166,19 +238,22 @@ class TestUtils {
 
 // TODO: export these to key/value properties file for tests
 
+// directory with monero binaries to test (monerod and monero-wallet-rpc)
+TestUtils.MONERO_BINS_DIR = "/path/to/bins";
+
 // test wallet config
 TestUtils.WALLET_NAME = "test_wallet_1";
 TestUtils.WALLET_PASSWORD = "supersecretpassword123";
 TestUtils.TEST_WALLETS_DIR = "./test_wallets";
-TestUtils.WALLET_WASM_PATH = TestUtils.TEST_WALLETS_DIR + "/" + TestUtils.WALLET_NAME;
+TestUtils.WALLET_FULL_PATH = TestUtils.TEST_WALLETS_DIR + "/" + TestUtils.WALLET_NAME;
 
 TestUtils.MAX_FEE = new BigInteger("7500000").multiply(new BigInteger("10000"));
-TestUtils.NETWORK_TYPE = MoneroNetworkType.STAGENET;
+TestUtils.NETWORK_TYPE = MoneroNetworkType.TESTNET;
 
 // default keypair to test
-TestUtils.MNEMONIC = "niece cube almost phase zeal ultimate pyramid tapestry hickory bulb bifocals festival always wayside sphere kept upwards wagtail invoke radar pager flippant sensible stunning kept";
-TestUtils.ADDRESS = "59dF9pSotECe1Fn4dBGZXWHYyNdo53rbZ7YYseu9jBKCf4c2cUzhuFVRH8HuD4wyaKTqtD3VF3F4eQe3Kzq342F5U8R4jeq";
-TestUtils.FIRST_RECEIVE_HEIGHT = 437;   // NOTE: this value MUST be the height of the wallet's first tx for tests
+TestUtils.MNEMONIC = "silk mocked cucumber lettuce hope adrenalin aching lush roles fuel revamp baptism wrist long tender teardrop midst pastry pigment equip frying inbound pinched ravine frying";
+TestUtils.ADDRESS = "A1y9sbVt8nqhZAVm3me1U18rUVXcjeNKuBd1oE2cTs8biA9cozPMeyYLhe77nPv12JA3ejJN3qprmREriit2fi6tJDi99RR";
+TestUtils.FIRST_RECEIVE_HEIGHT = 324; // NOTE: this value must be the height of the wallet's first tx for tests
 
 // wallet RPC config
 TestUtils.WALLET_RPC_CONFIG = {
@@ -188,7 +263,8 @@ TestUtils.WALLET_RPC_CONFIG = {
   rejectUnauthorized: true // reject self-signed certificates if true
 };
 
-// daemon RPC config
+// daemon config
+TestUtils.DAEMON_LOCAL_PATH = TestUtils.MONERO_BINS_DIR + "/monerod";
 TestUtils.DAEMON_RPC_CONFIG = {
   uri: "http://localhost:37750",
   username: "super",
@@ -196,15 +272,16 @@ TestUtils.DAEMON_RPC_CONFIG = {
  // rejectUnauthorized: true // reject self-signed certificates if true
 };
 
-//TestUtils.DAEMON_RPC_CONFIG = {
-//uri: "http://node.xmrbackb.one:28081",
-////username: "superuser",
-////password: "abctesting123",
-//maxRequestsPerSecond: 1
-//};
+const WalletTxTracker = require("./WalletTxTracker");
+TestUtils.WALLET_TX_TRACKER = new WalletTxTracker(); // used to track wallet txs for tests
+TestUtils.PROXY_TO_WORKER = true;
+TestUtils.SYNC_PERIOD_IN_MS = 5000; // period between wallet syncs in milliseconds
 
-const TxPoolWalletTracker = require("./TxPoolWalletTracker");
-TestUtils.TX_POOL_WALLET_TRACKER = new TxPoolWalletTracker(); // used to track which wallets are in sync with pool so associated txs in the pool do not need to be waited on
-TestUtils.PROXY_TO_WORKER = undefined;  // default to true if browser, false otherwise
+// monero-wallet-rpc process management
+TestUtils.WALLET_RPC_PORT_START = 28084;
+TestUtils.WALLET_PORT_OFFSETS = {};
+TestUtils.WALLET_RPC_LOCAL_PATH = TestUtils.MONERO_BINS_DIR + "/monero-wallet-rpc";
+TestUtils.WALLET_RPC_LOCAL_WALLET_DIR = TestUtils.MONERO_BINS_DIR;
+TestUtils.WALLET_RPC_ACCESS_CONTROL_ORIGINS = "http://localhost:8080"; // cors access from web browser
 
 module.exports = TestUtils;

@@ -1,9 +1,11 @@
+const assert = require("assert");
 const TestUtils = require("./utils/TestUtils");
 const WalletEqualityUtils = require("./utils/WalletEqualityUtils");
 const TestMoneroWalletCommon = require("./TestMoneroWalletCommon");
 const monerojs = require("../../index");
 const MoneroWalletConfig = monerojs.MoneroWalletConfig;
 const GenUtils = monerojs.GenUtils;
+const MoneroUtils = monerojs.MoneroUtils;
 
 /**
  * Tests the implementation of MoneroWallet which only manages keys using WebAssembly.
@@ -14,12 +16,29 @@ class TestMoneroWalletKeys extends TestMoneroWalletCommon {
     super(config);
   }
   
+  async beforeAll(currentTest) {
+    await super.beforeAll(currentTest);
+  }
+  
+  async beforeEach(currentTest) {
+    await super.beforeEach(currentTest);
+  }
+  
+  async afterAll() {
+    console.log("After all");
+    await this.wallet.close();
+  }
+  
+  async afterEach(currentTest) {
+    await super.afterEach(currentTest);
+  }
+  
   async getTestWallet() {
     return TestUtils.getWalletKeys();
   }
   
   async getTestDaemon() {
-    throw new Error("TestMoneroWalletKeys.getTestDaemon() not applicable");
+    return await TestUtils.getDaemonRpc();
   }
   
   async openWallet(config) {
@@ -37,6 +56,10 @@ class TestMoneroWalletKeys extends TestMoneroWalletCommon {
     // create wallet
     return await monerojs.createWalletKeys(config);
   }
+  
+  async closeWallet(wallet, save) {
+    await wallet.close(save);
+  }
 
   async getMnemonicLanguages() {
     return await monerojs.MoneroWalletKeys.getMnemonicLanguages();
@@ -46,10 +69,11 @@ class TestMoneroWalletKeys extends TestMoneroWalletCommon {
     let that = this;
     describe("TEST MONERO WALLET KEYS", function() {
       
-      // initialize wallet
-      before(async function() {
-        that.wallet = await that.getTestWallet();
-      });
+      // register handlers to run before and after tests
+      before(async function() { await that.beforeAll(); });
+      beforeEach(async function() { await that.beforeEach(this.currentTest); });
+      after(async function() { await that.afterAll(); });
+      afterEach(async function() { await that.afterEach(this.currentTest); });
       
       // run tests specific to keys wallet
       that._testWalletKeys();
@@ -90,6 +114,14 @@ class TestMoneroWalletKeys extends TestMoneroWalletCommon {
         
         // deep compare
         await WalletEqualityUtils.testWalletEqualityKeys(walletRpc, walletKeys);
+      });
+      
+      it("Can get the address of a specified account and subaddress index", async function() {
+        for (let accountIdx= 0; accountIdx < 5; accountIdx++) {
+          for (let subaddressIdx = 0; subaddressIdx < 5; subaddressIdx++) {
+            await MoneroUtils.validateAddress(await that.wallet.getAddress(accountIdx, subaddressIdx), TestUtils.NETWORK_TYPE);
+          }
+        }
       });
     });
   }

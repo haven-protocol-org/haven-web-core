@@ -429,21 +429,15 @@ class MoneroTx {
     assert(tx instanceof MoneroTx);
     if (this === tx) return this;
     
-    // merge blocks if they're different which comes back to merging txs
-    const MoneroBlock = require("./MoneroBlock");
+    // merge blocks if they're different
     if (this.getBlock() !== tx.getBlock()) {
       if (this.getBlock() === undefined) {
-        this.setBlock(new MoneroBlock());
-        this.getBlock().setTxs([this]);
-        this.getBlock().setHeight(tx.getHeight());
+        this.setBlock(tx.getBlock());
+        this.getBlock().getTxs[this.getBlock().getTxs().indexOf(tx)] = this; // update block to point to this tx
+      } else if (tx.getBlock() !== undefined) {
+        this.getBlock().merge(tx.getBlock()); // comes back to merging txs
+        return this;
       }
-      if (tx.getBlock() === undefined) {
-        tx.setBlock(new MoneroBlock());
-        tx.getBlock().setTxs([tx]);
-        tx.getBlock().setHeight(this.getHeight());
-      }
-      this.getBlock().merge(tx.getBlock());
-      return this;
     }
     
     // otherwise merge tx fields
@@ -452,11 +446,11 @@ class MoneroTx {
     this.setPaymentId(GenUtils.reconcile(this.getPaymentId(), tx.getPaymentId()));
     this.setFee(GenUtils.reconcile(this.getFee(), tx.getFee()));
     this.setRingSize(GenUtils.reconcile(this.getRingSize(), tx.getRingSize()));
-    this.setIsConfirmed(GenUtils.reconcile(this.isConfirmed(), tx.isConfirmed(), {resolveTrue: true}));
+    this.setIsConfirmed(GenUtils.reconcile(this.isConfirmed(), tx.isConfirmed(), {resolveTrue: true})); // tx can become confirmed
     this.setIsMinerTx(GenUtils.reconcile(this.isMinerTx(), tx.isMinerTx(), null, null, null));
     this.setRelay(GenUtils.reconcile(this.getRelay(), tx.getRelay(), {resolveTrue: true}));       // tx can become relayed
     this.setIsRelayed(GenUtils.reconcile(this.isRelayed(), tx.isRelayed(), {resolveTrue: true})); // tx can become relayed
-    this.setIsDoubleSpend(GenUtils.reconcile(this.isDoubleSpendSeen(), tx.isDoubleSpendSeen()));
+    this.setIsDoubleSpend(GenUtils.reconcile(this.isDoubleSpendSeen(), tx.isDoubleSpendSeen(), {resolveTrue: true})); // double spend can become seen
     this.setKey(GenUtils.reconcile(this.getKey(), tx.getKey()));
     this.setFullHex(GenUtils.reconcile(this.getFullHex(), tx.getFullHex()));
     this.setPrunedHex(GenUtils.reconcile(this.getPrunedHex(), tx.getPrunedHex()));

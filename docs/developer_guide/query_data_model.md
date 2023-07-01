@@ -99,12 +99,22 @@ let outputs = await wallet.getOutputs({
 ```
 
 ```javascript
+// get outputs by amount
+outputs = await wallet.getOutputs({
+  amount: "250000000000"
+});
+```
+
+```javascript
 // get outputs received to a specific subaddress
 let outputs = await wallet.getOutputs({
   accountIndex: 0,
   subaddressIndex: 1
 });
+```
 
+```javascript
+// get outputs by their key image hex
 let keyImage = outputs[0].getKeyImage().getHex();
 outputs = await wallet.getOutputs({
   keyImage: keyImage

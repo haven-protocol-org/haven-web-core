@@ -154,6 +154,25 @@ class MoneroTxWallet extends MoneroTx {
     return this;
   }
   
+  getInputs(outputQuery) {
+    if (!outputQuery || !super.getInputs()) return super.getInputs();
+    let inputs = [];
+    for (let output of super.getInputs()) if (!outputQuery || outputQuery.meetsCriteria(output)) inputs.push(output);
+    return inputs;
+  }
+  
+  setInputs(inputs) {
+    
+    // validate that all inputs are wallet inputs
+    if (inputs) {
+      for (let output of inputs) {
+        if (!(output instanceof MoneroOutputWallet)) throw new MoneroError("Wallet transaction inputs must be of type MoneroOutputWallet");
+      }
+    }
+    super.setInputs(inputs);
+    return this;
+  }
+  
   getOutputs(outputQuery) {
     if (!outputQuery || !super.getOutputs()) return super.getOutputs();
     let outputs = [];
@@ -323,7 +342,7 @@ class MoneroTxWallet extends MoneroTx {
     this.setIsIncoming(GenUtils.reconcile(this.isIncoming(), tx.isIncoming()));
     this.setIsOutgoing(GenUtils.reconcile(this.isOutgoing(), tx.isOutgoing()));
     this.setNote(GenUtils.reconcile(this.getNote(), tx.getNote()));
-    this.setIsLocked(GenUtils.reconcile(this.isLocked(), tx.isLocked()));
+    this.setIsLocked(GenUtils.reconcile(this.isLocked(), tx.isLocked(), {resolveTrue: false})); // tx can become unlocked
     this.setInputSum(GenUtils.reconcile(this.getInputSum(), tx.getInputSum()));
     this.setOutputSum(GenUtils.reconcile(this.getOutputSum(), tx.getOutputSum()));
     this.setChangeAddress(GenUtils.reconcile(this.getChangeAddress(), tx.getChangeAddress()));

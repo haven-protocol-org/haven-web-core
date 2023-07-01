@@ -1,8 +1,7 @@
 #!/bin/bash
 
-#source "$(realpath $(dirname $0))/emsdk_inc.sh"
-source "$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )/emsdk_inc.sh"
-[ -f $(dirname $0)/colors.sh ] && source $(dirname $0)/colors.sh
+. $(dirname $0)/emsdk_inc.sh
+[ -f $(dirname $0)/colors.sh ] && . $(dirname $0)/colors.sh
 
 PLATFORM="emscripten"
 
@@ -66,7 +65,7 @@ fi
 
 cd "$SRC_PATH"
 
-emcmake perl ./Configure \
+perl ./Configure \
 	linux-generic32 \
 	-no-asm no-ssl2 no-ssl3 no-comp no-engine no-deprecated no-tests no-dso no-shared no-threads disable-shared \
 	--prefix="$INSTALL_PATH" \

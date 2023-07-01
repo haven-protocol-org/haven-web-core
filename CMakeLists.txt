@@ -13,6 +13,9 @@ set(BUILD_HAVEN_OFFSHORE_WASM ON)
 set(BUILD_HAVEN_OFFSHORE_KEYS_WASM OFF)
 
 
+#SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++14 -Oz -s EXCEPTION_CATCHING_ALLOWED='[${WASM_EXCEPTION_WHITELIST}]'")
+#add_definitions(-DAUTO_INITIALIZE_EASYLOGGINGPP -DNO_AES)
+
 
 ##############
 # C++ bridge
@@ -68,8 +71,11 @@ include_directories("${HAVEN_OFFSHORE}/contrib/epee/include/net")
 
 if (CMAKE_HOST_APPLE)
     include_directories("${HAVEN_OFFSHORE}/build/Darwin/develop/release/translations")
+    include_directories("${HAVEN_OFFSHORE}/build/Darwin/develop/release/generated_include")
 else()
     include_directories("${HAVEN_OFFSHORE}/build/release/translations")
+    include_directories("${HAVEN_OFFSHORE}/build/release/generated_include")
+
 endif()
 
 #############
@@ -167,6 +173,7 @@ set(
     ${HAVEN_OFFSHORE_SRC}/cryptonote_basic/cryptonote_basic_impl.cpp
     ${HAVEN_OFFSHORE_SRC}/cryptonote_basic/account.cpp
     ${HAVEN_OFFSHORE_SRC}/cryptonote_basic/cryptonote_format_utils.cpp
+    ${HAVEN_OFFSHORE_SRC}/cryptonote_basic/cryptonote_format_utils_basic.cpp
     ${HAVEN_OFFSHORE_SRC}/crypto//cn_slow_hash_soft.cpp
     ${HAVEN_OFFSHORE_SRC}/crypto/cn_slow_hash_hard_intel.cpp
     ${HAVEN_OFFSHORE_SRC}/crypto/crypto.cpp
@@ -189,27 +196,38 @@ set(
     ${HAVEN_OFFSHORE_SRC}/crypto/jh.c
     ${HAVEN_OFFSHORE_SRC}/crypto/skein.c
     ${HAVEN_OFFSHORE_SRC}/cryptonote_core/cryptonote_tx_utils.cpp
+    ${HAVEN_OFFSHORE}/contrib/epee/src/byte_stream.cpp
+    ${HAVEN_OFFSHORE}/contrib/epee/src/byte_slice.cpp
     ${HAVEN_OFFSHORE}/contrib/epee/src/hex.cpp
     ${HAVEN_OFFSHORE}/contrib/epee/src/string_tools.cpp
     ${HAVEN_OFFSHORE}/contrib/epee/src/memwipe.c
     ${HAVEN_OFFSHORE}/contrib/epee/src/mlocker.cpp
     ${HAVEN_OFFSHORE}/contrib/epee/src/wipeable_string.cpp
+    ${HAVEN_OFFSHORE}/contrib/epee/src/portable_storage.cpp
+    ${HAVEN_OFFSHORE}/contrib/epee/src/net_parse_helpers.cpp
+    ${HAVEN_OFFSHORE}/contrib/epee/src/parserse_base_utils.cpp
     ${HAVEN_OFFSHORE_SRC}/common/base58.cpp
     ${HAVEN_OFFSHORE_SRC}/device/device.cpp
     ${HAVEN_OFFSHORE_SRC}/device/device_default.cpp
     ${HAVEN_OFFSHORE_SRC}/multisig/multisig.cpp
+    ${HAVEN_OFFSHORE_SRC}/multisig/multisig_account.cpp
+    ${HAVEN_OFFSHORE_SRC}/multisig/multisig_account_kex_impl.cpp
+    ${HAVEN_OFFSHORE_SRC}/multisig/multisig_clsag_context.cpp
+    ${HAVEN_OFFSHORE_SRC}/multisig/multisig_kex_msg.cpp
+    ${HAVEN_OFFSHORE_SRC}/multisig/multisig_tx_builder_ringct.cpp
     ${HAVEN_OFFSHORE_SRC}/ringct/rctOps.cpp
     ${HAVEN_OFFSHORE_SRC}/ringct/rctTypes.cpp
     ${HAVEN_OFFSHORE_SRC}/ringct/rctCryptoOps.c
     ${HAVEN_OFFSHORE_SRC}/ringct/rctSigs.cpp
     ${HAVEN_OFFSHORE_SRC}/ringct/bulletproofs.cc
+    ${HAVEN_OFFSHORE_SRC}/ringct/bulletproofs_plus.cc
     ${HAVEN_OFFSHORE_SRC}/ringct/multiexp.cc
     ${HAVEN_OFFSHORE_SRC}/mnemonics/electrum-words.cpp
     ${HAVEN_OFFSHORE}/external/easylogging++/easylogging++.cc
 )
 
 ################################
-# Core wallet source files
+# Full wallet source files
 ################################
 
 set(
@@ -219,7 +237,7 @@ set(
     src/main/cpp/http_client_wasm.cpp
     
     # haven-web-cpp (modified for WASM)
-    ${HAVEN_CPP_SRC}/wallet/monero_wallet_core.cpp
+    ${HAVEN_CPP_SRC}/wallet/monero_wallet_full.cpp
     
     # monero-project (modified for WASM)
     ${HAVEN_OFFSHORE}/external/db_drivers/liblmdb/mdb.c
@@ -268,7 +286,7 @@ EMCC_LINKER_FLAGS_BASE
 # unsure if the -I...boost..include is necessary here due to include above
 # TODO? does EXPORT_NAME need to be the same for both targets? (or should it be set per-target with …_WASM, …_ASMJS?)
 
-"-Wall -Werror -std=c++11 -Oz \
+"-Wall -Werror -Wl,--allow-undefined -std=c++11 -Oz \
 --bind -s MODULARIZE=1 \
 -s 'EXPORT_NAME=\"haven_javascript\"' \
 -s ERROR_ON_UNDEFINED_SYMBOLS=0 \
@@ -281,6 +299,7 @@ EMCC_LINKER_FLAGS_BASE
 -s NODEJS_CATCH_EXIT=0 \
 -s RESERVED_FUNCTION_POINTERS=5 \
 -s EXPORTED_RUNTIME_METHODS='[\"UTF8ToString\",\"stringToUTF8\",\"lengthBytesUTF8\",\"intArrayToString\",\"makeBigInt\",\"getTempRet0\",\"addFunction\"]' \
+#-s EXPORTED_RUNTIME_METHODS='[\"UTF8ToString\",\"stringToUTF8\",\"lengthBytesUTF8\",\"intArrayToString\",\"getTempRet0\",\"addFunction\"]' \
 -s WASM=1 \
 -s ALLOW_MEMORY_GROWTH=1 \
 -g0 \ "
@@ -294,21 +313,21 @@ EMCC_LINKER_FLAGS_BASE
 )
 
 set(
-EMCC_LINKER_FLAGS_CORE_KEYS
+EMCC_LINKER_FLAGS_KEYS
 "${EMCC_LINKER_FLAGS_BASE} \
 "
 )
 
 set(
-EMCC_LINKER_FLAGS_CORE
+EMCC_LINKER_FLAGS_FULL
 "${EMCC_LINKER_FLAGS_BASE} \
 -s ASYNCIFY=1 \
 -s 'ASYNCIFY_IMPORTS=[\"js_send_json_request\",\"js_send_binary_request\",\"emscripten_sleep\"]' \
 "
 )
 
-message(STATUS "EMCC_LINKER_FLAGS_CORE_KEYS ${EMCC_LINKER_FLAGS_CORE_KEYS}")
-message(STATUS "EMCC_LINKER_FLAGS_CORE ${EMCC_LINKER_FLAGS_CORE}")
+message(STATUS "EMCC_LINKER_FLAGS_KEYS ${EMCC_LINKER_FLAGS_KEYS}")
+message(STATUS "EMCC_LINKER_FLAGS_FULL ${EMCC_LINKER_FLAGS_FULL}")
 
 ####################
 # Build targets
@@ -316,7 +335,7 @@ message(STATUS "EMCC_LINKER_FLAGS_CORE ${EMCC_LINKER_FLAGS_CORE}")
 
 if (BUILD_HAVEN_OFFSHORE_KEYS_WASM)
 	add_executable(haven_offshore_keys ${HAVEN_OFFSHORE_KEYS_SRC_FILES})
-	set_target_properties(haven_offshore_keys PROPERTIES LINK_FLAGS "${EMCC_LINKER_FLAGS_CORE_KEYS}")
+	set_target_properties(haven_offshore_keys PROPERTIES LINK_FLAGS "${EMCC_LINKER_FLAGS_KEYS}")
 	target_link_libraries(
 	    haven_offshore_keys
 	    #
@@ -330,8 +349,8 @@ endif()
 
 if (BUILD_HAVEN_OFFSHORE_WASM)
 	add_executable($ENV{HAVEN_OFFSHORE_NAME} ${HAVEN_OFFSHORE_SRC_FILES} ${HAVEN_OFFSHORE_KEYS_SRC_FILES})
-	set_target_properties($ENV{HAVEN_OFFSHORE_NAME}  PROPERTIES LINK_FLAGS "${EMCC_LINKER_FLAGS_CORE}")
-	target_compile_definitions($ENV{HAVEN_OFFSHORE_NAME}  PRIVATE BUILD_CORE_WALLET=1)
+	set_target_properties($ENV{HAVEN_OFFSHORE_NAME}  PROPERTIES LINK_FLAGS "${EMCC_LINKER_FLAGS_FULL}")
+	target_compile_definitions($ENV{HAVEN_OFFSHORE_NAME}  PRIVATE BUILD_WALLET_FULL=1)
 	target_link_libraries(
 	    $ENV{HAVEN_OFFSHORE_NAME} 
 	    #
