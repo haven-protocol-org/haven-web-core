@@ -18,13 +18,14 @@
 cd ./external/haven-web-cpp/external/haven || exit 1
 git checkout monero-v0.18.1.2
 git pull
-mkdir -p build/release
-cd build/release
-cmake ../..
-make obj_common -j3
+make release-static -j4
+# mkdir -p build/release
+# cd build/release
+# cmake ../..
+# make obj_common -j3
 # HOST_NCORES=$(nproc 2>/dev/null || shell nproc 2>/dev/null || sysctl -n hw.ncpu 2>/dev/null || echo 1)
 #./build-haven.sh -j3		# don't exit because this will build translations directory even if build fails
-cd ../../../../../../ || exit 1
+cd ../../../../ || exit 1
 
 # build boost
 ./bin/build_boost_emscripten.sh || exit 1
