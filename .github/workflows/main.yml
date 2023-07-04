@@ -56,7 +56,7 @@ jobs:
         cd expat-2.4.8
         ./configure --enable-static --disable-shared
         make
-        make install
+        sudo make install
     - name: Install unbound
       run: |
         cd ~/
@@ -65,7 +65,7 @@ jobs:
         cd unbound-1.17.0
         ./configure --with-libexpat=/usr --with-ssl=/usr
         make
-        make install
+        sudo make install
     - name: build haven web libs
       run: |
         export EMSCRIPTEN=$PWD/emsdk/upstream/emscripten
