@@ -27,8 +27,8 @@ jobs:
         git clone https://github.com/emscripten-core/emsdk.git
         cd emsdk
         git pull
-        ./emsdk install 2.0.31
-        ./emsdk activate 2.0.31
+        ./emsdk install 3.1.10
+        ./emsdk activate 3.1.10
 
     - name: Install Haven dependencies
       run: |
@@ -49,6 +49,23 @@ jobs:
         git clone https://github.com/zeromq/cppzmq.git -b ${CPPZMQ_VERSION}
         cd cppzmq
         sudo mv *.hpp /usr/local/include
+    - name: Install expat
+      run: |
+        wget https://github.com/libexpat/libexpat/releases/download/R_2_4_8/expat-2.4.8.tar.bz2
+        tar -xf expat-2.4.8.tar.bz2
+        cd expat-2.4.8
+        ./configure --enable-static --disable-shared
+        make
+        make install
+    - name: Install unbound
+      run: |
+        cd ~/
+        wget https://www.nlnetlabs.nl/downloads/unbound/unbound-1.17.0.tar.gz
+        tar xzf unbound-1.17.0.tar.gz
+        cd unbound-1.17.0
+        ./configure --with-libexpat=/usr --with-ssl=/usr
+        make
+        make install
     - name: build haven web libs
       run: |
         export EMSCRIPTEN=$PWD/emsdk/upstream/emscripten
