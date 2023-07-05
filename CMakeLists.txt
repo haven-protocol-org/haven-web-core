@@ -64,6 +64,7 @@ include_directories("${HAVEN_OFFSHORE}/external/easylogging++")
 include_directories("${HAVEN_OFFSHORE}/external/rapidjson/include")
 include_directories("${HAVEN_OFFSHORE}/external/unbound/libunbound")
 include_directories("${HAVEN_OFFSHORE}/external/db_drivers/liblmdb")
+include_directories("${HAVEN_OFFSHORE}/external/supercop/include")
 include_directories("${HAVEN_OFFSHORE}/contrib/epee/include")
 include_directories("${HAVEN_OFFSHORE}/contrib/epee/include/net")
 
