@@ -78,6 +78,11 @@ else()
     include_directories("${HAVEN_OFFSHORE}/build/release/generated_include")
 
 endif()
+#############
+# Unbound
+#############
+
+include_directories("~/unbound-1.17.0/libunbound")
 
 #############
 # OpenSSL
