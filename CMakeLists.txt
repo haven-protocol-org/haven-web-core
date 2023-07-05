@@ -227,7 +227,7 @@ set(
     ${HAVEN_OFFSHORE_SRC}/ringct/rctTypes.cpp
     ${HAVEN_OFFSHORE_SRC}/ringct/rctCryptoOps.c
     ${HAVEN_OFFSHORE_SRC}/ringct/rctSigs.cpp
-    ${HAVEN_OFFSHORE_SRC}/ringct/bulletproofs.cc
+    #${HAVEN_OFFSHORE_SRC}/ringct/bulletproofs.cc
     ${HAVEN_OFFSHORE_SRC}/ringct/bulletproofs_plus.cc
     ${HAVEN_OFFSHORE_SRC}/ringct/multiexp.cc
     ${HAVEN_OFFSHORE_SRC}/mnemonics/electrum-words.cpp
@@ -256,7 +256,7 @@ set(
     ${HAVEN_OFFSHORE_SRC}/wallet/message_store.cpp
     ${HAVEN_OFFSHORE_SRC}/wallet/message_transporter.cpp
     ${HAVEN_OFFSHORE_SRC}/wallet/node_rpc_proxy.cpp
-    ${HAVEN_OFFSHORE_SRC}/offshore/pricing_record.cpp
+    #${HAVEN_OFFSHORE_SRC}/offshore/pricing_record.cpp
     ${HAVEN_OFFSHORE_SRC}/rpc/rpc_payment_signature.cpp
     ${HAVEN_OFFSHORE_SRC}/wallet/wallet_rpc_payments.cpp
     #${HAVEN_OFFSHORE_SRC}/blockchain_db/lmdb/db_lmdb.cpp
