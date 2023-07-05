@@ -215,6 +215,7 @@ set(
     ${HAVEN_OFFSHORE_SRC}/common/base58.cpp
     ${HAVEN_OFFSHORE_SRC}/device/device.cpp
     ${HAVEN_OFFSHORE_SRC}/device/device_default.cpp
+    ${HAVEN_OFFSHORE_SRC}/hardforks/hardforks.cpp
     ${HAVEN_OFFSHORE_SRC}/multisig/multisig.cpp
     ${HAVEN_OFFSHORE_SRC}/multisig/multisig_account.cpp
     ${HAVEN_OFFSHORE_SRC}/multisig/multisig_account_kex_impl.cpp
@@ -292,7 +293,7 @@ EMCC_LINKER_FLAGS_BASE
 # unsure if the -I...boost..include is necessary here due to include above
 # TODO? does EXPORT_NAME need to be the same for both targets? (or should it be set per-target with …_WASM, …_ASMJS?)
 
-"-Wall -Werror -Wl,--allow-undefined -std=c++11 -Oz \
+"-Wall -Werror -Wl,--allow-undefined -std=c++14 -Oz \
 --bind -s MODULARIZE=1 \
 -s 'EXPORT_NAME=\"haven_javascript\"' \
 -s ERROR_ON_UNDEFINED_SYMBOLS=0 \

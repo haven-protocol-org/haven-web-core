@@ -485,8 +485,11 @@ class TestMoneroDaemonRpc {
       
       if (testConfig.testNonRelays)
       it("Can get a fee estimate", async function() {
-        let fee = await that.daemon.getFeeEstimate();
-        TestUtils.testUnsignedBigInteger(fee, true);
+        let feeEstimate = await that.daemon.getFeeEstimate();
+        TestUtils.testUnsignedBigInteger(feeEstimate.getFee(), true);
+        assert(feeEstimate.getFees().length === 4); // slow, normal, fast, fastest
+        for (let i = 0; i < 4; i++) TestUtils.testUnsignedBigInteger(feeEstimate.getFees()[i], true);
+        TestUtils.testUnsignedBigInteger(feeEstimate.getQuantizationMask(), true);
       });
       
       if (testConfig.testNonRelays)
@@ -1037,10 +1040,10 @@ class TestMoneroDaemonRpc {
       it("Can be stopped", async function() {
         return; // test is disabled to not interfere with other tests
         
-        // give the that.daemon time to shut down
+        // give the daemon time to shut down
         await new Promise(function(resolve) { setTimeout(resolve, TestUtils.SYNC_PERIOD_IN_MS); });
         
-        // stop the that.daemon
+        // stop the daemon
         await that.daemon.stop();
         
         // give the daemon 10 seconds to shut down
@@ -1159,6 +1162,9 @@ class TestMoneroDaemonRpc {
           await that.daemon.flushTxPool(txHashes); // flush txs when relay fails to prevent double spends in other tests  
           throw e;
         }
+        
+        // wait for txs to be relayed // TODO (monero-project): all txs should be relayed: https://github.com/monero-project/monero/issues/8523
+        await new Promise(function(resolve) { setTimeout(resolve, 1000); });        
         
         // ensure txs are relayed
         let poolTxs = await that.daemon.getTxPool();

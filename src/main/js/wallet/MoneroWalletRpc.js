@@ -307,6 +307,7 @@ class MoneroWalletRpc extends MoneroWallet {
       throw new MoneroError("Wallet may be initialized with a mnemonic or keys but not both");
     }
     if (config.getNetworkType() !== undefined) throw new MoneroError("Cannot provide networkType when creating RPC wallet because server's network type is already set");
+    if (config.getAccountLookahead() !== undefined || config.getSubaddressLookahead() !== undefined) throw new MoneroError("monero-wallet-rpc does not support creating wallets with subaddress lookahead over rpc");
     
     // create wallet
     if (config.getMnemonic() !== undefined) {
@@ -632,6 +633,12 @@ class MoneroWalletRpc extends MoneroWallet {
   
   async stopSyncing() {
     return this.rpc.sendJsonRequest("auto_refresh", { enable: false });
+  }
+  
+  async scanTxs(txHashes) {
+    if (!txHashes || !txHashes.length) throw new MoneroError("No tx hashes given to scan");
+    await this.rpc.sendJsonRequest("scan_tx", {txids: txHashes});
+    await this._poll();
   }
   
   async rescanSpent() {
@@ -1610,10 +1617,16 @@ class MoneroWalletRpc extends MoneroWallet {
   
   async _getTransfersAux(query) {
     
-    // build params for get_transfers rpc call
+    // check if pool txs explicitly requested without daemon connection
+    let isConnectedToDaemon = await this.isConnectedToDaemon();
     let txQuery = query.getTxQuery();
+    if (txQuery.inTxPool() !== undefined && txQuery.inTxPool() && !isConnectedToDaemon) {
+      throw new MoneroError("Cannot fetch pool transactions because wallet has no daemon connection");
+    }
+    
+    // build params for get_transfers rpc call
     let canBeConfirmed = txQuery.isConfirmed() !== false && txQuery.inTxPool() !== true && txQuery.isFailed() !== true && txQuery.isRelayed() !== false;
-    let canBeInTxPool = txQuery.isConfirmed() !== true && txQuery.inTxPool() !== false && txQuery.isFailed() !== true && txQuery.isRelayed() !== false && txQuery.getHeight() === undefined && txQuery.getMaxHeight() === undefined && txQuery.isLocked() !== false;
+    let canBeInTxPool = isConnectedToDaemon && txQuery.isConfirmed() !== true && txQuery.inTxPool() !== false && txQuery.isFailed() !== true && txQuery.isRelayed() !== false && txQuery.getHeight() === undefined && txQuery.getMaxHeight() === undefined && txQuery.isLocked() !== false;
     let canBeIncoming = query.isIncoming() !== false && query.isOutgoing() !== true && query.hasDestinations() !== true;
     let canBeOutgoing = query.isOutgoing() !== false && query.isIncoming() !== true;
     let params = {};
@@ -2422,14 +2435,17 @@ class WalletPoller {
   
   async poll() {
     
-    // skip if next poll is already queued
-    if (this._numPolling > 1) return;
-    
     // synchronize polls
     let that = this;
     return this._threadPool.submit(async function() {
       try {
+        
+        // skip if next poll is already queued
+        if (that._numPolling > 1) return;
         that._numPolling++;
+        
+        // skip if wallet is closed
+        if (await that._wallet.isClosed()) return;
         
         // take initial snapshot
         if (that._prevHeight === undefined) {

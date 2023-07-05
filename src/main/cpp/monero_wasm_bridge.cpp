@@ -170,37 +170,12 @@ void monero_wasm_bridge::open_wallet_full(const string& password, int network_ty
 #endif
 }
 
-void monero_wasm_bridge::create_full_wallet_random(const string& password, int network_type, const string& daemon_uri, const string& daemon_username, const string& daemon_password, const string& reject_unauthorized_fn_id, const string& language, emscripten::val callback) {
+void monero_wasm_bridge::create_full_wallet(const string& config_json, const string& reject_unauthorized_fn_id, emscripten::val callback) {
 #if defined BUILD_WALLET_FULL
   try {
-    monero_rpc_connection daemon_connection = monero_rpc_connection(daemon_uri, daemon_username, daemon_password);
-    monero_wallet* wallet = monero_wallet_full::create_wallet_random("", password, static_cast<monero_network_type>(network_type), daemon_connection, language, std::unique_ptr<http_client_wasm_factory>(new http_client_wasm_factory(reject_unauthorized_fn_id)));
-    callback((int) wallet); // callback with wallet memory address
-  } catch (exception& e) {
-    callback(string(e.what()));
-  }
-#else
-  throw runtime_error("monero_wallet_full not built");
-#endif
-}
-
-void monero_wasm_bridge::create_full_wallet_from_mnemonic(const string& password, int network_type, const string& mnemonic, const string& daemon_uri, const string& daemon_username, const string& daemon_password, const string& reject_unauthorized_fn_id, long restore_height, const string& seed_offset, emscripten::val callback) {
-#if defined BUILD_WALLET_FULL
-  try {
-    monero_rpc_connection daemon_connection = monero_rpc_connection(daemon_uri, daemon_username, daemon_password);
-    monero_wallet* wallet = monero_wallet_full::create_wallet_from_mnemonic("", password, static_cast<monero_network_type>(network_type), mnemonic, daemon_connection, restore_height, seed_offset, std::unique_ptr<http_client_wasm_factory>(new http_client_wasm_factory(reject_unauthorized_fn_id)));
-    callback((int) wallet); // callback with wallet memory address
-  } catch (exception& e) {
-    callback(string(e.what()));
-  }
-#endif
-}
-
-void monero_wasm_bridge::create_full_wallet_from_keys(const string& password, int network_type, const string& address, const string& view_key, const string& spend_key, const string& daemon_uri, const string& daemon_username, const string& daemon_password, const string& reject_unauthorized_fn_id, long restore_height, const string& language, emscripten::val callback) {
-#if defined BUILD_WALLET_FULL
-  try {
-    monero_rpc_connection daemon_connection = monero_rpc_connection(daemon_uri, daemon_username, daemon_password);
-    monero_wallet* wallet = monero_wallet_full::create_wallet_from_keys("", password, static_cast<monero_network_type>(network_type), address, view_key, spend_key, daemon_connection, restore_height, language, std::unique_ptr<http_client_wasm_factory>(new http_client_wasm_factory(reject_unauthorized_fn_id)));
+    shared_ptr<monero_wallet_config> config = monero_wallet_config::deserialize(config_json);
+    config->m_path = std::string("");
+    monero_wallet* wallet = monero_wallet_full::create_wallet(*config, std::unique_ptr<http_client_wasm_factory>(new http_client_wasm_factory(reject_unauthorized_fn_id)));
     callback((int) wallet); // callback with wallet memory address
   } catch (exception& e) {
     callback(string(e.what()));
@@ -403,21 +378,30 @@ void monero_wasm_bridge::set_sync_height(int handle, long sync_height) {
   wallet->set_sync_height(sync_height);
 }
 
-int monero_wasm_bridge::set_listener(int wallet_handle, int old_listener_handle, emscripten::val on_sync_progress, emscripten::val on_new_block, emscripten::val on_balances_changed, emscripten::val on_output_received, emscripten::val on_output_spent) {
+void monero_wasm_bridge::set_listener(int wallet_handle, int old_listener_handle, emscripten::val callback, emscripten::val on_sync_progress, emscripten::val on_new_block, emscripten::val on_balances_changed, emscripten::val on_output_received, emscripten::val on_output_spent) {
   monero_wallet* wallet = (monero_wallet*) wallet_handle;
+  try {
 
-  // remove old listener
-  wallet_wasm_listener* old_listener = (wallet_wasm_listener*) old_listener_handle;
-  if (old_listener != nullptr) {
-    wallet->remove_listener(*old_listener);
-    delete old_listener;
+    // remove old listener
+    wallet_wasm_listener* old_listener = (wallet_wasm_listener*) old_listener_handle;
+    if (old_listener != nullptr) {
+      wallet->remove_listener(*old_listener);
+      delete old_listener;
+    }
+
+    // done if listeners not given
+    if (on_sync_progress == emscripten::val::undefined()) {
+      callback(0);
+      return;
+    }
+
+    // add new listener
+    wallet_wasm_listener* listener = new wallet_wasm_listener(on_sync_progress, on_new_block, on_balances_changed, on_output_received, on_output_spent);
+    wallet->add_listener(*listener);
+    callback((int) listener);
+  } catch (exception& e) {
+    callback(string(e.what()));
   }
-
-  // add new listener
-  if (on_sync_progress == emscripten::val::undefined()) return 0;
-  wallet_wasm_listener* listener = new wallet_wasm_listener(on_sync_progress, on_new_block, on_balances_changed, on_output_received, on_output_spent);
-  wallet->add_listener(*listener);
-  return (int) listener;
 }
 
 void monero_wasm_bridge::sync(int handle, long start_height, emscripten::val callback) {
@@ -439,6 +423,28 @@ void monero_wasm_bridge::rescan_spent(int handle, emscripten::val callback) {
   monero_wallet* wallet = (monero_wallet*) handle;
   wallet->rescan_spent();
   callback();
+}
+
+void monero_wasm_bridge::scan_txs(int handle, const string& args, emscripten::val callback) {
+  monero_wallet* wallet = (monero_wallet*) handle;
+  try {
+
+    // deserialize args to property tree
+    std::istringstream iss = std::istringstream(args);
+    boost::property_tree::ptree node;
+    boost::property_tree::read_json(iss, node);
+
+    // get tx hashes from args
+    vector<string> tx_hashes;
+    boost::property_tree::ptree tx_hashes_node = node.get_child("txHashes");
+    for (const auto& child : tx_hashes_node) tx_hashes.push_back(child.second.get_value<string>());
+
+    // scan txs
+    wallet->scan_txs(tx_hashes);
+    callback();
+  } catch (exception& e) {
+    callback(string(e.what()));
+  }
 }
 
 void monero_wasm_bridge::rescan_blockchain(int handle, emscripten::val callback) {

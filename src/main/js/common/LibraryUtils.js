@@ -108,14 +108,6 @@ class LibraryUtils {
   }
   
   /**
-   * Private helper to initialize the wasm module with data structures to synchronize access.
-   */
-  static _initWasmModule(wasmModule) {
-    wasmModule.taskQueue = new ThreadPool(1);
-    wasmModule.queueTask = async function(asyncFn) { return wasmModule.taskQueue.submit(asyncFn); }
-  }
-  
-  /**
    * Register a function by id which informs if unauthorized requests (e.g.
    * self-signed certificates) should be rejected.
    * 
@@ -215,6 +207,18 @@ class LibraryUtils {
       };
       worker.postMessage([objectId, fnName, callbackId].concat(args === undefined ? [] : GenUtils.listify(args)));
     });
+  }
+  
+  // ------------------------------ PRIVATE HELPERS ---------------------------
+  
+  static _initWasmModule(wasmModule) {
+    wasmModule.taskQueue = new ThreadPool(1);
+    wasmModule.queueTask = async function(asyncFn) { return wasmModule.taskQueue.submit(asyncFn); }
+  }
+  
+  static _prefixWindowsPath(path) {
+    if (path.indexOf("C:") == 0 && path.indexOf("file://") == -1) path = "file://" + path; // prepend C: paths with file://
+    return path;
   }
 }
 

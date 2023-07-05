@@ -48,7 +48,6 @@ const monerojs = require("monero-javascript");
 // connect to daemon
 let daemon = await monerojs.connectToDaemonRpc("http://localhost:38081", "superuser", "abctesting123");
 let height = await daemon.getHeight();            // 1523651
-let feeEstimate = await daemon.getFeeEstimate();  // 1014313512
 let txsInPool = await daemon.getTxPool();         // get transactions in the pool
 
 // open wallet on monero-wallet-rpc
@@ -156,7 +155,7 @@ Compiled WebAssembly binaries are committed to ./dist for convenience, but these
 ## Using monero-javascript in your project
 
 1. `cd your_project` or `mkdir your_project && cd your_project && npm init`
-2. `npm install monero-javascript@0.7.3`
+2. `npm install monero-javascript@0.7.6`
 3. Add `require("monero-javascript")` to your application code.
 4. If building a browser application, copy assets from ./dist to your web app's build directory as needed.
 
@@ -174,13 +173,14 @@ Compiled WebAssembly binaries are committed to ./dist for convenience, but these
 1. Install and activate emscripten.
 	1. Clone emscripten repository: `git clone https://github.com/emscripten-core/emsdk.git`
 	2. `cd emsdk`
-	3. `git pull && ./emsdk install latest-upstream && ./emsdk activate latest-upstream && source ./emsdk_env.sh`
+	3. `git pull && ./emsdk install 3.1.10 && ./emsdk activate 3.1.10 && source ./emsdk_env.sh`
 	4. `export EMSCRIPTEN=path/to/emsdk/upstream/emscripten` (change for your system)
-2. Clone monero-javascript repository: `git clone https://github.com/monero-ecosystem/monero-javascript.git`
+2. Clone monero-javascript repository: `git clone --recursive https://github.com/monero-ecosystem/monero-javascript.git`
 3. `cd monero-javascript`
 4. `./bin/update_submodules.sh`
 5. Modify ./external/monero-cpp/external/monero-project/src/crypto/wallet/CMakeLists.txt from `set(MONERO_WALLET_CRYPTO_LIBRARY "auto" ...` to `set(MONERO_WALLET_CRYPTO_LIBRARY "cn" ...`.
-6. `./bin/build_all.sh` (install [monero-project dependencies](https://github.com/monero-project/monero#dependencies) as needed for your system)
+6. [Download and install](https://unbound.docs.nlnetlabs.nl/en/latest/getting-started/installation.html) unbound 1.17.0 to your home directory (`~`).
+7. `./bin/build_all.sh` (install [monero-project dependencies](https://github.com/monero-project/monero#dependencies) as needed for your system)
 
 ## Running tests
 

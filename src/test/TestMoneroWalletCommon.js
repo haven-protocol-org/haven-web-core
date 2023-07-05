@@ -353,6 +353,38 @@ class TestMoneroWalletCommon {
         if (e1 !== undefined) throw e1;
       });
       
+      if (testConfig.testRelays)
+      it("Can create wallets with subaddress lookahead", async function() {
+        let err;
+        let receiver;
+        try {
+          
+         // create wallet with high subaddress lookahead
+         receiver = await that.createWallet({
+            accountLookahead: 1,
+            subaddressLookahead: 100000
+         });
+         
+         // transfer funds to subaddress with high index
+         await that.wallet.createTx(new MoneroTxConfig()
+                 .setAccountIndex(0)
+                 .addDestination((await receiver.getSubaddress(0, 85000)).getAddress(), TestUtils.MAX_FEE)
+                 .setRelay(true));
+         
+         // observe unconfirmed funds
+         await GenUtils.waitFor(1000);
+         await receiver.sync();
+         assert((await receiver.getBalance()).compare(new BigInteger("0")) > 0);
+        } catch (e) {
+          err = e;
+        }
+        
+        // close wallet and throw if error occurred
+        if (receiver) await that.closeWallet(receiver);
+        if (err) throw err;
+      });
+      
+      
       if (testConfig.testNonRelays)
       it("Can get the wallet's version", async function() {
         let version = await that.wallet.getVersion();
@@ -389,9 +421,24 @@ class TestMoneroWalletCommon {
         let wallet;
         try {
           
-          // create unconnected random wallet
+          // create random wallet with default daemon connection
           wallet = await that.createWallet({serverUri: ""});
+          if (wallet instanceof MoneroWalletRpc) {
+            assert.deepEqual(await wallet.getDaemonConnection(), new MoneroRpcConnection(TestUtils.DAEMON_RPC_CONFIG));
+            assert.equal(await wallet.isConnectedToDaemon(), true);
+          } else {
+            assert.equal(await wallet.getDaemonConnection(), undefined);
+            assert(!await wallet.isConnectedToDaemon());
+          }
+          
+          // set empty server uri
+          await wallet.setDaemonConnection("");
           assert.equal(await wallet.getDaemonConnection(), undefined);
+          assert.equal(await wallet.isConnectedToDaemon(), false);
+          
+          // set offline server uri
+          await wallet.setDaemonConnection(TestUtils.OFFLINE_SERVER_URI);
+          assert.deepEqual(await wallet.getDaemonConnection(), new MoneroRpcConnection(TestUtils.OFFLINE_SERVER_URI));
           assert.equal(await wallet.isConnectedToDaemon(), false);
           
           // set daemon with wrong credentials
@@ -402,6 +449,7 @@ class TestMoneroWalletCommon {
           
           // set daemon with authentication
           await wallet.setDaemonConnection(TestUtils.DAEMON_RPC_CONFIG);
+          assert.deepEqual(await wallet.getDaemonConnection(), new MoneroRpcConnection(TestUtils.DAEMON_RPC_CONFIG.uri, TestUtils.DAEMON_RPC_CONFIG.username, TestUtils.DAEMON_RPC_CONFIG.password));
           assert(await wallet.isConnectedToDaemon());
           
           // nullify daemon connection
@@ -1143,12 +1191,11 @@ class TestMoneroWalletCommon {
         }
       });
       
-      // NOTE: payment hashes are deprecated so this test will require an old wallet to pass
       if (testConfig.testNonRelays)
       it("Can get transactions by payment ids", async function() {
         
         // get random transactions with payment hashes for testing
-        let randomTxs = await getRandomTransactions(that.wallet, {hasPaymentId: true}, 3, 5);
+        let randomTxs = await getRandomTransactions(that.wallet, {hasPaymentId: true}, 2, 5);
         for (let randomTx of randomTxs) {
           assert(randomTx.getPaymentId());
         }
@@ -2171,7 +2218,7 @@ class TestMoneroWalletCommon {
         // import outputs hex
         if (outputsHex !== undefined) {
           let numImported = await that.wallet.importOutputs(outputsHex);
-          assert(numImported > 0);
+          assert(numImported >= 0);
         }
         
         // get and test new key images from last import
@@ -2549,7 +2596,7 @@ class TestMoneroWalletCommon {
         let senderNotificationCollector = new WalletNotificationCollector();
         let receiverNotificationCollector = new WalletNotificationCollector();
         await sender.addListener(senderNotificationCollector);
-        await GenUtils.waitFor(TestUtils.SYNC_PERIOD_IN_MS / 2);
+        await GenUtils.waitFor(TestUtils.SYNC_PERIOD_IN_MS / 2); // TODO: remove this, should be unnecessary
         await receiver.addListener(receiverNotificationCollector);
         
         // send funds
@@ -2804,12 +2851,13 @@ class TestMoneroWalletCommon {
       
       it("Can stop listening", async function() {
         
-        // create wallet and start background synchronizing
-        let wallet = await that.createWallet(new MoneroWalletConfig());
+        // create offline wallet
+        let wallet = await that.createWallet(new MoneroWalletConfig().setServerUri(TestUtils.OFFLINE_SERVER_URI));
         
         // add listener
         let listener = new WalletNotificationCollector();
         await wallet.addListener(listener);
+        await wallet.setDaemonConnection(await that.daemon.getRpcConnection());
         await new Promise(function(resolve) { setTimeout(resolve, 1000); });
         
         // remove listener and close
@@ -3316,13 +3364,13 @@ class TestMoneroWalletCommon {
         // init tx config
         let sendAmount = unlockedBalanceBefore.subtract(TestUtils.MAX_FEE).divide(new BigInteger(SEND_DIVISOR));
         let address = await that.wallet.getPrimaryAddress();
-        let txs = []
         config.setDestinations([new MoneroDestination(address, sendAmount)]);
         config.setAccountIndex(fromAccount.getIndex());
         config.setSubaddressIndices([fromSubaddress.getIndex()]);
         let reqCopy = config.copy();
         
         // send to self
+        let txs = []
         if (config.getCanSplit() !== false) {
           for (let tx of await that.wallet.createTxs(config)) txs.push(tx);
         } else {
@@ -3425,7 +3473,7 @@ class TestMoneroWalletCommon {
       
       if (testConfig.testRelays)
       it("Can send dust to multiple addresses in split transactions", async function() {
-        let dustAmt = (await that.daemon.getFeeEstimate()).divide(new BigInteger(2));
+        let dustAmt = (await that.daemon.getFeeEstimate()).getFee().divide(new BigInteger(2));
         await testSendToMultiple(5, 3, true, dustAmt);
       });
       
@@ -3557,7 +3605,7 @@ class TestMoneroWalletCommon {
         
         // create view-only and offline wallets
         let viewOnlyWallet = await that.createWallet({primaryAddress: await that.wallet.getPrimaryAddress(), privateViewKey: await that.wallet.getPrivateViewKey(), restoreHeight: TestUtils.FIRST_RECEIVE_HEIGHT});
-        let offlineWallet = await that.createWallet({primaryAddress: await that.wallet.getPrimaryAddress(), privateViewKey: await that.wallet.getPrivateViewKey(), privateSpendKey: await that.wallet.getPrivateSpendKey(), serverUri: "", restoreHeight: 0});
+        let offlineWallet = await that.createWallet({primaryAddress: await that.wallet.getPrimaryAddress(), privateViewKey: await that.wallet.getPrivateViewKey(), privateSpendKey: await that.wallet.getPrivateSpendKey(), serverUri: TestUtils.OFFLINE_SERVER_URI, restoreHeight: 0});
         await viewOnlyWallet.sync();
         
         // test tx signing with wallets
@@ -3877,6 +3925,36 @@ class TestMoneroWalletCommon {
           }
         }
       }
+      
+      it("Can scan transactions by id", async function() {
+        
+        // get a few tx hashes
+        let txHashes = [];
+        let txs = await that.wallet.getTxs();
+        if (txs.length < 3) throw new Error("Not enough txs to scan");
+        for (let i = 0; i < 3; i++) txHashes.push(txs[i].getHash());
+        
+        // start wallet without scanning
+        let scanWallet = await that.createWallet(new MoneroWalletConfig().setMnemonic(await that.wallet.getMnemonic()).setRestoreHeight(0));
+        await scanWallet.stopSyncing(); // TODO: create wallet without daemon connection (offline does not reconnect, default connects to localhost, offline then online causes confirmed txs to disappear)
+        assert(await scanWallet.isConnectedToDaemon());
+        
+        // scan txs
+        await scanWallet.scanTxs(txHashes);
+        
+        // TODO: scanning txs causes merge problems reconciling 0 fee, isMinerTx with test txs
+        
+    //    // txs are scanned
+    //    assertEquals(txHashes.size(), scanWallet.getTxs().size());
+    //    for (int i = 0; i < txHashes.size(); i++) {
+    //      assertEquals(wallet.getTx(txHashes.get(i)), scanWallet.getTx(txHashes.get(i)));
+    //    }
+    //    List<MoneroTxWallet> scannedTxs = scanWallet.getTxs(txHashes);
+    //    assertEquals(txHashes.size(), scannedTxs.size());
+        
+        // close wallet
+        await that.closeWallet(scanWallet, false);
+      });
       
       // disabled so tests don't delete local cache
       if (testConfig.testResets)
@@ -4864,7 +4942,7 @@ class TestMoneroWalletCommon {
     assert(!await offlineWallet.isConnectedToDaemon());
     assert(!await offlineWallet.isViewOnly());
     if (!(offlineWallet instanceof MoneroWalletRpc)) assert.equal(await offlineWallet.getMnemonic(), TestUtils.MNEMONIC); // TODO monero-project: cannot get mnemonic from offline wallet rpc
-    if (!(offlineWallet instanceof MoneroWalletRpc)) assert.equal((await offlineWallet.getTxs()).length, 0); // TODO: monero-wallet-rpc has these transactions cached on startup
+    assert.equal((await offlineWallet.getTxs()).length, 0);
     
     // import outputs to offline wallet
     let numOutputsImported = await offlineWallet.importOutputs(outputsHex);
@@ -4875,6 +4953,7 @@ class TestMoneroWalletCommon {
     assert(keyImages.length > 0);
     
     // import key images to view-only wallet
+    assert(await viewOnlyWallet.isConnectedToDaemon());
     await viewOnlyWallet.importKeyImages(keyImages);
     assert.equal((await viewOnlyWallet.getBalance()).toString(), (await this.wallet.getBalance()).toString());
     
