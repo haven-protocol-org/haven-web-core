@@ -7,7 +7,7 @@ export = MoneroWalletKeys;
  */
 declare class MoneroWalletKeys extends MoneroWallet implements MoneroWallet {
     /**
-     * <p>Create a wallet using WebAssembly bindings to monero-core.</p>
+     * <p>Create a wallet using WebAssembly bindings to monero-project.</p>
      *
      * <p>Example:</p>
      *
@@ -43,9 +43,31 @@ declare class MoneroWalletKeys extends MoneroWallet implements MoneroWallet {
      *
      * @param {int} cppAddress - address of the wallet instance in C++
      */
-    constructor(cppAddress: any);
-    _cppAddress: any;
+    constructor(cppAddress: int);
+    _cppAddress: int;
     _module: any;
+    addListener(listener: any): Promise<void>;
+    removeListener(listener: any): Promise<void>;
+    isViewOnly(): Promise<any>;
+    isConnectedToDaemon(): Promise<boolean>;
+    getVersion(): Promise<any>;
+    /**
+     * @ignore
+     */
+    getPath(): void;
+    getMnemonic(): Promise<any>;
+    getMnemonicLanguage(): Promise<any>;
+    getPrivateSpendKey(): Promise<any>;
+    getPrivateViewKey(): Promise<any>;
+    getPublicViewKey(): Promise<any>;
+    getPublicSpendKey(): Promise<any>;
+    getAddress(accountIdx: any, subaddressIdx: any): Promise<any>;
+    getAddressIndex(address: any): Promise<any>;
+    getAccounts(): void;
+    close(save: any): Promise<any>;
+    isClosed(): Promise<any>;
+    getPrimaryAddress(...args: any[]): Promise<string>;
+    getSubaddress(...args: any[]): Promise<MoneroSubaddress>;
     _assertNotClosed(): void;
 }
 import MoneroWallet = require("./MoneroWallet");
