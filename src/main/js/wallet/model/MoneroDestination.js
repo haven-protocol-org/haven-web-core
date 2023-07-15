@@ -54,6 +54,15 @@ class MoneroDestination {
     this.state.isCollateral = isCollateral;
     return this;
   }
+
+  getIsCollateralChange() {
+    return this.state.isCollateralChange;
+  }
+
+  setIsCollateralChange(isCollateralChange) {
+    this.state.isCollateralChange = isCollateralChange;
+    return this;
+  }
   
   getAmount() {
     return this.state.amount;
