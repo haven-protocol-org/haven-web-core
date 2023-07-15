@@ -67,7 +67,7 @@ struct wallet_wasm_listener : public monero_wallet_listener {
     string subaddress_idx_str = output.m_subaddress_index == boost::none ? "" : to_string(*output.m_subaddress_index).c_str();
     int version = output.m_tx->m_version == boost::none ? 2 : *output.m_tx->m_version;
     bool is_locked = std::static_pointer_cast<monero_tx_wallet>(output.m_tx)->m_is_locked.get();
-    m_on_output_spent(height == boost::none ? (long) 0 : (long) *height, output.m_tx->m_hash.get(), to_string(*output.m_amount), *output.m_currency, account_idx_str, subaddress_idx_str, version, (int) *output.m_tx->m_unlock_height, is_locked);
+    m_on_output_spent(height == boost::none ? (long) 0 : (long) *height, output.m_tx->m_hash.get(), to_string(*output.m_amount), account_idx_str, subaddress_idx_str, version, (int) *output.m_tx->m_unlock_height, is_locked);
   }
 };
 

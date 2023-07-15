@@ -1848,7 +1848,7 @@ class MoneroWalletFull extends MoneroWalletKeys {
             isEnabled ? async function(height) { await that._fullListener.onNewBlock(height); } : undefined,
             isEnabled ? async function(newBalanceStr, newUnlockedBalanceStr, assetType) { await that._fullListener.onBalancesChanged(newBalanceStr, newUnlockedBalanceStr, assetType); } : undefined,
             isEnabled ? async function(height, txHash, amountStr, assetType, accountIdx, subaddressIdx, version, unlockHeight, isLocked) { await that._fullListener.onOutputReceived(height, txHash, amountStr, assetType, accountIdx, subaddressIdx, version, unlockHeight, isLocked); } : undefined,
-            isEnabled ? async function(height, txHash, amountStr, assetType, accountIdxStr, subaddressIdxStr, version, unlockHeight, isLocked) { await that._fullListener.onOutputSpent(height, txHash, amountStr, assetType, accountIdxStr, subaddressIdxStr, version, unlockHeight, isLocked); } : undefined,
+            isEnabled ? async function(height, txHash, amountStr, accountIdxStr, subaddressIdxStr, version, unlockHeight, isLocked) { await that._fullListener.onOutputSpent(height, txHash, amountStr, accountIdxStr, subaddressIdxStr, version, unlockHeight, isLocked); } : undefined,
         );
       });
     });
@@ -2672,14 +2672,13 @@ class WalletFullListener {
     for (let listener of this._wallet.getListeners()) await listener.onOutputReceived(tx.getOutputs()[0]);
   }
   
-  async onOutputSpent(height, txHash, amountStr, assetType, accountIdxStr, subaddressIdxStr, version) {
+  async onOutputSpent(height, txHash, amountStr, accountIdxStr, subaddressIdxStr, version) {
     
     // build spent output
     let output = new MoneroOutputWallet();
     output.setAmount(BigInteger.parse(amountStr));
     if (accountIdxStr) output.setAccountIndex(parseInt(accountIdxStr));
     if (subaddressIdxStr) output.setSubaddressIndex(parseInt(subaddressIdxStr));
-    output.setCurrency(assetType);
     let tx = new MoneroTxWallet();
     tx.setHash(txHash);
     tx.setVersion(version);
