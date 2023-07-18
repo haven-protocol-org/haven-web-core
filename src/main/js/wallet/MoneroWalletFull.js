@@ -2672,7 +2672,7 @@ class WalletFullListener {
     for (let listener of this._wallet.getListeners()) await listener.onOutputReceived(tx.getOutputs()[0]);
   }
   
-  async onOutputSpent(height, txHash, amountStr, accountIdxStr, subaddressIdxStr, version) {
+  async onOutputSpent(height, txHash, amountStr, accountIdxStr, subaddressIdxStr, version, unlockHeight, isLocked) {
     
     // build spent output
     let output = new MoneroOutputWallet();
