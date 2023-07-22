@@ -1,15 +1,22 @@
 FROM ubuntu:20.04
 
-WORKDIR /tmp
-
 ARG DEBIAN_FRONTEND=noninteractive
-ARG EMSCRIPTEN=/tmp/emsdk/upstream/emscripten
+ARG EMSCRIPTEN=/emsdk/upstream/emscripten
 
 RUN apt update \
     && apt-get install -y \
         build-essential \
         cmake pkg-config \
         libssl-dev \
+        libboost-chrono-dev \
+        libboost-date-time-dev \
+        libboost-filesystem-dev \
+        libboost-locale-dev \
+        libboost-program-options-dev \
+        libboost-regex-dev \
+        libboost-serialization-dev \
+        libboost-system-dev \
+        libboost-thread-dev \
         libzmq3-dev \
         libsodium-dev \
         libunwind8-dev \
@@ -47,12 +54,18 @@ RUN wget https://www.nlnetlabs.nl/downloads/unbound/unbound-1.17.0.tar.gz \
     && make \
     && make install
 
+WORKDIR /
+
+RUN git clone https://github.com/emscripten-core/emsdk.git \
+  && cd emsdk \
+  && ./emsdk install 3.1.10 \
+  && ./emsdk activate 3.1.10
+
 WORKDIR /tmp
 COPY . .
 
 
-
-RUN cd emsdk \
-  && . ./emsdk_env.sh \
-  && cd .. \
-  && ./bin/build_ci.sh
+#RUN cd emsdk \
+#  && . ./emsdk_env.sh \
+#  && cd .. \
+#  && ./bin/build_ci.sh
