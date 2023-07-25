@@ -21,7 +21,7 @@ git pull
 mkdir -p build/release
 cd build/release
 cmake ../..
-make obj_common -j3
+make -j3
 # HOST_NCORES=$(nproc 2>/dev/null || shell nproc 2>/dev/null || sysctl -n hw.ncpu 2>/dev/null || echo 1)
 #./build-haven.sh -j3		# don't exit because this will build translations directory even if build fails
 
