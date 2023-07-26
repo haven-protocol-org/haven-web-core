@@ -1,6 +1,6 @@
-#!/bin/sh
+#!/bin/bash
 
-#EMCC_DEBUG=1 
+#EMCC_DEBUG=1
 
 # get current package version
 NPM_VERSION=$(node -p -e "require('./package.json').version")
@@ -12,5 +12,3 @@ else
 fi
 # build web app dependencies -> adds current package version on its own
 npm run build_worker
-
-

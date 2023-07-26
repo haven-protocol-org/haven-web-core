@@ -65,7 +65,7 @@ WORKDIR /tmp
 COPY . .
 
 
-#RUN cd emsdk \
+#RUN cd /emsdk \
 #  && . ./emsdk_env.sh \
 #  && cd .. \
 #  && ./bin/build_ci.sh
