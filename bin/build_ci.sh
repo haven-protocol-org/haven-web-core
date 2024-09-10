@@ -17,8 +17,6 @@
 # build haven offshore translations directory
 cd ./external/haven-web-cpp/external/haven || exit 1
 
-sed -i '33s/auto/cn/' src/crypto/wallet/CMakeLists.txt
-
 mkdir -p build/release
 cd build/release
 cmake ../..
