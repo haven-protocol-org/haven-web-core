@@ -1,6 +1,6 @@
 const assert = require("assert");
 const MoneroBlock = require("../daemon/model/MoneroBlock");
-const BigInteger = require("../common/biginteger").BigInteger;
+const BigInteger = require("../common/biginteger");
 const MoneroError = require("../common/MoneroError");
 const MoneroOutputQuery = require("./model/MoneroOutputQuery");
 const MoneroTransferQuery = require("./model/MoneroTransferQuery");
