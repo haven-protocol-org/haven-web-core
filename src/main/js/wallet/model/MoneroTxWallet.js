@@ -61,6 +61,7 @@ class MoneroTxWallet extends MoneroTx {
     if (state.outputSum !== undefined && !(state.outputSum instanceof BigInteger)) state.outputSum = BigInteger.parse(state.outputSum);
     if (state.changeAmount !== undefined && !(state.changeAmount instanceof BigInteger)) state.changeAmount = BigInteger.parse(state.changeAmount);
     if (state.collateralAmount !== undefined && !(state.collateralAmount instanceof BigInteger)) state.collateralAmount = BigInteger.parse(state.collateralAmount);
+    if (state.slippageAmount !== undefined && !(state.slippageAmount instanceof BigInteger)) state.slippageAmount = BigInteger.parse(state.slippageAmount);
   }
   
   
@@ -261,6 +262,15 @@ class MoneroTxWallet extends MoneroTx {
     this.state.collateralAmount = collateralAmount;
     return this;
   }
+
+  getSlippageAmount() {
+    return this.state.slippageAmount;
+  }
+  
+  setSlippageAmount(slippageAmount) {
+    this.state.slippageAmount = slippageAmount;
+    return this;
+  }
   
   getChangeAmount() {
     return this.state.changeAmount;
@@ -348,6 +358,7 @@ class MoneroTxWallet extends MoneroTx {
     this.setChangeAddress(GenUtils.reconcile(this.getChangeAddress(), tx.getChangeAddress()));
     this.setChangeAmount(GenUtils.reconcile(this.getChangeAmount(), tx.getChangeAmount()));
     this.setCollateralAmount(GenUtils.reconcile(this.getCollateralAmount(), tx.getCollateralAmount()));
+    this.setSlippageAmount(GenUtils.reconcile(this.getSlippageAmount(), tx.getSlippageAmount()));
     this.setNumDummyOutputs(GenUtils.reconcile(this.getNumDummyOutputs(), tx.getNumDummyOutputs()));
     this.setExtraHex(GenUtils.reconcile(this.getExtraHex(), tx.getExtraHex()));
     
@@ -498,6 +509,7 @@ class MoneroTxWallet extends MoneroTx {
     if (this.getOutputSum()) json.outputSum = this.getOutputSum().toString();
     if (this.getChangeAmount()) json.changeAmount = this.getChangeAmount().toString();
     if (this.getCollateralAmount()) json.collateralAmount = this.getCollateralAmount().toString();
+    if (this.getSlippageAmount()) json.slippageAmount = this.getSlippageAmount().toString();
     delete json.block;  // do not serialize parent block
     delete json.txSet;  // do not serialize parent tx set
     return json;
