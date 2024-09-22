@@ -73,7 +73,7 @@ get_openssl_github() {
     && {
       (
         cd "${SDK_PATH}/openssl-sdk"
-        git checkout OpenSSL_1_1_1-stable
+        git checkout tags/openssl-3.0.15
       )
     } \
     || {
@@ -181,7 +181,7 @@ get_openssl_source() {
   [ -d ${SDK_PATH} ] || { echo "get_openssl_source: Missing directory: ${SDK_PATH}"; return 1; }
 
   local DL_URL="https://github.com/openssl/openssl/archive"
-  local DL_FILE="OpenSSL_1_1_1q.tar.gz"
+  local DL_FILE="openssl-3.0.15.tar.gz"
 
   check_archive "${SDK_PATH}/${DL_FILE}" \
   && {
@@ -193,7 +193,7 @@ get_openssl_source() {
   }
 
   mkdir ${SDK_PATH}/openssl-sdk
-  tar -C ${SDK_PATH}/openssl-sdk --strip-components=1 -xvf ${SDK_PATH}/OpenSSL_1_1_1q.tar.gz || return 1
+  tar -C ${SDK_PATH}/openssl-sdk --strip-components=1 -xvf ${SDK_PATH}/${DL_FILE} || return 1
 
   return 0
 }
