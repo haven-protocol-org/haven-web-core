@@ -95,9 +95,12 @@ class LibraryUtils {
     
     // load module
     delete LibraryUtils.WASM_MODULE;
+    const fetch_ = globalThis.fetch;
+    globalThis.fetch = undefined;
     LibraryUtils.WASM_MODULE = require("../../../../dist/haven_offshore3.0.8")();
     return new Promise(function(resolve, reject) {
       LibraryUtils.WASM_MODULE.then(module => {
+        globalThis.fetch = fetch_;
         LibraryUtils.WASM_MODULE = module
         delete LibraryUtils.WASM_MODULE.then;
         LibraryUtils.FULL_LOADED = true;
